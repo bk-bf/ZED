@@ -1,6 +1,6 @@
 # Development Progress Report - Day 1: Foundation & Playable Movement
 **Date:** May 25, 2025  
-**Project:** ZED - Zombie Extraction Deliverance  
+**Project:** ZED 
 **Development Philosophy:** Playable-First Development
 
 ## Executive Summary

@@ -1,4 +1,4 @@
-# 🧟‍♂️ ZED - Zombie Extraction Deliverance Project Structure
+# 🧟‍♂️ ZED - Project Structure
 
 ## Directory Layout
 

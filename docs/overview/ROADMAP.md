@@ -1,4 +1,4 @@
-# 🧟‍♂️ ZED - Zombie Extraction Deliverance - Development Roadmap
+# 🧟‍♂️ ZED - Development Roadmap
 
 ## Project Overview
 **Genre:** Top-down tactical looter shooter  
@@ -208,7 +208,7 @@
 - [ ] Release preparation and marketing
 
 ### Day 28: Launch (2025-06-21)
-- [ ] **RELEASED:** Zombie Extraction Deliverance available for purchase
+- [ ] **RELEASED:** ZED available for purchase
 - [ ] Monitor launch metrics and player feedback
 - [ ] **SUCCESSFUL:** Commercial game development completed
 - [ ] Launch and post-launch support

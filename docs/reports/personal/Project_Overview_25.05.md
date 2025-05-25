@@ -1,6 +1,6 @@
 # Project Overview: What We Built Today
 
-Let me break down exactly what we accomplished in this session and how each piece fits into your **Zombie Extraction Deliverance** roadmap. Since we don't have a playable scene yet, I'll explain what each system does and why it's crucial for your tactical looter shooter.
+Let me break down exactly what we accomplished in this session and how each piece fits into your **ZED** roadmap. Since we don't have a playable scene yet, I'll explain what each system does and why it's crucial for your tactical looter shooter.
 
 ## **What We Built: The Foundation Systems**
 
