@@ -9,6 +9,8 @@
 [node name="Player" parent="." instance=ExtResource("1_uspyl")]
 position = Vector2(400, 300)
 
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="TopWall" parent="Walls" instance=ExtResource("3_8rjut")]

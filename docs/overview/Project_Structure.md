@@ -1,4 +1,4 @@
-# Apocalypse Clearance Project Structure
+# 🧟‍♂️ ZED - Zombie Extraction Deliverance Project Structure
 
 ## Directory Layout
 

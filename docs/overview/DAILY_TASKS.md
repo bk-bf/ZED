@@ -1,4 +1,4 @@
-# APOCALYPSE CLEARANCE - Daily Tasks Breakdown
+# 🧟‍♂️ ZED - Zombie Extraction Deliverance - Daily Tasks Breakdown
 
 ## How to Use This Document
 - Each roadmap item is broken into 3 sub-tasks with 5 granular steps each
@@ -60,10 +60,10 @@
 - **TESTABLE:** Player can walk around a simple room immediately
 
 #### Sub-task 3.1: Add camera follow system
-1. [ ] Add Camera2D node as child of Player
-2. [ ] Enable Camera2D and set as current camera
-3. [ ] Set camera smoothing enabled with speed 5.0
-4. [ ] Test camera follows player movement smoothly
+1. [x] Add Camera2D node as child of Player
+2. [x] Enable Camera2D and set as current camera
+3. [x] Set camera smoothing enabled with speed 5.0
+4. [x] Test camera follows player movement smoothly
 5. [ ] Adjust camera limits to room boundaries if needed
 
 #### Sub-task 3.2: Polish movement feel

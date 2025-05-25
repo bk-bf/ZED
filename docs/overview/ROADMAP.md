@@ -1,4 +1,4 @@
-# APOCALYPSE CLEARANCE - Development Roadmap
+# 🧟‍♂️ ZED - Zombie Extraction Deliverance - Development Roadmap
 
 ## Project Overview
 **Genre:** Top-down tactical looter shooter  
@@ -45,7 +45,8 @@
 - [ ] **PLAYABLE:** Different zombie types with different speeds/health
 - [ ] **PLAYABLE:** Spawn waves of zombies for escalating challenge
 - [ ] **TESTABLE:** Tactical positioning and kiting mechanics
-- [ ] Movement system with collision detection
+- [ ] **PLAYABLE:** Implement basic fog of war - unvisited areas are black, visited areas show memory
+- [ ] **TESTABLE:** Tactical information management adds strategic room-to-room planning
 
 ### Day 6: Room Progression (2025-05-30)
 - [ ] **PLAYABLE:** Multiple connected rooms with doors
@@ -99,6 +100,8 @@
 - [ ] **PLAYABLE:** Different building types (house, office, warehouse)
 - [ ] **PLAYABLE:** Environmental hazards and interactive elements
 - [ ] **TESTABLE:** Varied tactical scenarios
+- [ ] **PLAYABLE:** Implement directional vision cone system for tactical awareness
+- [ ] **TESTABLE:** Horror tension from limited vision and zombie flanking opportunities
 - [ ] Procedural generation algorithms
 
 ### Day 13: Progression Systems (2025-06-06)
@@ -205,7 +208,7 @@
 - [ ] Release preparation and marketing
 
 ### Day 28: Launch (2025-06-21)
-- [ ] **RELEASED:** Apocalypse Clearance available for purchase
+- [ ] **RELEASED:** Zombie Extraction Deliverance available for purchase
 - [ ] Monitor launch metrics and player feedback
 - [ ] **SUCCESSFUL:** Commercial game development completed
 - [ ] Launch and post-launch support
