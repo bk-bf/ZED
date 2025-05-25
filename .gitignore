@@ -31,3 +31,10 @@ __pycache__/
 *.pyo
 *.pyd
 *.gd.uid
+
+# Keep placeholders, ignore generated content initially
+assets/generated/
+assets/temp/
+
+# Documentation builds
+docs/build/
