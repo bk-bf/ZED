@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://clfg7irsq22k1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80uj3"]
+size = Vector2(32, 32)
+
+[node name="MovementTest" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_80uj3")
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+offset_top = 1.0
+offset_right = 40.0
+offset_bottom = 41.0
+color = Color(0.0768358, 0.0768358, 0.0768358, 1)

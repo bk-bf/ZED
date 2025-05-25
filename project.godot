@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="top_down_apocalypse_looter_shoter"
+run/main_scene="uid://clfg7irsq22k1"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
