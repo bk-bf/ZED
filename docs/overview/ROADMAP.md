@@ -1,168 +1,233 @@
-# Complete ERP Roadmap: Top-Down Apocalypse Looter
-## Mechanics-First Development with Strategic AI Asset Integration
+# APOCALYPSE CLEARANCE - Development Roadmap
 
-Based on industry best practices from the search results, this roadmap prioritizes core mechanics validation before asset investment, following the principle that "most successful games carefully focus on a core mechanic and design gameplay loops that challenge the player's mastery of it."
+## Project Overview
+**Genre:** Top-down tactical looter shooter  
+**Core Loop:** Clear zombie-infested buildings → Collect resources → Manage base → Repeat with increasing difficulty  
+**Development Philosophy:** Playable-first development with immediate testability at every step  
+**Target:** Commercial release with AI-generated assets
 
-## Phase 1: Core Mechanics Foundation (Week 1)
+---
 
-### Day 1: Project Architecture & Core Mechanic Definition (Deadline: 2025-05-25)
-- [x] Set up project structure with clear separation: mechanics, placeholders, assets (2025-05-25)
-- [x] Configure Jolt Physics for performance optimization (2025-05-25)
-- [x] Create comprehensive placeholder asset library (colored shapes, basic sprites) (2025-05-25)
-- [ ] Define primary mechanic: tactical building clearance with resource management consequences (2025-05-25)
+## Phase 1: Core Mechanics (Days 1-7)
+*Build immediately testable core gameplay loop*
 
-### Day 2-3: Movement & Combat Core Loop (Deadline: 2025-05-27)
-- [ ] Implement top-down movement with WASD controls using colored rectangle placeholder (2025-05-26)
-- [ ] Add camera follow system with smooth tracking and room boundaries (2025-05-26)
-- [ ] Set up collision detection using Jolt Physics with visual feedback (2025-05-26)
-- [ ] Optimize movement feel (2025-05-26)
-- [ ] Implement point-and-click shooting with basic projectile system (2025-05-27)
-- [ ] Add simple enemy AI using colored circles (zombies with basic pathfinding) (2025-05-27)
-- [ ] Create health/damage system with immediate visual feedback (2025-05-27)
-- [ ] Implement death consequences - gear loss mechanic (2025-05-27)
-- [ ] Test basic gameplay loop: enter room → clear enemies → collect loot → risk assessment (2025-05-27)
+### Day 1: Foundation + Playable Movement (2025-05-25)
+- [x] Set up project structure with clear separation: mechanics, placeholders, assets
+- [x] Configure Jolt Physics for performance optimization  
+- [x] Create comprehensive placeholder asset library (colored shapes, basic sprites)
+- [ ] **PLAYABLE:** Create test scene with player movement (blue square moves with WASD)
+- [ ] **PLAYABLE:** Add basic room with walls for collision testing
+- [ ] **TESTABLE:** Player can walk around a simple room immediately
 
-### Day 4-5: Procedural Systems & Mission Structure (Deadline: 2025-05-29)
-- [ ] Create template-based room system using solid color tiles (10-15 layouts) (2025-05-28)
-- [ ] Implement door/connection system with clear visual hierarchy (2025-05-28)
-- [ ] Set up strategic spawn placement for enemies and loot (2025-05-28)
-- [ ] Add multiple building types with different layouts and challenges (2025-05-28)
-- [ ] Implement mission framework with three objective types: Clear Building, Destroy Threat, Rescue Survivor (2025-05-29)
-- [ ] Create mission selection UI with placeholder elements (2025-05-29)
-- [ ] Add completion detection and reward calculation (2025-05-29)
-- [ ] Implement return-to-base transition system (2025-05-29)
+### Day 2: Combat Foundation (2025-05-26)
+- [ ] **PLAYABLE:** Implement shooting system (click to shoot white squares toward cursor)
+- [ ] **PLAYABLE:** Add 5 static zombies (red squares) in test room
+- [ ] **PLAYABLE:** Bullets destroy zombies on contact
+- [ ] **TESTABLE:** Core combat loop works - walk, aim, shoot, kill
+- [ ] Define primary mechanic: tactical building clearance with resource management consequences
 
-### Day 6-7: Resource Management & Base Systems (Deadline: 2025-05-31)
-- [ ] Implement grid-based inventory using placeholder squares with drag-and-drop (2025-05-30)
-- [ ] Add gear loss on death implementation (2025-05-30)
-- [ ] Create equipment stat system affecting gameplay performance (2025-05-30)
-- [ ] Categorize resources (weapons, medical, building materials) (2025-05-30)
-- [ ] Implement resource storage and upgrade system (2025-05-31)
-- [ ] Add survivor management with basic stat tracking (2025-05-31)
-- [ ] Create medical/healing mechanics for injured party members (2025-05-31)
-- [ ] Implement base expansion affecting mission capabilities (2025-05-31)
-- [ ] Test complete core loop: Mission Selection → Building Clearance → Resource Collection → Base Management → Repeat (2025-05-31)
+### Day 3: Health & Consequences (2025-05-27)
+- [ ] **PLAYABLE:** Add player health system with visual health bar
+- [ ] **PLAYABLE:** Zombies damage player on contact
+- [ ] **PLAYABLE:** Death restarts the test scene (consequence simulation)
+- [ ] **TESTABLE:** Risk/reward balance - getting close to zombies is dangerous
+- [ ] Implement basic damage system for all entities
 
-## Phase 2: Systems Integration & Market Research (Week 2)
+### Day 4: Resource Management (2025-05-28)
+- [ ] **PLAYABLE:** Limited ammo system with ammo counter UI
+- [ ] **PLAYABLE:** Ammo pickups spawn when zombies die
+- [ ] **PLAYABLE:** Player must collect ammo to continue fighting
+- [ ] **TESTABLE:** Tactical decisions about ammo conservation
+- [ ] Basic inventory system for carried items
 
-### Day 8-9: Combat Polish & Enemy Variety (Deadline: 2025-06-02)
-- [ ] Add multiple enemy types with distinct behaviors (placeholders) (2025-06-01)
-- [ ] Implement weapon variety affecting tactical decisions (2025-06-01)
-- [ ] Add environmental interactions (cover, destructible objects) (2025-06-01)
-- [ ] Improve visual feedback using placeholder particle effects (2025-06-01)
-- [ ] Implement difficulty scaling for balance testing (2025-06-02)
+### Day 5: Simple AI & Challenge (2025-05-29)
+- [ ] **PLAYABLE:** Zombies chase player when in range
+- [ ] **PLAYABLE:** Different zombie types with different speeds/health
+- [ ] **PLAYABLE:** Spawn waves of zombies for escalating challenge
+- [ ] **TESTABLE:** Tactical positioning and kiting mechanics
+- [ ] Movement system with collision detection
 
-### Day 10: Market Analysis & Competitive Research (Deadline: 2025-06-03)
-- [ ] Research similar games: Project Zomboid, Cataclysm DDA, Dead State (2025-06-03)
-- [ ] Analyze Steam reviews for common complaints and praise (2025-06-03)
-- [ ] Identify market gaps and unique positioning opportunities (2025-06-03)
-- [ ] Define target audience and price point strategy (2025-06-03)
-- [ ] Create comprehensive GDD based on validated mechanics (2025-06-03)
+### Day 6: Room Progression (2025-05-30)
+- [ ] **PLAYABLE:** Multiple connected rooms with doors
+- [ ] **PLAYABLE:** Player must clear each room to progress
+- [ ] **PLAYABLE:** Final room has exit that completes "mission"
+- [ ] **TESTABLE:** Building clearance concept with progression
+- [ ] Basic procedural room generation
 
-### Day 11-12: Audio Framework & Progression Systems (Deadline: 2025-06-05)
-- [ ] Set up basic audio framework in Godot with placeholder sounds (2025-06-04)
-- [ ] Implement audio trigger system for combat, UI, and environmental feedback (2025-06-04)
-- [ ] Add dynamic audio system responding to game state changes (2025-06-04)
-- [ ] Implement volume controls and accessibility options (2025-06-04)
-- [ ] Add character skill development affecting mission success (2025-06-05)
-- [ ] Implement base upgrade paths with meaningful choices (2025-06-05)
-- [ ] Add weapon modification and improvement systems (2025-06-05)
-- [ ] Create achievement framework for player engagement (2025-06-05)
+### Day 7: Core Loop Validation (2025-05-31)
+- [ ] **PLAYABLE:** Complete mission loop - enter building, clear rooms, extract
+- [ ] **PLAYABLE:** Loot collection with inventory display
+- [ ] **PLAYABLE:** Mission success/failure with consequences
+- [ ] **TESTABLE:** Full tactical building clearance mechanic
+- [ ] Performance optimization for 60fps with 50+ entities
 
-### Day 13-14: UI/UX Polish & Playtesting (Deadline: 2025-06-07)
-- [ ] Optimize placeholder UI for clarity and usability (2025-06-06)
-- [ ] Ensure information hierarchy for critical data visibility (2025-06-06)
-- [ ] Add accessibility considerations (colorblind-friendly, scalable text) (2025-06-06)
-- [ ] Improve input responsiveness and feedback systems (2025-06-06)
-- [ ] Conduct internal playtesting of complete gameplay loops (2025-06-07)
-- [ ] Document pain points and confusing elements (2025-06-07)
-- [ ] Validate difficulty curve and progression pacing (2025-06-07)
-- [ ] Confirm all core mechanics are fun and engaging (2025-06-07)
+---
 
-## Phase 3: AI Asset Pipeline & Visual Development (Week 3)
+## Phase 2: Content Systems (Days 8-14)
+*Expand playable content while maintaining testability*
 
-### Day 15: AI Asset Pipeline Setup (Deadline: 2025-06-08)
-- [ ] Install and configure AUTOMATIC1111 or ComfyUI (2025-06-08)
-- [ ] Download CDDA Ultica and MSX+ tilesets (500+ reference sprites) (2025-06-08)
-- [ ] Set up LoRA training environment with GPU optimization (2025-06-08)
-- [ ] Create asset categorization system matching gameplay needs (2025-06-08)
-- [ ] Catalog all placeholder assets requiring replacement (2025-06-08)
-- [ ] Define technical specifications (resolution, format, style consistency) (2025-06-08)
-- [ ] Prioritize assets by visual impact and development timeline (2025-06-08)
-- [ ] Create asset naming convention and organization system (2025-06-08)
+### Day 8: Mission Variety (2025-06-01)
+- [ ] **PLAYABLE:** 3 different building layouts (small, medium, large)
+- [ ] **PLAYABLE:** Different zombie densities per mission type
+- [ ] **PLAYABLE:** Mission selection screen with difficulty indicators
+- [ ] **TESTABLE:** Variety in tactical challenges
+- [ ] Mission system with objectives and rewards
 
-### Day 16-17: Character & Weapon Asset Generation (Deadline: 2025-06-10)
-- [ ] Train LoRA model on CDDA character sprites (8-12 hour training) (2025-06-09)
-- [ ] Generate player character variations with equipment visibility (2025-06-09)
-- [ ] Create zombie enemy types with distinct visual characteristics (2025-06-09)
-- [ ] Generate survivor NPCs with diverse appearances (2025-06-09)
-- [ ] Train weapon-specific LoRA model using CDDA weapon references (2025-06-10)
-- [ ] Generate comprehensive weapon library (pistols, rifles, melee, explosives) (2025-06-10)
-- [ ] Create weapon modification visual variants (2025-06-10)
-- [ ] Generate ammunition and equipment sprites (2025-06-10)
-- [ ] Replace character and weapon placeholders, test sprite scaling, animation compatibility, and visual consistency (2025-06-10)
+### Day 9: Base Management Foundation (2025-06-02)
+- [ ] **PLAYABLE:** Simple base screen with resource counters
+- [ ] **PLAYABLE:** Spend collected resources on upgrades
+- [ ] **PLAYABLE:** Upgrades affect next mission (more health, ammo, etc.)
+- [ ] **TESTABLE:** Resource management consequences between missions
+- [ ] Basic base building mechanics
 
-### Day 18-19: Environmental & UI Asset Creation (Deadline: 2025-06-12)
-- [ ] Generate building tiles (walls, floors, doors, windows) (2025-06-11)
-- [ ] Create interior decoration assets (furniture, debris, atmosphere) (2025-06-11)
-- [ ] Generate lighting and shadow textures for mood (2025-06-11)
-- [ ] Create environmental storytelling elements (posters, graffiti, damage) (2025-06-11)
-- [ ] Generate interface elements maintaining visual consistency (2025-06-12)
-- [ ] Create inventory slot graphics and status indicators (2025-06-12)
-- [ ] Generate button designs and panel backgrounds (2025-06-12)
-- [ ] Create iconography for all game systems (2025-06-12)
+### Day 10: Weapon Variety (2025-06-03)
+- [ ] **PLAYABLE:** 3 weapon types (pistol, rifle, shotgun) with different stats
+- [ ] **PLAYABLE:** Weapon switching during missions
+- [ ] **PLAYABLE:** Weapons found as loot in buildings
+- [ ] **TESTABLE:** Tactical weapon choice for different situations
+- [ ] Weapon system with stats and behaviors
 
-### Day 20-21: Audio Generation & Polish (Deadline: 2025-06-14)
-- [ ] Use AI audio tools (MusicLM, AIVA) for ambient soundscapes (2025-06-13)
-- [ ] Generate weapon sound effects with appropriate impact (2025-06-13)
-- [ ] Create UI audio feedback library (2025-06-13)
-- [ ] Generate atmospheric audio for different building types (2025-06-13)
-- [ ] Implement particle effects using generated textures (2025-06-14)
-- [ ] Add environmental atmosphere and lighting (2025-06-14)
-- [ ] Create visual feedback for all player actions (2025-06-14)
-- [ ] Ensure visual consistency across all generated assets (2025-06-14)
+### Day 11: Survivor Management (2025-06-04)
+- [ ] **PLAYABLE:** Recruit survivors found in buildings
+- [ ] **PLAYABLE:** Assign survivors to base tasks
+- [ ] **PLAYABLE:** Survivors can be injured and need recovery
+- [ ] **TESTABLE:** Risk of losing valuable team members
+- [ ] Survivor AI and management systems
 
-## Phase 4: Marketing Foundation & Launch Preparation (Week 4)
+### Day 12: Advanced Building Generation (2025-06-05)
+- [ ] **PLAYABLE:** Procedurally generated building layouts
+- [ ] **PLAYABLE:** Different building types (house, office, warehouse)
+- [ ] **PLAYABLE:** Environmental hazards and interactive elements
+- [ ] **TESTABLE:** Varied tactical scenarios
+- [ ] Procedural generation algorithms
 
-### Day 22-23: Website Development & Steam Setup (Deadline: 2025-06-16)
-- [ ] Create responsive game website with screenshot galleries (2025-06-15)
-- [ ] Set up development blog structure for ongoing content (2025-06-15)
-- [ ] Add press kit download section with high-quality assets (2025-06-15)
-- [ ] Integrate Steam and optimize for wishlist conversion (2025-06-15)
-- [ ] Create compelling Steam store description emphasizing unique mechanics (2025-06-16)
-- [ ] Add professional screenshot gallery showcasing generated assets (2025-06-16)
-- [ ] Create capsule art and header images using AI-generated materials (2025-06-16)
-- [ ] Set up Steam Coming Soon page for wishlist building (2025-06-16)
+### Day 13: Progression Systems (2025-06-06)
+- [ ] **PLAYABLE:** Player skill progression (accuracy, health, speed)
+- [ ] **PLAYABLE:** Unlockable equipment and base upgrades
+- [ ] **PLAYABLE:** Achievement system for tactical accomplishments
+- [ ] **TESTABLE:** Long-term progression motivation
+- [ ] Character progression and unlocks
 
-### Day 24-25: Marketing Materials & PR Preparation (Deadline: 2025-06-18)
-- [ ] Create 60-90 second gameplay trailer using generated assets (2025-06-17)
-- [ ] Prepare professional screenshot series highlighting key features (2025-06-17)
-- [ ] Create GIFs for social media engagement (2025-06-17)
-- [ ] Prepare press kit with fact sheet and developer information (2025-06-17)
-- [ ] Set up anonymous Twitter account (@ApocalypseDev) with professional branding (2025-06-18)
-- [ ] Launch development blog with technical focus and generated screenshots (2025-06-18)
-- [ ] Prepare simple email templates for press outreach (2025-06-18)
-- [ ] Develop Reddit engagement strategy for r/gamedev and r/indiegames (2025-06-18)
+### Day 14: Content Integration (2025-06-07)
+- [ ] **PLAYABLE:** All systems working together in cohesive experience
+- [ ] **PLAYABLE:** Balanced difficulty curve across multiple missions
+- [ ] **PLAYABLE:** Complete gameplay loop from tutorial to endgame
+- [ ] **TESTABLE:** Full game experience validation
+- [ ] Save/load system implementation
 
-### Day 26-27: Balance Testing & Performance Optimization (Deadline: 2025-06-20)
-- [ ] Optimize difficulty curve based on complete asset integration (2025-06-19)
-- [ ] Tune resource economy for engaging progression (2025-06-19)
-- [ ] Optimize performance across target platforms (2025-06-19)
-- [ ] Fix bugs and test stability with final assets (2025-06-19)
-- [ ] Complete gameplay testing with all systems integrated (2025-06-20)
-- [ ] Validate UI/UX with final visual assets (2025-06-20)
-- [ ] Optimize audio balance and mixing (2025-06-20)
-- [ ] Conduct platform-specific testing and optimization (2025-06-20)
+---
 
-### Day 28: Launch Preparation & Final Polish (Deadline: 2025-06-21)
-- [ ] Upload Steam build and submit for approval (2025-06-21)
-- [ ] Update website with launch information (2025-06-21)
-- [ ] Prepare marketing campaign activation (2025-06-21)
-- [ ] Prepare community management for launch day (2025-06-21)
-- [ ] Fix last-minute bugs and improve stability (2025-06-21)
-- [ ] Finalize achievement system implementation (2025-06-21)
-- [ ] Optimize tutorial and onboarding flow (2025-06-21)
-- [ ] Set up launch day monitoring system (2025-06-21)
+## Phase 3: AI Asset Generation (Days 15-21)
+*Replace placeholders while maintaining playable build*
+
+### Day 15: Asset Pipeline Setup (2025-06-08)
+- [ ] **PLAYABLE:** Maintain current game with placeholder swapping system
+- [ ] Set up AI art generation workflow (Midjourney/DALL-E)
+- [ ] Create asset specification documents
+- [ ] **TESTABLE:** Asset replacement doesn't break gameplay
+- [ ] Establish art style and consistency guidelines
+
+### Day 16: Character Assets (2025-06-09)
+- [ ] **PLAYABLE:** Replace player and zombie placeholders with AI sprites
+- [ ] Generate character variations and animations
+- [ ] **TESTABLE:** New art improves game feel without changing mechanics
+- [ ] Implement sprite animation system
+
+### Day 17: Environment Assets (2025-06-10)
+- [ ] **PLAYABLE:** Replace building tiles with detailed AI-generated textures
+- [ ] Generate furniture and environmental objects
+- [ ] **TESTABLE:** Enhanced visual clarity improves tactical decisions
+- [ ] Create tileset and environmental art
+
+### Day 18: Weapon & Item Assets (2025-06-11)
+- [ ] **PLAYABLE:** Replace weapon and loot placeholders with detailed sprites
+- [ ] Generate UI icons and interface elements
+- [ ] **TESTABLE:** Clear visual communication of item properties
+- [ ] Implement item and weapon art
+
+### Day 19: Effects & Polish Assets (2025-06-12)
+- [ ] **PLAYABLE:** Add particle effects, muzzle flashes, blood spatters
+- [ ] Generate ambient and atmospheric elements
+- [ ] **TESTABLE:** Enhanced feedback improves combat feel
+- [ ] Create visual effects and particles
+
+### Day 20: Audio Integration (2025-06-13)
+- [ ] **PLAYABLE:** Add AI-generated sound effects and music
+- [ ] Implement audio feedback for all actions
+- [ ] **TESTABLE:** Audio enhances tactical awareness and immersion
+- [ ] Complete audio implementation
+
+### Day 21: Asset Polish (2025-06-14)
+- [ ] **PLAYABLE:** Final asset integration and consistency pass
+- [ ] Optimize all assets for performance
+- [ ] **TESTABLE:** Professional visual quality maintained at 60fps
+- [ ] Final art optimization and integration
+
+---
+
+## Phase 4: Polish & Release (Days 22-28)
+*Maintain playable build while adding commercial features*
+
+### Day 22: UI/UX Polish (2025-06-15)
+- [ ] **PLAYABLE:** Professional menu systems and interface design
+- [ ] Implement accessibility features
+- [ ] **TESTABLE:** Intuitive user experience for new players
+- [ ] Complete UI/UX implementation
+
+### Day 23: Tutorial & Onboarding (2025-06-16)
+- [ ] **PLAYABLE:** Interactive tutorial teaching core mechanics
+- [ ] Create difficulty options and accessibility settings
+- [ ] **TESTABLE:** New players can learn and enjoy the game
+- [ ] Tutorial and help systems
+
+### Day 24: Performance Optimization (2025-06-17)
+- [ ] **PLAYABLE:** Maintain 60fps on target hardware
+- [ ] Optimize for different screen resolutions
+- [ ] **TESTABLE:** Smooth performance across all content
+- [ ] Final performance optimization
+
+### Day 25: Content Balancing (2025-06-18)
+- [ ] **PLAYABLE:** Balanced difficulty curve and progression
+- [ ] Fine-tune all game systems based on playtesting
+- [ ] **TESTABLE:** Engaging challenge throughout entire game
+- [ ] Balance and difficulty tuning
+
+### Day 26: Bug Fixing & Stability (2025-06-19)
+- [ ] **PLAYABLE:** Stable, crash-free experience
+- [ ] Fix all critical and major bugs
+- [ ] **TESTABLE:** Reliable gameplay experience
+- [ ] Quality assurance and bug fixes
+
+### Day 27: Release Preparation (2025-06-20)
+- [ ] **PLAYABLE:** Final release candidate build
+- [ ] Prepare store pages and marketing materials
+- [ ] **TESTABLE:** Commercial-ready product
+- [ ] Release preparation and marketing
+
+### Day 28: Launch (2025-06-21)
+- [ ] **RELEASED:** Apocalypse Clearance available for purchase
+- [ ] Monitor launch metrics and player feedback
+- [ ] **SUCCESSFUL:** Commercial game development completed
+- [ ] Launch and post-launch support
+
+---
+
+## Success Metrics
+- **Daily:** Playable build with new features
+- **Weekly:** Complete gameplay systems validation
+- **Phase 1:** Core tactical combat loop proven fun
+- **Phase 2:** Full content experience engaging
+- **Phase 3:** Professional visual quality achieved
+- **Phase 4:** Commercial product successfully launched
+
+## Development Principles
+1. **Playable First:** Every feature must be immediately testable
+2. **Incremental Progress:** Each day builds on proven foundations
+3. **Constant Validation:** Regular playtesting and feedback integration
+4. **Commercial Focus:** All decisions support successful product launch
+5. **Performance Priority:** Maintain 60fps throughout development
+
+---
 
 ## Phase 5: Launch & Post-Launch Strategy (Week 5-6)
 
