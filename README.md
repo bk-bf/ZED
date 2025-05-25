@@ -45,7 +45,7 @@ Apocalypse Clearance is a top-down tactical survival game where you lead a team 
 
 ### 💻 Engine & Platform
 - **Engine**: Godot 4.4 with Jolt Physics integration ⚡
-- **Platform**: PC (Steam) 🖥️, with potential mobile expansion 📱
+- **Platform**: PC (Steam) 🖥️
 - **Graphics**: AI-generated 2D sprites using Stable Diffusion 3 + LoRA 🤖
 - **Audio**: AI-generated sound effects and atmospheric music 🎵
 
@@ -72,7 +72,7 @@ Apocalypse Clearance is a top-down tactical survival game where you lead a team 
 
 ### 👥 Primary Demographics
 - **Tactical Strategy Enthusiasts**: Players who enjoy games like XCOM, Darkest Dungeon 🧠
-- **Survival Game Fans**: Audience from Project Zomboid, Cataclysm DDA, Dead State 🧟‍♂️
+- **Survival Game Fans**: Audience from Project Zomboid, Escape from Tarkov, Stalker Anomaly, Cataclysm DDA 🧟‍♂️ 
 - **Indie Game Supporters**: Steam users seeking innovative mechanics and fair pricing 💎
 
 ### 🌟 Unique Selling Points
@@ -152,13 +152,4 @@ Apocalypse Clearance is a top-down tactical survival game where you lead a team 
 🎮 *Apocalypse Clearance - Where every mission could be your last, and every decision shapes your survival.* 🧟‍♂️
 
 **Status**: In Development 🚧 | **Expected Early Access**: [Launch Date] 📅 | **Platform**: Steam 🖥️
-
-### 🏆 Achievement Preview
-- 🧟 **First Blood**: Kill your first zombie
-- 🏠 **Home Sweet Home**: Complete your first base upgrade  
-- 💀 **Close Call**: Survive a mission with 1 HP
-- 🎯 **Marksman**: Achieve 90% accuracy in a mission
-- 👥 **Team Leader**: Rescue 10 survivors
-- 💰 **Hoarder**: Collect 1000 resources
-- 🏆 **Legendary**: Complete 50 missions without losing gear
 
