@@ -6,7 +6,6 @@ Based on industry best practices from the search results, this roadmap prioritiz
 ## Phase 1: Core Mechanics Foundation (Week 1)
 
 ### Day 1: Project Architecture & Core Mechanic Definition (Deadline: 2025-05-25)
-- [ ] Install Godot 4.4 with optimized scene tree system (2025-05-25)
 - [ ] Set up project structure with clear separation: mechanics, placeholders, assets (2025-05-25)
 - [ ] Configure Jolt Physics for performance optimization (2025-05-25)
 - [ ] Create comprehensive placeholder asset library (colored shapes, basic sprites) (2025-05-25)
