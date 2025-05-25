@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://brmwpmml8y2as"]
+
+[ext_resource type="Script" uid="uid://djaqs5144c1qy" path="res://scripts/mechanics/player_controller.gd" id="1_v0q10"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0q10"]
+size = Vector2(32, 32)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_v0q10")
+metadata/_custom_type_script = "uid://djaqs5144c1qy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v0q10")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+color = Color(0.10121, 0.272982, 0.58, 1)
+metadata/_edit_use_anchors_ = true

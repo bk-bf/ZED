@@ -15,8 +15,8 @@
 - [x] Set up project structure with clear separation: mechanics, placeholders, assets
 - [x] Configure Jolt Physics for performance optimization  
 - [x] Create comprehensive placeholder asset library (colored shapes, basic sprites)
-- [ ] **PLAYABLE:** Create test scene with player movement (blue square moves with WASD)
-- [ ] **PLAYABLE:** Add basic room with walls for collision testing
+- [x] **PLAYABLE:** Create test scene with player movement (blue square moves with WASD)
+- [x] **PLAYABLE:** Add basic room with walls for collision testing
 - [ ] **TESTABLE:** Player can walk around a simple room immediately
 
 ### Day 2: Combat Foundation (2025-05-26)

@@ -14,48 +14,48 @@
 - **PLAYABLE:** Create test scene with player movement (blue square moves with WASD)
 
 #### Sub-task 1.1: Set up basic test scene
-1. [ ] Create new scene `scenes/testing/movement_test.tscn` with Node2D root
-2. [ ] Add CharacterBody2D node named "Player" as child
-3. [ ] Add CollisionShape2D to Player with RectangleShape2D (32x32)
-4. [ ] Save scene and verify it loads without errors
-5. [ ] Set scene as main scene in project settings
+1. [x] Create new scene `scenes/testing/movement_test.tscn` with Node2D root
+2. [x] Add CharacterBody2D node named "Player" as child
+3. [x] Add CollisionShape2D to Player with RectangleShape2D (32x32)
+4. [x] Save scene and verify it loads without errors
+5. [x] Set scene as main scene in project settings
 
 #### Sub-task 1.2: Create player visual and script
-1. [ ] Create `scripts/player_controller.gd` script file
-2. [ ] Attach script to Player CharacterBody2D node
-3. [ ] Add ColorRect child to Player (32x32 size, blue color)
-4. [ ] Position ColorRect at (0,0) relative to Player
-5. [ ] Test scene - blue square should be visible on screen
+1. [x] Create `scripts/player_controller.gd` script file
+2. [x] Attach script to Player CharacterBody2D node
+3. [x] Add ColorRect child to Player (32x32 size, blue color)
+4. [x] Position ColorRect at (0,0) relative to Player
+5. [x] Test scene - blue square should be visible on screen
 
 #### Sub-task 1.3: Implement WASD movement
-1. [ ] Add input handling in `_physics_process()` for WASD keys
-2. [ ] Implement velocity calculation using `Input.get_action_strength()`
-3. [ ] Add `move_and_slide()` call to apply movement
-4. [ ] Set player speed to 200 pixels/second
-5. [ ] Test movement - blue square moves smoothly with WASD
+1. [x] Add input handling in `_physics_process()` for WASD keys
+2. [x] Implement velocity calculation using `Input.get_action_strength()`
+3. [x] Add `move_and_slide()` call to apply movement
+4. [x] Set player speed to 200 pixels/second
+5. [x] Test movement - blue square moves smoothly with WASD
 
 - **PLAYABLE:** Add basic room with walls for collision testing
 
 #### Sub-task 2.1: Create wall structure
-1. [ ] Add Node2D named "Walls" as child of root scene
-2. [ ] Create 4 StaticBody2D nodes as children of Walls (Top, Bottom, Left, Right)
-3. [ ] Add CollisionShape2D to each wall with RectangleShape2D
-4. [ ] Size walls: Top/Bottom (800x32), Left/Right (32x600)
-5. [ ] Position walls to form enclosed 800x600 room
+1. [x] Add Node2D named "Walls" as child of root scene
+2. [x] Create 4 StaticBody2D nodes as children of Walls (Top, Bottom, Left, Right)
+3. [x] Add CollisionShape2D to each wall with RectangleShape2D
+4. [x] Size walls: Top/Bottom (800x32), Left/Right (32x600)
+5. [x] Position walls to form enclosed 800x600 room
 
 #### Sub-task 2.2: Make walls visible
-1. [ ] Add ColorRect child to each wall StaticBody2D
-2. [ ] Set ColorRect size to match collision shape
-3. [ ] Set all wall ColorRects to gray color (#808080)
-4. [ ] Position ColorRects at (0,0) relative to each wall
-5. [ ] Test scene - gray walls should be visible forming room boundaries
+1. [x] Add ColorRect child to each wall StaticBody2D
+2. [x] Set ColorRect size to match collision shape
+3. [x] Set all wall ColorRects to gray color (#808080)
+4. [x] Position ColorRects at (0,0) relative to each wall
+5. [x] Test scene - gray walls should be visible forming room boundaries
 
 #### Sub-task 2.3: Test collision system
-1. [ ] Run scene and verify player spawns inside room
-2. [ ] Test collision - player should not move through walls
-3. [ ] Verify smooth sliding along walls when moving diagonally
-4. [ ] Check all 4 walls prevent player movement outside room
-5. [ ] Adjust player starting position to center of room (400, 300)
+1. [x] Run scene and verify player spawns inside room
+2. [x] Test collision - player should not move through walls
+3. [x] Verify smooth sliding along walls when moving diagonally
+4. [x] Check all 4 walls prevent player movement outside room
+5. [x] Adjust player starting position to center of room (400, 300)
 
 - **TESTABLE:** Player can walk around a simple room immediately
 
