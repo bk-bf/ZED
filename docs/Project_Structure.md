@@ -3,83 +3,57 @@
 ## Directory Layout
 
 ```
-apocalypse_clearance/
+top_down_apocalypse_looter_shoter/
 ├── project.godot
+├── icon.svg
+├── icon.svg.import
+├── README.md
 ├── scenes/
 │   ├── core/
-│   │   ├── game_manager.tscn
-│   │   ├── mission_manager.tscn
-│   │   └── base_manager.tscn
-│   ├── gameplay/
-│   │   ├── player/
-│   │   │   ├── player.tscn
-│   │   │   └── player_controller.gd
-│   │   ├── enemies/
-│   │   │   ├── zombie_basic.tscn
-│   │   │   └── enemy_ai.gd
-│   │   ├── buildings/
-│   │   │   ├── room_template.tscn
-│   │   │   └── building_generator.gd
-│   │   └── weapons/
-│   │       ├── weapon_base.tscn
-│   │       └── projectile.tscn
+│   ├── base/
 │   ├── ui/
-│   │   ├── main_menu.tscn
-│   │   ├── mission_select.tscn
-│   │   ├── inventory.tscn
-│   │   └── hud.tscn
-│   └── base/
-│       ├── base_overview.tscn
-│       └── survivor_management.tscn
+│   └── gameplay/
+│       ├── player/
+│       ├── enemies/
+│       ├── buildings/
+│       └── items/
 ├── scripts/
 │   ├── core/
 │   │   ├── game_manager.gd
-│   │   ├── event_bus.gd
-│   │   └── constants.gd
+│   │   └── physics_layers.gd
+│   ├── data/
+│   │   ├── loot_data.gd
+│   │   ├── player_data.gd
+│   │   ├── projectile_data.gd
+│   │   └── zombie_data.gd
+│   ├── debug/
+│   │   ├── performance_tracker.gd
+│   │   └── physics_monitor.gd
 │   ├── mechanics/
 │   │   ├── movement_system.gd
-│   │   ├── combat_system.gd
-│   │   ├── inventory_system.gd
-│   │   ├── health_system.gd
-│   │   └── resource_manager.gd
-│   ├── systems/
-│   │   ├── placeholder_manager.gd
-│   │   ├── mission_system.gd
-│   │   ├── procedural_generation.gd
-│   │   ├── save_system.gd
-│   │   └── audio_manager.gd
-│   └── data/
-│       ├── weapon_data.gd
-│       ├── enemy_data.gd
-│       └── mission_data.gd
+│   │   ├── physics_optimization.gd
+│   │   └── trigger_optimization.gd
+│   └── systems/
+│       ├── collision_manager.gd
+│       ├── entity_manager.gd
+│       ├── jolt_config.gd
+│       ├── physics_config.gd
+│       └── placeholder_manager.gd
 ├── assets/
 │   ├── placeholders/
 │   │   ├── sprites/
-│   │   │   ├── player_placeholder.png (colored rectangle)
-│   │   │   ├── zombie_placeholder.png (colored circle)
-│   │   │   ├── weapon_placeholders/
-│   │   │   └── ui_placeholders/
 │   │   ├── audio/
-│   │   │   ├── sfx_placeholders/
-│   │   │   └── music_placeholders/
 │   │   └── materials/
-│   │       ├── floor_tiles/
-│   │       ├── wall_tiles/
-│   │       └── ui_materials/
-│   ├── generated/ (for AI assets later)
-│   │   ├── characters/
-│   │   ├── weapons/
-│   │   ├── environments/
-│   │   └── ui/
-│   └── final/ (production-ready assets)
+│   ├── generated/
+│   └── final/
 ├── data/
-│   ├── missions/
 │   ├── buildings/
-│   └── configs/
+│   ├── configs/
+│   │   └── weapon_config.gd
+│   └── missions/
 └── docs/
-	├── mechanics_documentation.md
-	├── asset_specifications.md
-	└── development_notes.md
+    ├── Project_Structure.md
+    └── ROADMAP.md
 ```
 
 ## Asset Naming Convention
