@@ -73,8 +73,108 @@
 4. [x] Test edge cases (holding multiple keys, rapid direction changes)
 5. [x] Ensure no jittering or stuttering during movement
 
----
 
 **Expected Result:** Blue square (player) moves smoothly with WASD keys inside a gray-walled room with camera following. Immediate testability achieved - you can play the basic movement system right now.
 
-**Next Day Preview:** Day 2 will add shooting (white squares) and static zombies (red squares) to this same test scene.
+---
+
+## Day 2: Combat Foundation (2025-05-26)
+
+### Task 1: Implement shooting system (click to shoot white squares toward cursor)
+
+#### Sub-task 1.1: Create bullet scene and script
+1. [ ] Create new scene `scenes/gameplay/weapons/bullet.tscn` with Area2D root
+2. [ ] Add CollisionShape2D with CircleShape2D (radius 4) to bullet
+3. [ ] Add ColorRect child (8x8 size, white color) for visual
+4. [ ] Create `scripts/mechanics/bullet.gd` script extending Area2D
+5. [ ] Add velocity property and movement logic in `_physics_process()`
+
+#### Sub-task 1.2: Add shooting to player controller
+1. [ ] Add bullet scene preload to player_controller.gd
+2. [ ] Implement mouse click detection in `_input()` function
+3. [ ] Calculate direction from player to mouse cursor on click
+4. [ ] Instantiate bullet at player position with calculated direction
+5. [ ] Test shooting - white squares should fly toward mouse cursor
+
+#### Sub-task 1.3: Handle bullet lifecycle
+1. [ ] Add bullet lifetime timer (2 seconds) to prevent infinite bullets
+2. [ ] Remove bullets when they hit walls or leave screen bounds
+3. [ ] Test edge case: rapid clicking doesn't crash game
+4. [ ] Test edge case: bullets despawn properly when hitting walls
+5. [ ] Verify no memory leaks from bullet spawning/despawning
+
+### Task 2: Add 5 static zombies (red squares) in test room
+
+#### Sub-task 2.1: Create zombie scene and basic script
+1. [ ] Create new scene `scenes/gameplay/enemies/zombie.tscn` with CharacterBody2D root
+2. [ ] Add CollisionShape2D with RectangleShape2D (32x32) to zombie
+3. [ ] Add ColorRect child (32x32 size, red color) for visual
+4. [ ] Create `scripts/mechanics/zombie.gd` script with health property (100 HP)
+5. [ ] Add `take_damage(amount)` and `die()` functions
+
+#### Sub-task 2.2: Spawn zombies in test scene
+1. [ ] Add 5 zombie instances to movement_test.tscn at fixed positions
+2. [ ] Position zombies around room: corners and center, avoiding player spawn
+3. [ ] Verify zombies don't overlap with walls or player starting position
+4. [ ] Test scene loads with all 5 red squares visible
+5. [ ] Ensure zombies don't move (static for now)
+
+#### Sub-task 2.3: Test zombie collision boundaries
+1. [ ] Verify player can't walk through zombies
+2. [ ] Test edge case: player getting stuck between zombie and wall
+3. [ ] Ensure zombie collision shapes match visual size
+4. [ ] Test player can walk around zombies smoothly
+5. [ ] Verify camera still follows player with zombies present
+
+### Task 3: Bullets destroy zombies on contact
+
+#### Sub-task 3.1: Implement bullet-zombie collision
+1. [ ] Connect bullet's `body_entered` signal to collision handler
+2. [ ] Add collision detection between bullets and zombies
+3. [ ] Call zombie `take_damage(25)` when bullet hits
+4. [ ] Remove bullet immediately after hitting zombie
+5. [ ] Test single bullet kills zombie after 4 hits (100 HP / 25 damage)
+
+#### Sub-task 3.2: Add zombie death handling
+1. [ ] Make zombie disappear when health reaches 0
+2. [ ] Add simple death effect (zombie fades out or disappears instantly)
+3. [ ] Ensure dead zombie collision is removed (player can walk through)
+4. [ ] Test edge case: multiple bullets hitting same zombie simultaneously
+5. [ ] Verify zombie counter decreases when zombies die
+
+#### Sub-task 3.3: Polish combat feedback
+1. [ ] Add brief visual feedback when zombie takes damage (color flash)
+2. [ ] Ensure bullets don't pass through zombies to hit others behind
+3. [ ] Test edge case: shooting zombies at extreme angles
+4. [ ] Verify bullet-wall collision still works with zombie collision
+5. [ ] Test rapid-fire shooting at single zombie works correctly
+
+### Task 4: Define primary mechanic - tactical building clearance with resource management consequences
+
+#### Sub-task 4.1: Document core mechanic rules
+1. [ ] Create `docs/core_mechanics.md` file with tactical clearance definition
+2. [ ] Define death consequences: lose all carried equipment, restart mission
+3. [ ] Define success rewards: keep collected loot, return to base safely
+4. [ ] Specify resource constraints: limited ammo forces tactical decisions
+5. [ ] Document risk/reward balance: more dangerous areas have better loot
+
+#### Sub-task 4.2: Plan resource management systems
+1. [ ] Define core resources: ammo, health, equipment durability, time
+2. [ ] Document how resources create tactical decisions (conserve vs aggressive)
+3. [ ] Plan permadeath consequences for team members and equipment
+4. [ ] Define mission structure: enter building → clear rooms → extract safely
+5. [ ] Document how resource scarcity drives tactical positioning choices
+
+#### Sub-task 4.3: Validate mechanic with current test
+1. [ ] Test current combat feels tactical (positioning matters for safety)
+2. [ ] Verify shooting mechanics support careful, aimed gameplay
+3. [ ] Ensure zombie placement creates tactical challenges (cover, angles)
+4. [ ] Document what works and what needs improvement for tactical feel
+5. [ ] Plan how current systems extend to full building clearance concept
+
+
+**Expected Result:** Click to shoot white squares at red zombie squares. Zombies die after 4 hits and disappear. Core tactical combat loop functional with documented game design foundation.
+
+**Next Day Preview:** Day 3 will add player health, zombie damage, and death consequences to create risk/reward decisions.
+
+---

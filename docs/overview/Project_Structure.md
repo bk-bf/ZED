@@ -3,57 +3,74 @@
 ## Directory Layout
 
 ```
-top_down_apocalypse_looter_shoter/
+ZED/
 ├── project.godot
 ├── icon.svg
 ├── icon.svg.import
 ├── README.md
-├── scenes/
-│   ├── core/
-│   ├── base/
-│   ├── ui/
-│   └── gameplay/
-│       ├── player/
-│       ├── enemies/
-│       ├── buildings/
-│       └── items/
-├── scripts/
-│   ├── core/
-│   │   ├── game_manager.gd
-│   │   └── physics_layers.gd
-│   ├── data/
+├── .editorconfig
+├── .gitattributes
+├── .gitignore
+├── .vscode/
+│   ├── launch.json
+│   └── settings.json
+├── _archieved_systems/
+│   ├── README_ARCHIEVED.md
+│   ├── unused_mechanics/
 │   │   ├── loot_data.gd
 │   │   ├── player_data.gd
 │   │   ├── projectile_data.gd
+│   │   ├── weapon_config.gd
 │   │   └── zombie_data.gd
+│   └── unused_systems/
+│       ├── entity_manager.gd
+│       └── trigger_optimization.gd
+├── scenes/
+│   ├── base/
+│   ├── core/
+│   ├── debug/
+│   │   └── performance_tracker.tscn
+│   ├── gameplay/
+│   │   ├── buildings/
+│   │   ├── enemies/
+│   │   ├── items/
+│   │   └── player/
+│   ├── testing/
+│   │   ├── horizontal_wall.tscn
+│   │   ├── movement_test.tscn
+│   │   ├── player.tscn
+│   │   └── vertical_wall.tscn
+│   └── ui/
+├── scripts/
+│   ├── core/
+│   │   ├── jolt_config.gd
+│   │   └── physics_layers.gd
 │   ├── debug/
 │   │   ├── performance_tracker.gd
 │   │   └── physics_monitor.gd
 │   ├── mechanics/
-│   │   ├── movement_system.gd
-│   │   ├── physics_optimization.gd
-│   │   └── trigger_optimization.gd
+│   │   └── player_controller.gd
 │   └── systems/
-│       ├── collision_manager.gd
-│       ├── entity_manager.gd
-│       ├── jolt_config.gd
-│       ├── physics_config.gd
-│       └── placeholder_manager.gd
 ├── assets/
-│   ├── placeholders/
-│   │   ├── sprites/
-│   │   ├── audio/
-│   │   └── materials/
+│   ├── final/
 │   ├── generated/
-│   └── final/
+│   └── placeholders/
+│       ├── audio/
+│       ├── materials/
+│       └── sprites/
 ├── data/
 │   ├── buildings/
 │   ├── configs/
-│   │   └── weapon_config.gd
 │   └── missions/
 └── docs/
-    ├── Project_Structure.md
-    └── ROADMAP.md
+    ├── overview/
+    │   ├── DAILY_TASKS.md
+    │   ├── Project_Structure.md
+    │   └── ROADMAP.md
+    └── reports/
+        ├── personal/
+        │   └── Project_Overview_25.05.md
+        └── public/
 ```
 
 ## Asset Naming Convention
