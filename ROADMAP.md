@@ -5,282 +5,216 @@ Based on industry best practices from the search results, this roadmap prioritiz
 
 ## Phase 1: Core Mechanics Foundation (Week 1)
 
-### Day 1: Project Architecture & Core Mechanic Definition
-**Godot 4.4 Setup:**
-- Install Godot 4.4 with optimized scene tree system
-- Set up project structure with clear separation: mechanics, placeholders, assets
-- Configure Jolt Physics for performance optimization
-- Create comprehensive placeholder asset library (colored shapes, basic sprites)
+### Day 1: Project Architecture & Core Mechanic Definition (Deadline: 2025-05-25)
+- [ ] Install Godot 4.4 with optimized scene tree system (2025-05-25)
+- [ ] Set up project structure with clear separation: mechanics, placeholders, assets (2025-05-25)
+- [ ] Configure Jolt Physics for performance optimization (2025-05-25)
+- [ ] Create comprehensive placeholder asset library (colored shapes, basic sprites) (2025-05-25)
+- [ ] Define primary mechanic: tactical building clearance with resource management consequences (2025-05-25)
 
-**Core Mechanic Definition:**
-Following the search results' guidance that your "core game mechanic is the foundation of your game," define your primary mechanic as **tactical building clearance with resource management consequences**. Every action affects future missions through gear loss risk and resource scarcity.
+### Day 2-3: Movement & Combat Core Loop (Deadline: 2025-05-27)
+- [ ] Implement top-down movement with WASD controls using colored rectangle placeholder (2025-05-26)
+- [ ] Add camera follow system with smooth tracking and room boundaries (2025-05-26)
+- [ ] Set up collision detection using Jolt Physics with visual feedback (2025-05-26)
+- [ ] Optimize movement feel (2025-05-26)
+- [ ] Implement point-and-click shooting with basic projectile system (2025-05-27)
+- [ ] Add simple enemy AI using colored circles (zombies with basic pathfinding) (2025-05-27)
+- [ ] Create health/damage system with immediate visual feedback (2025-05-27)
+- [ ] Implement death consequences - gear loss mechanic (2025-05-27)
+- [ ] Test basic gameplay loop: enter room → clear enemies → collect loot → risk assessment (2025-05-27)
 
-### Day 2-3: Movement & Combat Core Loop
-**Character Controller (Core Mechanic #1):**
-- Top-down movement with WASD controls using colored rectangle placeholder
-- Camera follow system with smooth tracking and room boundaries
-- Collision detection using Jolt Physics with visual feedback
-- Movement feel optimization - "game feel encompasses everything from the weight of character movement"
+### Day 4-5: Procedural Systems & Mission Structure (Deadline: 2025-05-29)
+- [ ] Create template-based room system using solid color tiles (10-15 layouts) (2025-05-28)
+- [ ] Implement door/connection system with clear visual hierarchy (2025-05-28)
+- [ ] Set up strategic spawn placement for enemies and loot (2025-05-28)
+- [ ] Add multiple building types with different layouts and challenges (2025-05-28)
+- [ ] Implement mission framework with three objective types: Clear Building, Destroy Threat, Rescue Survivor (2025-05-29)
+- [ ] Create mission selection UI with placeholder elements (2025-05-29)
+- [ ] Add completion detection and reward calculation (2025-05-29)
+- [ ] Implement return-to-base transition system (2025-05-29)
 
-**Combat System (Core Mechanic #2):**
-- Point-and-click shooting with basic projectile system
-- Simple enemy AI using colored circles (zombies with basic pathfinding)
-- Health/damage system with immediate visual feedback
-- Death consequences - gear loss mechanic (core to the gameplay loop)
-
-**Gameplay Loop Validation:**
-Test the basic "enter room → clear enemies → collect loot → risk assessment" cycle with placeholders to ensure the core mechanics are engaging before any asset investment.
-
-### Day 4-5: Procedural Systems & Mission Structure
-**Building Generation (Supporting Mechanic):**
-- Template-based room system using solid color tiles (10-15 layouts)
-- Door/connection system with clear visual hierarchy
-- Strategic spawn placement for enemies and loot
-- Multiple building types with different layouts and challenges
-
-**Mission Framework (Primary Mechanic):**
-- Three distinct objective types: Clear Building, Destroy Threat, Rescue Survivor
-- Mission selection UI with placeholder elements
-- Completion detection and reward calculation
-- Return-to-base transition system
-
-### Day 6-7: Resource Management & Base Systems
-**Inventory System (Primary Mechanic):**
-- Grid-based inventory using placeholder squares with drag-and-drop
-- Gear loss on death implementation - core risk/reward mechanic
-- Equipment stat system affecting gameplay performance
-- Resource categorization (weapons, medical, building materials)
-
-**Base Management (Supporting Mechanic):**
-- Resource storage and upgrade system using simple progression bars
-- Survivor management with basic stat tracking
-- Medical/healing mechanics for injured party members
-- Base expansion affecting mission capabilities
-
-**Core Loop Validation:**
-By Day 7, test complete cycle: Mission Selection → Building Clearance → Resource Collection → Base Management → Repeat. Ensure this loop is engaging with placeholders before proceeding.
+### Day 6-7: Resource Management & Base Systems (Deadline: 2025-05-31)
+- [ ] Implement grid-based inventory using placeholder squares with drag-and-drop (2025-05-30)
+- [ ] Add gear loss on death implementation (2025-05-30)
+- [ ] Create equipment stat system affecting gameplay performance (2025-05-30)
+- [ ] Categorize resources (weapons, medical, building materials) (2025-05-30)
+- [ ] Implement resource storage and upgrade system (2025-05-31)
+- [ ] Add survivor management with basic stat tracking (2025-05-31)
+- [ ] Create medical/healing mechanics for injured party members (2025-05-31)
+- [ ] Implement base expansion affecting mission capabilities (2025-05-31)
+- [ ] Test complete core loop: Mission Selection → Building Clearance → Resource Collection → Base Management → Repeat (2025-05-31)
 
 ## Phase 2: Systems Integration & Market Research (Week 2)
 
-### Day 8-9: Combat Polish & Enemy Variety
-**Enhanced Combat Systems:**
-- Multiple enemy types with distinct behaviors (still using placeholders)
-- Weapon variety affecting tactical decisions
-- Environmental interactions (cover, destructible objects)
-- Visual feedback improvements using placeholder particle effects
+### Day 8-9: Combat Polish & Enemy Variety (Deadline: 2025-06-02)
+- [ ] Add multiple enemy types with distinct behaviors (placeholders) (2025-06-01)
+- [ ] Implement weapon variety affecting tactical decisions (2025-06-01)
+- [ ] Add environmental interactions (cover, destructible objects) (2025-06-01)
+- [ ] Improve visual feedback using placeholder particle effects (2025-06-01)
+- [ ] Implement difficulty scaling for balance testing (2025-06-02)
 
-**Balance Testing:**
-Following the search results' emphasis on "balancing and progression systems," implement difficulty scaling that "challenges, but doesn't frustrate."
+### Day 10: Market Analysis & Competitive Research (Deadline: 2025-06-03)
+- [ ] Research similar games: Project Zomboid, Cataclysm DDA, Dead State (2025-06-03)
+- [ ] Analyze Steam reviews for common complaints and praise (2025-06-03)
+- [ ] Identify market gaps and unique positioning opportunities (2025-06-03)
+- [ ] Define target audience and price point strategy (2025-06-03)
+- [ ] Create comprehensive GDD based on validated mechanics (2025-06-03)
 
-### Day 10: Market Analysis & Competitive Research
-**Market Research (Critical for Commercial Success):**
-Following the search results' guidance: "analyze the market look at similar games what's already out there what works and what doesn't"
+### Day 11-12: Audio Framework & Progression Systems (Deadline: 2025-06-05)
+- [ ] Set up basic audio framework in Godot with placeholder sounds (2025-06-04)
+- [ ] Implement audio trigger system for combat, UI, and environmental feedback (2025-06-04)
+- [ ] Add dynamic audio system responding to game state changes (2025-06-04)
+- [ ] Implement volume controls and accessibility options (2025-06-04)
+- [ ] Add character skill development affecting mission success (2025-06-05)
+- [ ] Implement base upgrade paths with meaningful choices (2025-06-05)
+- [ ] Add weapon modification and improvement systems (2025-06-05)
+- [ ] Create achievement framework for player engagement (2025-06-05)
 
-- Research similar games: Project Zomboid, Cataclysm DDA, Dead State
-- Analyze Steam reviews for common complaints and praise
-- Identify market gaps and unique positioning opportunities
-- Define target audience and price point strategy
-
-**Game Design Document Refinement:**
-Create comprehensive GDD based on validated mechanics, serving as "a comprehensive blueprint, detailing gameplay mechanics, narrative, characters, levels, and visual and audio elements."
-
-### Day 11-12: Audio Framework & Progression Systems
-**Audio System Foundation:**
-- Basic audio framework in Godot with placeholder sounds
-- Audio trigger system for combat, UI, and environmental feedback
-- Dynamic audio system responding to game state changes
-- Volume controls and accessibility options
-
-**Progression Systems:**
-- Character skill development affecting mission success
-- Base upgrade paths with meaningful choices
-- Weapon modification and improvement systems
-- Achievement framework for player engagement
-
-### Day 13-14: UI/UX Polish & Playtesting
-**User Interface Refinement:**
-- Placeholder UI optimization for clarity and usability
-- Information hierarchy ensuring critical data visibility
-- Accessibility considerations (colorblind-friendly, scalable text)
-- Input responsiveness and feedback systems
-
-**Internal Playtesting:**
-- Test complete gameplay loops with fresh perspective
-- Document pain points and confusing elements
-- Validate difficulty curve and progression pacing
-- Confirm all core mechanics are fun and engaging
+### Day 13-14: UI/UX Polish & Playtesting (Deadline: 2025-06-07)
+- [ ] Optimize placeholder UI for clarity and usability (2025-06-06)
+- [ ] Ensure information hierarchy for critical data visibility (2025-06-06)
+- [ ] Add accessibility considerations (colorblind-friendly, scalable text) (2025-06-06)
+- [ ] Improve input responsiveness and feedback systems (2025-06-06)
+- [ ] Conduct internal playtesting of complete gameplay loops (2025-06-07)
+- [ ] Document pain points and confusing elements (2025-06-07)
+- [ ] Validate difficulty curve and progression pacing (2025-06-07)
+- [ ] Confirm all core mechanics are fun and engaging (2025-06-07)
 
 ## Phase 3: AI Asset Pipeline & Visual Development (Week 3)
 
-### Day 15: AI Asset Pipeline Setup (Major Priority Shift - 50% of time)
-**Stable Diffusion 3 Environment:**
-- Install and configure AUTOMATIC1111 or ComfyUI
-- Download CDDA Ultica and MSX+ tilesets (500+ reference sprites)
-- Set up LoRA training environment with proper GPU optimization
-- Create asset categorization system matching confirmed gameplay needs
+### Day 15: AI Asset Pipeline Setup (Deadline: 2025-06-08)
+- [ ] Install and configure AUTOMATIC1111 or ComfyUI (2025-06-08)
+- [ ] Download CDDA Ultica and MSX+ tilesets (500+ reference sprites) (2025-06-08)
+- [ ] Set up LoRA training environment with GPU optimization (2025-06-08)
+- [ ] Create asset categorization system matching gameplay needs (2025-06-08)
+- [ ] Catalog all placeholder assets requiring replacement (2025-06-08)
+- [ ] Define technical specifications (resolution, format, style consistency) (2025-06-08)
+- [ ] Prioritize assets by visual impact and development timeline (2025-06-08)
+- [ ] Create asset naming convention and organization system (2025-06-08)
 
-**Asset Requirements Documentation:**
-- Catalog all placeholder assets requiring replacement
-- Define technical specifications (resolution, format, style consistency)
-- Prioritize assets by visual impact and development timeline
-- Create asset naming convention and organization system
+### Day 16-17: Character & Weapon Asset Generation (Deadline: 2025-06-10)
+- [ ] Train LoRA model on CDDA character sprites (8-12 hour training) (2025-06-09)
+- [ ] Generate player character variations with equipment visibility (2025-06-09)
+- [ ] Create zombie enemy types with distinct visual characteristics (2025-06-09)
+- [ ] Generate survivor NPCs with diverse appearances (2025-06-09)
+- [ ] Train weapon-specific LoRA model using CDDA weapon references (2025-06-10)
+- [ ] Generate comprehensive weapon library (pistols, rifles, melee, explosives) (2025-06-10)
+- [ ] Create weapon modification visual variants (2025-06-10)
+- [ ] Generate ammunition and equipment sprites (2025-06-10)
+- [ ] Replace character and weapon placeholders, test sprite scaling, animation compatibility, and visual consistency (2025-06-10)
 
-### Day 16-17: Character & Weapon Asset Generation (60% priority)
-**Character Asset Creation:**
-- Train LoRA model on CDDA character sprites (8-12 hour training)
-- Generate player character variations with equipment visibility
-- Create zombie enemy types with distinct visual characteristics
-- Generate survivor NPCs with diverse appearances
+### Day 18-19: Environmental & UI Asset Creation (Deadline: 2025-06-12)
+- [ ] Generate building tiles (walls, floors, doors, windows) (2025-06-11)
+- [ ] Create interior decoration assets (furniture, debris, atmosphere) (2025-06-11)
+- [ ] Generate lighting and shadow textures for mood (2025-06-11)
+- [ ] Create environmental storytelling elements (posters, graffiti, damage) (2025-06-11)
+- [ ] Generate interface elements maintaining visual consistency (2025-06-12)
+- [ ] Create inventory slot graphics and status indicators (2025-06-12)
+- [ ] Generate button designs and panel backgrounds (2025-06-12)
+- [ ] Create iconography for all game systems (2025-06-12)
 
-**Weapon Asset Generation:**
-- Train weapon-specific LoRA model using CDDA weapon references
-- Generate comprehensive weapon library (pistols, rifles, melee, explosives)
-- Create weapon modification visual variants
-- Generate ammunition and equipment sprites
-
-**Integration Testing:**
-Replace character and weapon placeholders, testing sprite scaling, animation compatibility, and visual consistency.
-
-### Day 18-19: Environmental & UI Asset Creation (70% priority)
-**Environmental Assets:**
-- Generate building tiles (walls, floors, doors, windows)
-- Create interior decoration assets (furniture, debris, atmosphere)
-- Generate lighting and shadow textures for mood
-- Create environmental storytelling elements (posters, graffiti, damage)
-
-**UI Asset Generation:**
-- Generate interface elements maintaining visual consistency
-- Create inventory slot graphics and status indicators
-- Generate button designs and panel backgrounds
-- Create iconography for all game systems
-
-### Day 20-21: Audio Generation & Polish (80% priority)
-**AI Audio Creation:**
-- Use AI audio tools (MusicLM, AIVA) for ambient soundscapes
-- Generate weapon sound effects with appropriate impact
-- Create UI audio feedback library
-- Generate atmospheric audio for different building types
-
-**Visual Polish Integration:**
-- Implement particle effects using generated textures
-- Add environmental atmosphere and lighting
-- Create visual feedback for all player actions
-- Ensure visual consistency across all generated assets
+### Day 20-21: Audio Generation & Polish (Deadline: 2025-06-14)
+- [ ] Use AI audio tools (MusicLM, AIVA) for ambient soundscapes (2025-06-13)
+- [ ] Generate weapon sound effects with appropriate impact (2025-06-13)
+- [ ] Create UI audio feedback library (2025-06-13)
+- [ ] Generate atmospheric audio for different building types (2025-06-13)
+- [ ] Implement particle effects using generated textures (2025-06-14)
+- [ ] Add environmental atmosphere and lighting (2025-06-14)
+- [ ] Create visual feedback for all player actions (2025-06-14)
+- [ ] Ensure visual consistency across all generated assets (2025-06-14)
 
 ## Phase 4: Marketing Foundation & Launch Preparation (Week 4)
 
-### Day 22-23: Website Development & Steam Setup (90% priority)
-**Professional Website Creation:**
-Following the search results' guidance on "support press coverage with a landing page," use Claude Opus 4 to generate:
-- Responsive game website with screenshot galleries
-- Development blog structure for ongoing content
-- Press kit download section with high-quality assets
-- Steam integration and wishlist conversion optimization
+### Day 22-23: Website Development & Steam Setup (Deadline: 2025-06-16)
+- [ ] Create responsive game website with screenshot galleries (2025-06-15)
+- [ ] Set up development blog structure for ongoing content (2025-06-15)
+- [ ] Add press kit download section with high-quality assets (2025-06-15)
+- [ ] Integrate Steam and optimize for wishlist conversion (2025-06-15)
+- [ ] Create compelling Steam store description emphasizing unique mechanics (2025-06-16)
+- [ ] Add professional screenshot gallery showcasing generated assets (2025-06-16)
+- [ ] Create capsule art and header images using AI-generated materials (2025-06-16)
+- [ ] Set up Steam Coming Soon page for wishlist building (2025-06-16)
 
-**Steam Store Page:**
-- Compelling store description emphasizing unique mechanics
-- Professional screenshot gallery showcasing generated assets
-- Capsule art and header images using AI-generated materials
-- Steam Coming Soon page setup for wishlist building
+### Day 24-25: Marketing Materials & PR Preparation (Deadline: 2025-06-18)
+- [ ] Create 60-90 second gameplay trailer using generated assets (2025-06-17)
+- [ ] Prepare professional screenshot series highlighting key features (2025-06-17)
+- [ ] Create GIFs for social media engagement (2025-06-17)
+- [ ] Prepare press kit with fact sheet and developer information (2025-06-17)
+- [ ] Set up anonymous Twitter account (@ApocalypseDev) with professional branding (2025-06-18)
+- [ ] Launch development blog with technical focus and generated screenshots (2025-06-18)
+- [ ] Prepare simple email templates for press outreach (2025-06-18)
+- [ ] Develop Reddit engagement strategy for r/gamedev and r/indiegames (2025-06-18)
 
-### Day 24-25: Marketing Materials & PR Preparation (95% priority)
-**Content Creation:**
-- 60-90 second gameplay trailer using generated assets
-- Professional screenshot series highlighting key features
-- GIF creation for social media engagement
-- Press kit with fact sheet and developer information
+### Day 26-27: Balance Testing & Performance Optimization (Deadline: 2025-06-20)
+- [ ] Optimize difficulty curve based on complete asset integration (2025-06-19)
+- [ ] Tune resource economy for engaging progression (2025-06-19)
+- [ ] Optimize performance across target platforms (2025-06-19)
+- [ ] Fix bugs and test stability with final assets (2025-06-19)
+- [ ] Complete gameplay testing with all systems integrated (2025-06-20)
+- [ ] Validate UI/UX with final visual assets (2025-06-20)
+- [ ] Optimize audio balance and mixing (2025-06-20)
+- [ ] Conduct platform-specific testing and optimization (2025-06-20)
 
-**Anonymous Marketing Setup:**
-Following your preference for minimal exposure:
-- Anonymous Twitter account (@ApocalypseDev) with professional branding
-- Development blog with technical focus and generated screenshots
-- Simple email templates for press outreach
-- Reddit engagement strategy for r/gamedev and r/indiegames
-
-### Day 26-27: Balance Testing & Performance Optimization
-**Final Game Balance:**
-- Difficulty curve optimization based on complete asset integration
-- Resource economy tuning ensuring engaging progression
-- Performance optimization across target platforms
-- Bug fixing and stability testing with final assets
-
-**Quality Assurance:**
-- Complete gameplay testing with all systems integrated
-- UI/UX validation with final visual assets
-- Audio balance and mixing optimization
-- Platform-specific testing and optimization
-
-### Day 28: Launch Preparation & Final Polish
-**Launch Readiness:**
-- Steam build upload and approval submission
-- Final website updates with launch information
-- Marketing campaign activation preparation
-- Community management preparation for launch day
-
-**Final Polish:**
-- Last-minute bug fixes and stability improvements
-- Achievement system final implementation
-- Tutorial and onboarding flow optimization
-- Launch day monitoring system setup
+### Day 28: Launch Preparation & Final Polish (Deadline: 2025-06-21)
+- [ ] Upload Steam build and submit for approval (2025-06-21)
+- [ ] Update website with launch information (2025-06-21)
+- [ ] Prepare marketing campaign activation (2025-06-21)
+- [ ] Prepare community management for launch day (2025-06-21)
+- [ ] Fix last-minute bugs and improve stability (2025-06-21)
+- [ ] Finalize achievement system implementation (2025-06-21)
+- [ ] Optimize tutorial and onboarding flow (2025-06-21)
+- [ ] Set up launch day monitoring system (2025-06-21)
 
 ## Phase 5: Launch & Post-Launch Strategy (Week 5-6)
 
-### Week 5: Early Access Launch
-**Launch Day Execution:**
-Following the search results' marketing guidance:
-- Steam Early Access release with optimized store presence
-- Anonymous social media announcement campaign
-- Press outreach using prepared materials
-- Community engagement through development blog
+### Week 5: Early Access Launch (Deadline: 2025-06-28)
+- [ ] Release Steam Early Access build (2025-06-22)
+- [ ] Announce on anonymous social media (2025-06-22)
+- [ ] Conduct press outreach using prepared materials (2025-06-22)
+- [ ] Engage community through development blog (2025-06-22)
+- [ ] Monitor Steam reviews and player feedback daily (2025-06-28)
+- [ ] Engage on social media with generated content (2025-06-28)
+- [ ] Follow up with press and coordinate interviews (2025-06-28)
+- [ ] Provide player support and community management (2025-06-28)
 
-**Launch Week Activities:**
-- Daily monitoring of Steam reviews and player feedback
-- Social media engagement with generated content
-- Press follow-up and interview coordination
-- Player support and community management
-
-### Week 6: Post-Launch Optimization & Growth
-**Community Building:**
-- Regular development updates using anonymous approach
-- Player feedback integration and roadmap communication
-- Steam forum engagement and support
-- Content creation for ongoing marketing
-
-**Performance Analysis:**
-- Sales data analysis and conversion optimization
-- Marketing channel effectiveness evaluation
-- Player behavior analysis for future updates
-- Revenue optimization and pricing strategy refinement
+### Week 6: Post-Launch Optimization & Growth (Deadline: 2025-07-05)
+- [ ] Post regular development updates anonymously (2025-07-05)
+- [ ] Integrate player feedback and communicate roadmap (2025-07-05)
+- [ ] Engage on Steam forums and provide support (2025-07-05)
+- [ ] Create ongoing marketing content (2025-07-05)
+- [ ] Analyze sales data and optimize conversion (2025-07-05)
+- [ ] Evaluate marketing channel effectiveness (2025-07-05)
+- [ ] Analyze player behavior for future updates (2025-07-05)
+- [ ] Refine revenue optimization and pricing strategy (2025-07-05)
 
 ## Success Metrics & Commercial Viability
 
 ### Technical Validation Targets
-- **Core Mechanics**: Validated as engaging by Day 7
-- **Asset Pipeline**: Efficient workflow established by Day 15
-- **Visual Consistency**: Professional quality achieved by Day 21
-- **Performance**: Stable 60fps across target platforms by Day 25
+- [ ] Core Mechanics: Validated as engaging by Day 7 (2025-05-31)
+- [ ] Asset Pipeline: Efficient workflow established by Day 15 (2025-06-08)
+- [ ] Visual Consistency: Professional quality achieved by Day 21 (2025-06-14)
+- [ ] Performance: Stable 60fps across target platforms by Day 25 (2025-06-18)
 
 ### Commercial Success Metrics
 **Launch Targets (Month 1):**
-- **Sales**: 300-800 copies in first week
-- **Reviews**: 85%+ positive rating on Steam
-- **Wishlist Conversion**: 15-25% conversion rate
-- **Revenue**: $2,400-6,400 (at $8 price point)
+- [ ] Sales: 300-800 copies in first week (2025-06-29)
+- [ ] Reviews: 85%+ positive rating on Steam (2025-06-29)
+- [ ] Wishlist Conversion: 15-25% conversion rate (2025-06-29)
+- [ ] Revenue: $2,400-6,400 (at $8 price point) (2025-06-29)
 
 **Growth Targets (Months 2-6):**
-- **Total Sales**: 3,000-8,000 copies
-- **Revenue**: $24,000-64,000
-- **Community**: 1,000+ engaged players
-- **Market Position**: Top 25% of indie releases in genre
+- [ ] Total Sales: 3,000-8,000 copies (2025-11-01)
+- [ ] Revenue: $24,000-64,000 (2025-11-01)
+- [ ] Community: 1,000+ engaged players (2025-11-01)
+- [ ] Market Position: Top 25% of indie releases in genre (2025-11-01)
 
 ### Investment Analysis
 **Development Costs:**
-- **AI Tools**: $100-200 (Stable Diffusion, audio generation)
-- **Steam Direct Fee**: $100 (one-time)
-- **Domain/Hosting**: $15/year
-- **Total Investment**: ~$300-400
+- [ ] AI Tools: $100-200 (Stable Diffusion, audio generation) (2025-06-08)
+- [ ] Steam Direct Fee: $100 (one-time) (2025-06-16)
+- [ ] Domain/Hosting: $15/year (2025-06-15)
+- [ ] Total Investment: ~$300-400 (2025-06-18)
 
 **ROI Projections:**
-- **Conservative**: 6,000% return ($24,000 revenue on $400 investment)
-- **Optimistic**: 16,000% return ($64,000 revenue on $400 investment)
-
+- [ ] Conservative: 6,000% return ($24,000 revenue on $400 investment) (2025-11-01)
+- [ ] Optimistic: 16,000% return ($64,000 revenue on $400 investment) (2025-11-01)
