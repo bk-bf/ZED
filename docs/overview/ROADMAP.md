@@ -17,7 +17,7 @@
 - [x] Create comprehensive placeholder asset library (colored shapes, basic sprites)
 - [x] **PLAYABLE:** Create test scene with player movement (blue square moves with WASD)
 - [x] **PLAYABLE:** Add basic room with walls for collision testing
-- [ ] **TESTABLE:** Player can walk around a simple room immediately
+- [x] **TESTABLE:** Player can walk around a simple room immediately
 
 ### Day 2: Combat Foundation (2025-05-26)
 - [ ] **PLAYABLE:** Implement shooting system (click to shoot white squares toward cursor)

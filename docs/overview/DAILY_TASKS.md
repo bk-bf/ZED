@@ -64,21 +64,14 @@
 2. [x] Enable Camera2D and set as current camera
 3. [x] Set camera smoothing enabled with speed 5.0
 4. [x] Test camera follows player movement smoothly
-5. [ ] Adjust camera limits to room boundaries if needed
+5. [x] Adjust camera limits to room boundaries if needed
 
-#### Sub-task 3.2: Polish movement feel
-1. [ ] Test movement responsiveness and adjust speed if needed
-2. [ ] Verify diagonal movement is properly normalized
-3. [ ] Check movement feels smooth at 60fps
-4. [ ] Test edge cases (holding multiple keys, rapid direction changes)
-5. [ ] Ensure no jittering or stuttering during movement
-
-#### Sub-task 3.3: Final validation and documentation
-1. [ ] Run complete test - spawn, move in all directions, test all walls
-2. [ ] Verify scene can be played from editor without errors
-3. [ ] Document any issues or improvements needed
-4. [ ] Mark task complete in ROADMAP.md
-5. [ ] Commit changes to version control with message "Day 1: Basic movement complete"
+#### Sub-task 3.2: Basic polishment of movement feel
+1. [x] Test movement responsiveness and adjust speed if needed
+2. [x] Verify diagonal movement is properly normalized
+3. [x] Check movement *feels* smooth at 60fps
+4. [x] Test edge cases (holding multiple keys, rapid direction changes)
+5. [x] Ensure no jittering or stuttering during movement
 
 ---
 
