@@ -1,4 +1,4 @@
-# 🧟‍♂️ ZED - Zombie Extraction Deliverance
+# 🧟‍♂️ ZED
 
 **Top-Down Tactical Extraction Shooter**
 

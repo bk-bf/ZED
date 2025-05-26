@@ -1,4 +1,4 @@
-# 🧟‍♂️ ZED - Zombie Extraction Deliverance - Daily Tasks Breakdown
+# 🧟‍♂️ ZED - Daily Tasks Breakdown
 
 ## How to Use This Document
 - Each roadmap item is broken into 3 sub-tasks with 5 granular steps each
