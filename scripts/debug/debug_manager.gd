@@ -85,6 +85,12 @@ func register_bullet_fired():
 	bullets_fired += 1
 	debug_print("ai", "Bullet fired. Total shots: " + str(bullets_fired))
 
+func register_bullet_hit():
+	"""Called when bullet hits a zombie (not necessarily kills)"""
+	bullets_hit += 1
+	debug_print("ai", "Bullet hit zombie. Total hits: " + str(bullets_hit))
+	
+
 func print_ai_stats():
 	"""Print current AI debug statistics"""
 	if ai_debug:
