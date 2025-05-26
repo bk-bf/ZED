@@ -171,3 +171,47 @@
 **Next Day Preview:** Day 3 will add player health, zombie damage, and death consequences to create risk/reward decisions.
 
 ---
+
+# Day 3: Health & Consequences (2025-05-27)
+
+## Sub-task 3.1: Player Health System
+1. [ ] Create `scripts/mechanics/health_system.gd` with max_health (100) and current_health properties
+2. [ ] Add health system to player_controller.gd with `take_damage(amount)` function
+3. [ ] Create simple health bar UI scene (`scenes/ui/health_bar.tscn`) with ProgressBar node
+4. [ ] Connect health bar to player health and position in top-left corner
+5. [ ] Test health bar updates when player takes damage (use debug key to test)
+
+## Sub-task 3.2: Zombie Contact Damage
+1. [ ] Add Area2D child to zombie for damage detection (separate from bullet collision)
+2. [ ] Set Area2D collision mask to detect player layer only
+3. [ ] Implement `_on_damage_area_entered()` in zombie.gd to damage player on contact
+4. [ ] Add damage cooldown (1 second) to prevent instant death from single zombie
+5. [ ] Test zombie damages player when touching, health bar decreases
+
+## Sub-task 3.3: Death and Restart System
+1. [ ] Add `die()` function to player_controller.gd that triggers on health <= 0
+2. [ ] Implement scene restart using `get_tree().reload_current_scene()`
+3. [ ] Add brief death message display before restart (2 second delay)
+4. [ ] Reset DebugManager counters on scene restart for accurate tracking
+5. [ ] Test death restarts scene and resets all systems properly
+
+## Sub-task 3.4: Risk/Reward Balance Validation
+1. [ ] Position zombies strategically to create tactical choices (near walls, in corners)
+2. [ ] Test that players must choose between safe shooting distance vs close-range risks
+3. [ ] Verify zombie contact damage creates meaningful threat without being unfair
+4. [ ] Document observed player behavior: do they maintain distance or rush in?
+5. [ ] Adjust zombie damage (10-25 HP) if balance feels too punishing or too lenient
+
+## Sub-task 3.5: Universal Damage System Foundation
+1. [ ] Create `scripts/core/damage_interface.gd` with standard damage functions
+2. [ ] Ensure all entities (player, zombies) use consistent damage/health patterns
+3. [ ] Add damage type enum (BULLET, CONTACT, ENVIRONMENTAL) for future expansion
+4. [ ] Implement damage resistance system foundation for different entity types
+5. [ ] Test all damage sources work consistently across different entity types
+
+
+**Expected Result:** Player has visible health, zombies are dangerous to approach, death has consequences (scene restart), and the risk/reward of close combat is established. Core damage system ready for Day 4's ammo scarcity mechanics.
+
+**Next Day Preview:** Day 4 will add limited ammo system, forcing players to make tactical decisions about when to engage vs when to conserve resources.
+
+---
