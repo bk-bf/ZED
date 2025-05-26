@@ -159,18 +159,11 @@
 5. [x] Document risk/reward balance: more dangerous areas have better loot
 
 #### Sub-task 4.2: Plan resource management systems
-1. [ ] Define core resources: ammo, health, equipment durability, time
-2. [ ] Document how resources create tactical decisions (conserve vs aggressive)
-3. [ ] Plan permadeath consequences for team members and equipment
-4. [ ] Define mission structure: enter building → clear rooms → extract safely
-5. [ ] Document how resource scarcity drives tactical positioning choices
-
-#### Sub-task 4.3: Validate mechanic with current test
-1. [ ] Test current combat feels tactical (positioning matters for safety)
-2. [ ] Verify shooting mechanics support careful, aimed gameplay
-3. [ ] Ensure zombie placement creates tactical challenges (cover, angles)
-4. [ ] Document what works and what needs improvement for tactical feel
-5. [ ] Plan how current systems extend to full building clearance concept
+1. [x] Define core resources: ammo, health, equipment durability, time
+2. [x] Document how resources create tactical decisions (conserve vs aggressive)
+3. [x] Plan permadeath consequences for team members and equipment
+4. [x] Define mission structure: enter building → clear rooms → extract safely
+5. [x] Document how resource scarcity drives tactical positioning choices
 
 
 **Expected Result:** Click to shoot white squares at red zombie squares. Zombies die after 4 hits and disappear. Core tactical combat loop functional with documented game design foundation.

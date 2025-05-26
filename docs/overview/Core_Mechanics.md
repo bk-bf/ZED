@@ -53,8 +53,8 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 #### Recruited Survivors
 - **Both Difficulties**: Permanent death when killed in missions
 - **Mission Deployment**: Can be sent on missions instead of main character
-- **Specialized Skills**: Each survivor may have unique abilities or bonuses
-- **Backup Leadership**: Can continue campaign if main character dies (Permadeath mode)
+- **Specialized Skills**: Each survivor may have unique stats or abilities
+- **Backup Leadership**: Can continue campaign if main character dies (in Permadeath mode)
 
 ### Risk Mitigation Strategies
 
@@ -146,7 +146,7 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **Escape Options**: Sometimes retreat is the optimal strategy
 
 ### Enemy Types
-- **Zombies**: Slow but numerous, attracted to noise
+- **Zombies**: Slow but numerous, attracted to noise, smell
 - **Mutants**: Fast and dangerous, unique abilities
 - **Bandits**: Intelligent opponents with weapons and tactics
 - **Bosses**: Unique encounters requiring specific strategies
