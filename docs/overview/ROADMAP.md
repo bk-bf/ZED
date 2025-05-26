@@ -20,11 +20,11 @@
 - [x] **TESTABLE:** Player can walk around a simple room immediately
 
 ### Day 2: Combat Foundation (2025-05-26)
-- [ ] **PLAYABLE:** Implement shooting system (click to shoot white squares toward cursor)
-- [ ] **PLAYABLE:** Add 5 static zombies (red squares) in test room
-- [ ] **PLAYABLE:** Bullets destroy zombies on contact
-- [ ] **TESTABLE:** Core combat loop works - walk, aim, shoot, kill
-- [ ] Define primary mechanic: tactical building clearance with resource management consequences
+- [x] **PLAYABLE:** Implement shooting system (click to shoot white squares toward cursor)
+- [x] **PLAYABLE:** Add 5 static zombies (red squares) in test room
+- [x] **PLAYABLE:** Bullets destroy zombies on contact
+- [x] **TESTABLE:** Core combat loop works - walk, aim, shoot, kill
+- [x] Define primary mechanic: tactical building clearance with resource management consequences
 
 ### Day 3: Health & Consequences (2025-05-27)
 - [ ] **PLAYABLE:** Add player health system with visual health bar
