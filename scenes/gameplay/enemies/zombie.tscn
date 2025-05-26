@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsvwgterct27"]
 
-[ext_resource type="Script" uid="uid://gor1acg3lxpy" path="res://scripts/mechanics/zombie.gd" id="1_opfcu"]
+[ext_resource type="Script" uid="uid://blvum2rai2wcu" path="res://scripts/mechanics/zombie.gd" id="1_opfcu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ey4e"]
 size = Vector2(32, 32)
@@ -25,5 +25,5 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.505393, 0.152595, 0.135802, 1)
+color = Color(0.662215, 0.215734, 0.193434, 1)
 metadata/_edit_use_anchors_ = true

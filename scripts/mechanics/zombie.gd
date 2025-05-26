@@ -33,8 +33,26 @@ func take_damage(amount: int):
 	# DebugManager - AI category for combat debugging
 	DebugManager.debug_print("ai", "Zombie took " + str(amount) + " damage. Health: " + str(health) + "/" + str(max_health))
 	
+	# Add visual damage feedback
+	show_damage_flash()
+	
 	if health <= 0:
 		die()
+
+
+func show_damage_flash():
+	"""Flash zombie white briefly to indicate damage"""
+	var color_rect = get_node("CollisionShape2D/ColorRect")
+	if color_rect:
+		# Flash bright white for damage
+		color_rect.modulate = Color.WHITE * 2.0 # Bright white flash
+		
+		# Return to normal color after brief delay
+		await get_tree().create_timer(0.1).timeout
+		
+		# Only reset if zombie is still alive
+		if not is_dead:
+			color_rect.modulate = Color.WHITE
 
 
 func die():
@@ -44,10 +62,10 @@ func die():
 	
 	is_dead = true
 	
-	# Register death with debug manager BEFORE visual feedback
+	# Register death with debug manager
 	DebugManager.register_zombie_death()
 	
-	# Visual feedback
+	# Visual feedback - change to dark red for death (distinct from damage flash)
 	var color_rect = get_node("CollisionShape2D/ColorRect")
 	if color_rect:
 		color_rect.color = Color.DARK_RED
@@ -60,9 +78,6 @@ func die():
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
-func is_alive() -> bool:
-	"""Check if zombie is still alive"""
-	return health > 0 and not is_dead
 
 # Future expansion methods (ready for Day 5 AI)
 func get_health_percentage() -> float:

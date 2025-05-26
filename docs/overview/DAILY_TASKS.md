@@ -143,20 +143,20 @@
 5. [x] Verify zombie counter decreases when zombies die
 
 #### Sub-task 3.3: Polish combat feedback
-1. [ ] Add brief visual feedback when zombie takes damage (color flash)
-2. [ ] Ensure bullets don't pass through zombies to hit others behind
-3. [ ] Test edge case: shooting zombies at extreme angles
-4. [ ] Verify bullet-wall collision still works with zombie collision
-5. [ ] Test rapid-fire shooting at single zombie works correctly
+1. [x] Add brief visual feedback when zombie takes damage (color flash)
+2. [x] Ensure bullets don't pass through zombies to hit others behind
+3. [x] Test edge case: shooting zombies at extreme angles
+4. [x] Verify bullet-wall collision still works with zombie collision
+5. [x] Test rapid-fire shooting at single zombie works correctly
 
 ### Task 4: Define primary mechanic - tactical building clearance with resource management consequences
 
 #### Sub-task 4.1: Document core mechanic rules
-1. [ ] Create `docs/core_mechanics.md` file with tactical clearance definition
-2. [ ] Define death consequences: lose all carried equipment, restart mission
-3. [ ] Define success rewards: keep collected loot, return to base safely
-4. [ ] Specify resource constraints: limited ammo forces tactical decisions
-5. [ ] Document risk/reward balance: more dangerous areas have better loot
+1. [x] Create `docs/core_mechanics.md` file with tactical clearance definition
+2. [x] Define death consequences: lose all carried equipment, restart mission
+3. [x] Define success rewards: keep collected loot, return to base safely
+4. [x] Specify resource constraints: limited ammo forces tactical decisions
+5. [x] Document risk/reward balance: more dangerous areas have better loot
 
 #### Sub-task 4.2: Plan resource management systems
 1. [ ] Define core resources: ammo, health, equipment durability, time
