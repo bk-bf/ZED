@@ -83,64 +83,64 @@
 ### Task 1: Implement shooting system (click to shoot white squares toward cursor)
 
 #### Sub-task 1.1: Create bullet scene and script
-1. [ ] Create new scene `scenes/gameplay/weapons/bullet.tscn` with Area2D root
-2. [ ] Add CollisionShape2D with CircleShape2D (radius 4) to bullet
-3. [ ] Add ColorRect child (8x8 size, white color) for visual
-4. [ ] Create `scripts/mechanics/bullet.gd` script extending Area2D
-5. [ ] Add velocity property and movement logic in `_physics_process()`
+1. [x] Create new scene `scenes/gameplay/weapons/bullet.tscn` with Area2D root
+2. [x] Add CollisionShape2D with CircleShape2D (radius 4) to bullet
+3. [x] Add ColorRect child (8x8 size, white color) for visual
+4. [x] Create `scripts/mechanics/bullet.gd` script extending Area2D
+5. [x] Add velocity property and movement logic in `_physics_process()`
 
 #### Sub-task 1.2: Add shooting to player controller
-1. [ ] Add bullet scene preload to player_controller.gd
-2. [ ] Implement mouse click detection in `_input()` function
-3. [ ] Calculate direction from player to mouse cursor on click
-4. [ ] Instantiate bullet at player position with calculated direction
-5. [ ] Test shooting - white squares should fly toward mouse cursor
+1. [x] Add bullet scene preload to player_controller.gd
+2. [x] Implement mouse click detection in `_input()` function
+3. [x] Calculate direction from player to mouse cursor on click
+4. [x] Instantiate bullet at player position with calculated direction
+5. [x] Test shooting - white squares should fly toward mouse cursor
 
 #### Sub-task 1.3: Handle bullet lifecycle
-1. [ ] Add bullet lifetime timer (2 seconds) to prevent infinite bullets
-2. [ ] Remove bullets when they hit walls or leave screen bounds
-3. [ ] Test edge case: rapid clicking doesn't crash game
-4. [ ] Test edge case: bullets despawn properly when hitting walls
-5. [ ] Verify no memory leaks from bullet spawning/despawning
+1. [x] Add bullet lifetime timer (2 seconds) to prevent infinite bullet objects, that consume memory
+2. [x] Remove bullets when they hit walls or leave screen bounds
+3. [x] Test edge case: rapid clicking doesn't crash game
+4. [x] Test edge case: bullets despawn properly when hitting walls
+5. [x] Verify no memory leaks from bullet spawning/despawning
 
 ### Task 2: Add 5 static zombies (red squares) in test room
 
 #### Sub-task 2.1: Create zombie scene and basic script
-1. [ ] Create new scene `scenes/gameplay/enemies/zombie.tscn` with CharacterBody2D root
-2. [ ] Add CollisionShape2D with RectangleShape2D (32x32) to zombie
-3. [ ] Add ColorRect child (32x32 size, red color) for visual
-4. [ ] Create `scripts/mechanics/zombie.gd` script with health property (100 HP)
-5. [ ] Add `take_damage(amount)` and `die()` functions
+1. [x] Create new scene `scenes/gameplay/enemies/zombie.tscn` with CharacterBody2D root
+2. [x] Add CollisionShape2D with RectangleShape2D (32x32) to zombie
+3. [x] Add ColorRect child (32x32 size, red color) for visual
+4. [x] Create `scripts/mechanics/zombie.gd` script with health property (100 HP)
+5. [x] Add `take_damage(amount)` and `die()` functions
 
 #### Sub-task 2.2: Spawn zombies in test scene
-1. [ ] Add 5 zombie instances to movement_test.tscn at fixed positions
-2. [ ] Position zombies around room: corners and center, avoiding player spawn
-3. [ ] Verify zombies don't overlap with walls or player starting position
-4. [ ] Test scene loads with all 5 red squares visible
-5. [ ] Ensure zombies don't move (static for now)
+1. [x] Add 5 zombie instances to movement_test.tscn at fixed positions
+2. [x] Position zombies around room: corners and center, avoiding player spawn
+3. [x] Verify zombies don't overlap with walls or player starting position
+4. [x] Test scene loads with all 5 red squares visible
+5. [x] Ensure zombies don't move (static for now)
 
 #### Sub-task 2.3: Test zombie collision boundaries
-1. [ ] Verify player can't walk through zombies
-2. [ ] Test edge case: player getting stuck between zombie and wall
-3. [ ] Ensure zombie collision shapes match visual size
-4. [ ] Test player can walk around zombies smoothly
-5. [ ] Verify camera still follows player with zombies present
+1. [x] Verify player can't walk through zombies
+2. [-] Test edge case: player getting stuck between zombie and wall
+3. [x] Ensure zombie collision shapes match visual size
+4. [-] Test player can walk around zombies smoothly
+5. [x] Verify camera still follows player with zombies present
 
 ### Task 3: Bullets destroy zombies on contact
 
 #### Sub-task 3.1: Implement bullet-zombie collision
-1. [ ] Connect bullet's `body_entered` signal to collision handler
-2. [ ] Add collision detection between bullets and zombies
-3. [ ] Call zombie `take_damage(25)` when bullet hits
-4. [ ] Remove bullet immediately after hitting zombie
-5. [ ] Test single bullet kills zombie after 4 hits (100 HP / 25 damage)
+1. [x] Connect bullet's `body_entered` signal to collision handler
+2. [x] Add collision detection between bullets and zombies
+3. [x] Call zombie `take_damage(25)` when bullet hits
+4. [x] Remove bullet immediately after hitting zombie
+5. [x] Test single bullet kills zombie after 4 hits (100 HP / 25 damage)
 
 #### Sub-task 3.2: Add zombie death handling
-1. [ ] Make zombie disappear when health reaches 0
-2. [ ] Add simple death effect (zombie fades out or disappears instantly)
-3. [ ] Ensure dead zombie collision is removed (player can walk through)
-4. [ ] Test edge case: multiple bullets hitting same zombie simultaneously
-5. [ ] Verify zombie counter decreases when zombies die
+1. [x] Make zombie disappear when health reaches 0
+2. [x] Add simple death effect (zombie fades out or disappears instantly)
+3. [x] Ensure dead zombie collision is removed (player can walk through)
+4. [x] Test edge case: multiple bullets hitting same zombie simultaneously
+5. [x] Verify zombie counter decreases when zombies die
 
 #### Sub-task 3.3: Polish combat feedback
 1. [ ] Add brief visual feedback when zombie takes damage (color flash)

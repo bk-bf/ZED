@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7jcmsfwm2eoq"]
+
+[ext_resource type="Script" uid="uid://blbpmfcuaxn1r" path="res://scripts/mechanics/bullet.gd" id="1_yyawg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f1eee"]
+radius = 4.0
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 4
+script = ExtResource("1_yyawg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f1eee")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
+custom_minimum_size = Vector2(8, 8)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

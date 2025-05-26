@@ -1,3 +1,4 @@
+# _archieved_systems/unused_mechanics/zombie_data.gd
 extends Resource
 class_name ZombieData
 

@@ -1,15 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://brmwpmml8y2as"]
+[gd_scene load_steps=3 format=3 uid="uid://dsvwgterct27"]
 
-[ext_resource type="Script" uid="uid://cp7it5kpk2t6q" path="res://scripts/mechanics/player_controller.gd" id="1_v0q10"]
+[ext_resource type="Script" uid="uid://gor1acg3lxpy" path="res://scripts/mechanics/zombie.gd" id="1_opfcu"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0q10"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ey4e"]
 size = Vector2(32, 32)
 
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_v0q10")
+[node name="Zombie" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_opfcu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_v0q10")
+shape = SubResource("RectangleShape2D_8ey4e")
 
 [node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
 custom_minimum_size = Vector2(32, 32)
@@ -24,5 +25,5 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.10121, 0.272982, 0.58, 1)
+color = Color(0.505393, 0.152595, 0.135802, 1)
 metadata/_edit_use_anchors_ = true

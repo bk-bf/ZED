@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://clfg7irsq22k1"]
+[gd_scene load_steps=5 format=3 uid="uid://clfg7irsq22k1"]
 
+[ext_resource type="PackedScene" uid="uid://dsvwgterct27" path="res://scenes/gameplay/enemies/zombie.tscn" id="1_8rjut"]
 [ext_resource type="PackedScene" uid="uid://brmwpmml8y2as" path="res://scenes/testing/player.tscn" id="1_uspyl"]
 [ext_resource type="PackedScene" uid="uid://dx7abjien1uq" path="res://scenes/testing/vertical_wall.tscn" id="2_uspyl"]
 [ext_resource type="PackedScene" uid="uid://bdrvxmbo0ap8e" path="res://scenes/testing/horizontal_wall.tscn" id="3_8rjut"]
@@ -11,6 +12,21 @@ position = Vector2(400, 300)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
+[node name="Zombie5" parent="." instance=ExtResource("1_8rjut")]
+position = Vector2(231, 444)
+
+[node name="Zombie4" parent="." instance=ExtResource("1_8rjut")]
+position = Vector2(523, 122)
+
+[node name="Zombie3" parent="." instance=ExtResource("1_8rjut")]
+position = Vector2(183, 223)
+
+[node name="Zombie2" parent="." instance=ExtResource("1_8rjut")]
+position = Vector2(612, 285)
+
+[node name="Zombie" parent="." instance=ExtResource("1_8rjut")]
+position = Vector2(345, 118)
+
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="TopWall" parent="Walls" instance=ExtResource("3_8rjut")]
@@ -20,7 +36,7 @@ position = Vector2(400, 16)
 position = Vector2(400, 584)
 
 [node name="LeftWall" parent="Walls" instance=ExtResource("2_uspyl")]
-position = Vector2(16, 300)
+position = Vector2(14, 625)
 
 [node name="RightWall" parent="Walls" instance=ExtResource("2_uspyl")]
 position = Vector2(784, 300)

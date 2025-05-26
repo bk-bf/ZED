@@ -15,6 +15,14 @@ run/main_scene="uid://clfg7irsq22k1"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+DebugManager="*res://scripts/debug/debug_manager.gd"
+
+[debug]
+
+settings/stdout/verbose_stdout=true
+
 [input]
 
 move_up={
