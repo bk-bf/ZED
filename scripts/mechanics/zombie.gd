@@ -77,6 +77,7 @@ func _on_damage_area_body_exited(body):
 func get_resistances() -> Dictionary:
 	return zombie_data.get_resistances() if zombie_data else {}
 
+# it is just impossible to outsource this method
 func take_damage(amount: int, damage_type: DamageInterface.DamageType):
 	if is_dead or not zombie_data.is_alive():
 		return

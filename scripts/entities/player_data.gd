@@ -14,6 +14,12 @@ class_name PlayerData
 func get_resistances() -> Dictionary:
     return resistances
 
+func take_damage(amount: int):
+    health = max(0, health - amount)
+    if health <= 0:
+        # Player doesn't change state like zombies, just dies
+        pass # Death handled by PlayerController
+
 func can_shoot() -> bool:
     return ammo_count > 0
 

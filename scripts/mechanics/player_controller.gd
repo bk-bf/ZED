@@ -63,6 +63,8 @@ func setup_camera_ui():
 func get_resistances() -> Dictionary:
 	return player_data.get_resistances() if player_data else {}
 
+
+# it is just impossible to outsource this method
 func take_damage(amount: int, damage_type: DamageInterface.DamageType = DamageInterface.DamageType.BULLET):
 	if player_data.health <= 0:
 		return
@@ -70,7 +72,7 @@ func take_damage(amount: int, damage_type: DamageInterface.DamageType = DamageIn
 	var resistances = get_resistances()
 	var resistance = resistances.get(damage_type, 0.0)
 	var final_damage = int(amount * (1.0 - resistance))
-	player_data.health = max(0, player_data.health - final_damage)
+	player_data.take_damage(final_damage)
 	
 	modulate = Color.WHITE * 2.0
 	var tween = create_tween()

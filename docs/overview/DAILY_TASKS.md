@@ -196,7 +196,7 @@
 
 ## Sub-task 3.4: Universal Damage System Foundation
 1. [x] Create `scripts/core/damage_interface.gd` with standard damage functions
-2. [ ] Ensure all entities (player, zombies) use consistent damage/health patterns
+2. [x] Ensure all entities (player, zombies) use consistent damage/health patterns
 3. [x] Add damage type enum (BULLET, CONTACT, ENVIRONMENTAL) for future expansion
 4. [x] Implement damage resistance system foundation for different entity types
 5. [x] Test all damage sources work consistently across different entity types
