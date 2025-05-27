@@ -49,12 +49,14 @@ func get_velocity() -> Vector2:
 
 func _on_body_entered(body):
 	"""Handle collision with StaticBody2D (walls) or CharacterBody2D (zombies)"""
-	DebugManager.debug_print("collision", "Bullet hit: " + body.name)
+	DebugManager.debug_print("combat", "Bullet hit: " + body.name)
 	if body.has_method("take_damage"):
-		# Hit a zombie or damageable entity
-		body.take_damage(damage)
-	
-	# Destroy bullet on any collision
+		DamageInterface.apply_damage(
+			self,
+			body,
+			damage,
+			DamageInterface.DamageType.BULLET
+		)
 	queue_free()
 
 func _on_area_entered(area):

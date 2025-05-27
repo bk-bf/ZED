@@ -14,8 +14,8 @@ class_name ZombieData
 @export var target_position: Vector2 = Vector2.ZERO
 @export var state: ZombieState = ZombieState.IDLE
 
-# Day 3 addition - damage cooldown
-var damage_cooldown: float = 0.0
+# damage cooldown
+var current_cooldown: float = 0.0
 var damage_cooldown_duration: float = 1.0 # second
 
 enum ZombieState {
@@ -25,6 +25,12 @@ enum ZombieState {
     ATTACKING,
     DEAD
 }
+
+func get_resistances() -> Dictionary:
+    return {
+        DamageInterface.DamageType.BULLET: 0.0, # 0% bullet resistance
+        DamageInterface.DamageType.CONTACT: 0.0
+    }
 
 func take_damage(amount: int):
     health = max(0, health - amount)
@@ -36,11 +42,11 @@ func is_alive() -> bool:
     return health > 0 and is_active
 
 func can_damage() -> bool:
-    return damage_cooldown <= 0.0 and is_alive()
+    return current_cooldown <= 0.0
 
 func apply_damage_cooldown():
-    damage_cooldown = damage_cooldown_duration
+    current_cooldown = damage_cooldown_duration
 
 func update_cooldown(delta: float):
-    if damage_cooldown > 0.0:
-        damage_cooldown -= delta
+    if current_cooldown > 0.0:
+        current_cooldown = max(0.0, current_cooldown - delta)

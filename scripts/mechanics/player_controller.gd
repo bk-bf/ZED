@@ -60,20 +60,29 @@ func setup_camera_ui():
 	ui_layer.add_child(debug_health_ui)
 	debug_health_ui.setup(player_data)
 
+func get_resistances() -> Dictionary:
+	return player_data.get_resistances() if player_data else {}
 
-func take_damage(amount: int):
-	"""Handle player taking damage with visual feedback"""
-	player_data.health = max(0, player_data.health - amount)
+func take_damage(amount: int, damage_type: DamageInterface.DamageType = DamageInterface.DamageType.BULLET):
+	if player_data.health <= 0:
+		return
+
+	var resistances = get_resistances()
+	var resistance = resistances.get(damage_type, 0.0)
+	var final_damage = int(amount * (1.0 - resistance))
+	player_data.health = max(0, player_data.health - final_damage)
 	
-	# Visual damage feedback
-	modulate = Color.WHITE * 2.0 # Flash white
+	modulate = Color.WHITE * 2.0
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 	
-	# Debug output
-	print("Player took ", amount, " damage. Health: ", player_data.health, "/", player_data.max_health)
+	DebugManager.debug_print("combat", "Player took %s %s damage (Health: %s/%s)" % [
+		final_damage,
+		DamageInterface.DamageType.keys()[damage_type],
+		player_data.health,
+		player_data.max_health
+	])
 	
-	# Check for death
 	if player_data.health <= 0:
 		die()
 		
@@ -112,6 +121,7 @@ func shoot_bullet(direction: Vector2):
 		
 		# Track bullet firing for debug
 		DebugManager.register_bullet_fired()
+		DebugManager.debug_print("combat", "Ammo remaining: " + str(player_data.ammo_count))
 
 func handle_movement():
 	var input_vector = Vector2.ZERO

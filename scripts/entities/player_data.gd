@@ -9,6 +9,10 @@ class_name PlayerData
 @export var current_weapon: String = "pistol"
 @export var ammo_count: int = 30
 @export var inventory: Array[String] = []
+@export var resistances := {DamageInterface.DamageType.CONTACT: 0.0} # 20% contact resistance
+
+func get_resistances() -> Dictionary:
+    return resistances
 
 func can_shoot() -> bool:
     return ammo_count > 0

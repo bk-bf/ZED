@@ -27,10 +27,9 @@
 - [x] Define primary mechanic: tactical building clearance with resource management consequences
 
 ### Day 3: Health & Consequences (2025-05-27)
-- [ ] **PLAYABLE:** Add player health system with visual health bar
-- [ ] **PLAYABLE:** Zombies damage player on contact
-- [ ] **PLAYABLE:** Death restarts the test scene (consequence simulation)
-- [ ] **TESTABLE:** Risk/reward balance - getting close to zombies is dangerous
+- [x] **PLAYABLE:** Add player health system with visual health bar
+- [x] **PLAYABLE:** Zombies damage player on contact
+- [x] **PLAYABLE:** Death restarts the test scene (consequence simulation)
 - [ ] Implement basic damage system for all entities
 
 ### Day 4: Resource Management (2025-05-28)

@@ -3,6 +3,7 @@ extends CharacterBody2D
 class_name Zombie
 
 @export var zombie_data: ZombieData
+@export var armor: Resource = null # ArmorData resource
 var is_dead: bool = false
 var damage_area: Area2D # Store reference to damage area
 
@@ -40,56 +41,54 @@ func _ready():
 var player_in_damage_area: bool = false
 
 func _process(delta):
-	# Update damage cooldown
 	zombie_data.update_cooldown(delta)
 	
-	# CONTINUOUS DAMAGE CHECK - this is the key fix
-	if player_in_damage_area and zombie_data.can_damage():
-		# Check if player is still overlapping (extra safety)
-		var overlapping_bodies = damage_area.get_overlapping_bodies()
-		for body in overlapping_bodies:
-			if body.has_method("take_damage"):
-				body.take_damage(zombie_data.damage)
+	if player_in_damage_area && zombie_data.can_damage():
+		var overlapping = $DamageArea.get_overlapping_bodies()
+		for body in overlapping:
+			if body is PlayerController:
+				DamageInterface.apply_damage(
+					self,
+					body,
+					zombie_data.damage,
+					DamageInterface.DamageType.CONTACT
+				)
 				zombie_data.apply_damage_cooldown()
-				print("Zombie damaged player for ", zombie_data.damage, " damage")
 				break # Only damage once per cooldown cycle
 
+
 func _on_damage_area_body_entered(body):
-	"""Player entered damage area"""
-	if body.has_method("take_damage"):
+	if body is PlayerController:
 		player_in_damage_area = true
-		# Apply immediate damage on first contact
 		if zombie_data.can_damage():
-			body.take_damage(zombie_data.damage)
+			DamageInterface.apply_damage(
+				self,
+				body,
+				zombie_data.damage,
+				DamageInterface.DamageType.CONTACT
+			)
 			zombie_data.apply_damage_cooldown()
-			print("Zombie initially damaged player for ", zombie_data.damage, " damage")
 
 func _on_damage_area_body_exited(body):
-	"""Player left damage area"""
-	if body.has_method("take_damage"):
+	if body is PlayerController:
 		player_in_damage_area = false
-		print("Player left zombie damage area")
 
 
-func take_damage(amount: int):
-	"""Handle damage from bullets - called by bullet's _on_body_entered"""
+func get_resistances() -> Dictionary:
+	return zombie_data.get_resistances() if zombie_data else {}
+
+func take_damage(amount: int, damage_type: DamageInterface.DamageType):
 	if is_dead or not zombie_data.is_alive():
 		return
-	
-	# Register bullet hit with debug manager
-	DebugManager.register_bullet_hit()
-	
-	# Use ZombieData's take_damage method
-	zombie_data.take_damage(amount)
-	
-	# DebugManager - AI category for combat debugging
-	DebugManager.debug_print("ai", "Zombie took " + str(amount) + " damage. Health: " + str(zombie_data.health) + "/" + str(zombie_data.max_health))
-	
-	# Add visual damage feedback
+
+	var resistances = get_resistances()
+	var resistance = resistances.get(damage_type, 0.0)
+	var final_damage = int(amount * (1.0 - resistance))
+	zombie_data.take_damage(final_damage)
+
 	show_damage_flash()
-	
-	# Check if zombie died (ZombieData handles state change)
-	if not zombie_data.is_alive():
+
+	if zombie_data.health <= 0 and not is_dead:
 		die()
 
 func show_damage_flash():

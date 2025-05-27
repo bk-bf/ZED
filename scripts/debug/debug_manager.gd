@@ -3,9 +3,9 @@ extends Node
 
 # Debug toggles
 var memory_monitoring: bool = false
-var collision_debug: bool = false
-var ai_debug: bool = false
-var physics_debug: bool = false
+var collision_debug: bool = true
+var ai_debug: bool = true
+var physics_debug: bool = true
 @export var show_debug_health: bool = true
 
 # AI Debug counters
@@ -15,7 +15,7 @@ var bullets_fired: int = 0
 var bullets_hit: int = 0
 
 func _ready():
-	print("🔧 Debug Manager initialized - Press F3 for memory monitoring")
+	print("🔧 Debug Manager initialized")
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -67,7 +67,8 @@ func debug_print(category: String, message: String):
 		"physics":
 			if physics_debug:
 				print(message)
-
+		"combat": # New combat category
+			print(message) # Always print combat messages
 
 func register_zombie_death():
 	"""Called when zombie dies"""
@@ -115,6 +116,17 @@ func monitor_memory():
 	# Print every 60 frames (1 second at 60fps)
 	if Engine.get_process_frames() % 60 == 0:
 		debug_print("memory", "Nodes: " + str(node_count) + " | Objects: " + str(object_count) + " | Orphans: " + str(orphan_nodes))
+
+func debug_print_combat_damage(target_name: String, final_damage: int, damage_type: String, resistance_percent: float):
+	"""Log detailed combat damage events"""
+	var message = "%s took %s %s damage (Resisted: %.1f%%)" % [
+		target_name,
+		final_damage,
+		damage_type,
+		resistance_percent
+	]
+	debug_print("combat", message)
+
 
 func toggle_debug_health():
 	show_debug_health = !show_debug_health

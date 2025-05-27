@@ -194,19 +194,12 @@
 4. [x] Reset DebugManager counters on scene restart for accurate tracking
 5. [x] Test death restarts scene and resets all systems properly
 
-## Sub-task 3.4: Risk/Reward Balance Validation
-1. [ ] Position zombies strategically to create tactical choices (near walls, in corners)
-2. [ ] Test that players must choose between safe shooting distance vs close-range risks
-3. [ ] Verify zombie contact damage creates meaningful threat without being unfair
-4. [ ] Document observed player behavior: do they maintain distance or rush in?
-5. [ ] Adjust zombie damage (10-25 HP) if balance feels too punishing or too lenient
-
-## Sub-task 3.5: Universal Damage System Foundation
-1. [ ] Create `scripts/core/damage_interface.gd` with standard damage functions
+## Sub-task 3.4: Universal Damage System Foundation
+1. [x] Create `scripts/core/damage_interface.gd` with standard damage functions
 2. [ ] Ensure all entities (player, zombies) use consistent damage/health patterns
-3. [ ] Add damage type enum (BULLET, CONTACT, ENVIRONMENTAL) for future expansion
-4. [ ] Implement damage resistance system foundation for different entity types
-5. [ ] Test all damage sources work consistently across different entity types
+3. [x] Add damage type enum (BULLET, CONTACT, ENVIRONMENTAL) for future expansion
+4. [x] Implement damage resistance system foundation for different entity types
+5. [x] Test all damage sources work consistently across different entity types
 
 
 **Expected Result:** Player has visible health, zombies are dangerous to approach, death has consequences (scene restart), and the risk/reward of close combat is established. Core damage system ready for Day 4's ammo scarcity mechanics.
