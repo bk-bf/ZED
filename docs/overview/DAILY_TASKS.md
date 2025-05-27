@@ -210,41 +210,39 @@
 
 # Day 4: Resource Management (2025-05-28)
 
-## Sub-task 4.1: Item Database Foundation
-1. [ ] Create `ItemData` resource class with `id`, `name`, `type`, `stack_size`, and `drop_chance` properties
-2. [ ] Create `ItemDatabase` resource class with `items` array and `get_item_by_id()` lookup method
-3. [ ] Define basic ammo item in database: `"pistol_ammo"` with `stack_size = 30` and `drop_chance = 0.6`
-4. [ ] Add `dropped_by` array to `ItemData` specifying which enemies drop each item type
-5. [ ] Create `item_database.tres` resource file with initial ammo configuration
+## Sub-task 4.1: ItemData Foundation with Static Database
+1. [ ] Create `ItemData` resource class with `id`, `name`, `type`, `stack_size` properties and static database methods
+2. [ ] Implement static `get_item_by_id()` and `get_items_by_type()` methods with automatic `.tres` file loading
+3. [ ] Create `pistol_ammo` ItemData with 30 `stack_size` and save as `res://data/items/pistol_ammo.tres`
+4. [ ] Add `ItemType` enum (`AMMO`, `WEAPON`, `MEDICAL`, `CONSUMABLE`, `EQUIPMENT`) to `ItemData` class
+5. [ ] Test `ItemData.get_item_by_id("pistol_ammo")` returns correct item properties
 
-## Sub-task 4.2: Limited Ammo System with Database Integration
-1. [ ] Update `PlayerData` to use `ItemDatabase` for `ammo_count` and `max_ammo` from `"pistol_ammo"` item
-2. [ ] Create ammo counter UI showing current/max ammo from database item properties
-3. [ ] Implement `can_shoot()` method that checks current ammo against database item `stack_size`
-4. [ ] Update `shoot_bullet()` to consume ammo and prevent shooting when inventory is empty
-5. [ ] Add "No ammo!" feedback when attempting to shoot with zero ammo
+## Sub-task 4.2: Dictionary-Based Zombie Loot Pools
+1. [ ] Add `loot_pool` Dictionary to ZombieData with `"pistol_ammo": 1.0` (100% drop chance)
+2. [ ] Add `loot_amounts` Dictionary to ZombieData with amount ranges per item type
+3. [ ] Implement `get_loot_drops()` method that iterates `loot_pool` and generates drop arrays
+4. [ ] Update zombie `die()` function to call `get_loot_drops()` and spawn pickups accordingly
+5. [ ] Test zombie death consistently drops 5-15 pistol ammo with 100% reliability
 
-## Sub-task 4.3: Database-Driven Drop System
-1. [ ] Create `ItemPickup` scene with `Area2D` collision and configurable `ItemData` reference
-2. [ ] Implement zombie death drop logic that queries `ItemDatabase` for droppable items
-3. [ ] Add `drop_chance` calculation and random amount generation from database min/max values
-4. [ ] Position item pickups at death location using `ItemData` configuration
-5. [ ] Connect pickup visual appearance to `ItemData` type (yellow for ammo, etc.)
+## Sub-task 4.3: Ammo System Integration with ItemData
+1. [ ] Update `PlayerData` to reference `ItemData.get_item_by_id("pistol_ammo")` for ammo properties
+2. [ ] Modify `can_shoot()` method to check current ammo against `ItemData` `stack_size` limits
+3. [ ] Create ammo counter UI displaying current/max from `ItemData` properties
+4. [ ] Update `shoot_bullet()` to consume ammo and show "No ammo!" when inventory empty
+5. [ ] Test ammo system respects `ItemData` configuration without hardcoded values
 
-## Sub-task 4.4: Item Collection and Inventory Integration
-1. [ ] Implement pickup detection that identifies `ItemData` type and amount from database
-2. [ ] Add `collect_item(item_data, amount)` method to `PlayerData` respecting database `stack_size`
-3. [ ] Create pickup feedback system showing item name and amount from database properties
-4. [ ] Integrate collection events with `DebugManager` for item tracking statistics
-5. [ ] Handle "inventory full" scenarios based on database `stack_size` limits
+## Sub-task 4.4: Item Pickup and Collection System
+1. [ ] Create `ItemPickup` scene with `setup(item_data, amount)` method for configurable drops
+2. [ ] Implement pickup collision detection that identifies `ItemData` type and amount
+3. [ ] Add `collect_item()` method to `PlayerData` respecting `ItemData` `stack_size` limits
+4. [ ] Create pickup feedback showing item name and amount from `ItemData` properties
+5. [ ] Test pickup collection updates ammo counter and respects maximum capacity
 
-## Sub-task 4.5: Resource Scarcity and Tactical Balance
-1. [ ] Configure database drop rates to create ammo scarcity (reduce `drop_chance` to 0.4)
-2. [ ] Adjust starting ammo to 15 bullets and zombie health to require 3-4 shots per kill
-3. [ ] Implement ammo warning system at 25% remaining based on database `max_ammo`
-4. [ ] Test tactical scenarios where players must choose engagement vs. conservation
-5. [ ] Validate that database-driven loot creates meaningful resource management decisions
+## Sub-task 4.5: Resource Scarcity Balance Through Data Configuration
+1. [ ] Adjust zombie `loot_pool` `drop_chance` to 0.6 and reduce starting ammo to 15 bullets
+2. [ ] Configure zombie health and `ItemData` ammo amounts to require tactical engagement decisions
+3. [ ] Implement ammo warning system at 25% remaining based on `ItemData` max values
+4. [ ] Test scenarios where players must choose between aggressive vs. conservative tactics
+5. [ ] Validate that dictionary-driven loot creates meaningful resource management pressure
 
-**Expected Result:** Player starts with limited ammo, collects database-defined drops from zombies, and faces tactical decisions about resource conservation. All items, drop rates, and stack sizes are configurable through data files without code changes.
-
----
+**Expected Result:** Player inventory, ammo, and loot are fully data-driven. All item properties, drop rates, and collection mechanics are configured through `ItemData` and `ZombieData` dictionaries. Players experience tactical resource scarcity with immediate visual feedback and configurable balance parameters.
