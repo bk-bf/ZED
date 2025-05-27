@@ -32,6 +32,9 @@ func _ready():
 	damage_area.body_entered.connect(_on_damage_area_body_entered)
 	damage_area.body_exited.connect(_on_damage_area_body_exited)
 	
+	# add to "zombies" group for tracking
+	add_to_group("zombies")
+
 	print("Zombie damage area setup complete")
 
 var player_in_damage_area: bool = false

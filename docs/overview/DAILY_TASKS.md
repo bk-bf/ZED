@@ -188,11 +188,11 @@
 5. [x] Test zombie damages player when touching, health bar decreases
 
 ## Sub-task 3.3: Death and Restart System
-1. [ ] Add `die()` function to player_controller.gd that triggers on health <= 0
-2. [ ] Implement scene restart using `get_tree().reload_current_scene()`
-3. [ ] Add brief death message display before restart (2 second delay)
-4. [ ] Reset DebugManager counters on scene restart for accurate tracking
-5. [ ] Test death restarts scene and resets all systems properly
+1. [x] Add `die()` function to player_controller.gd that triggers on health <= 0
+2. [x] Implement scene restart using `get_tree().reload_current_scene()`
+3. [x] Add brief death message display before restart (2 second delay)
+4. [x] Reset DebugManager counters on scene restart for accurate tracking
+5. [x] Test death restarts scene and resets all systems properly
 
 ## Sub-task 3.4: Risk/Reward Balance Validation
 1. [ ] Position zombies strategically to create tactical choices (near walls, in corners)

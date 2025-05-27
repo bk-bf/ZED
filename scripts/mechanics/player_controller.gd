@@ -1,4 +1,4 @@
-# scripts/mechanics/player_controller.gd
+# scripts/mechanics/player_controller.gd (Autoload)
 extends CharacterBody2D
 class_name PlayerController
 
@@ -76,13 +76,16 @@ func take_damage(amount: int):
 	# Check for death
 	if player_data.health <= 0:
 		die()
-
+		
 func die():
 	"""Handle player death - restart scene for Day 3 consequence simulation"""
 	print("Player died! Restarting scene...")
 	
 	# Visual death feedback
 	modulate = Color.RED
+	
+	# FIX: Reset debug stats before scene restart
+	DebugManager.reset_ai_stats()
 	
 	# Brief delay before restart
 	await get_tree().create_timer(1.0).timeout

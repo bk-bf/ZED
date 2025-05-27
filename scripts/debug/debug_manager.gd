@@ -69,15 +69,8 @@ func debug_print(category: String, message: String):
 				print(message)
 
 
-# AI Debug tracking functions
-func register_zombie():
-	"""Called when zombie spawns"""
-	zombie_count += 1
-	debug_print("ai", "Zombie spawned. Total zombies: " + str(zombie_count))
-
 func register_zombie_death():
 	"""Called when zombie dies"""
-	zombie_count -= 1
 	zombies_killed += 1
 	debug_print("ai", "Zombie died. Remaining: " + str(zombie_count) + " | Total killed: " + str(zombies_killed))
 
@@ -90,32 +83,25 @@ func register_bullet_hit():
 	"""Called when bullet hits a zombie (not necessarily kills)"""
 	bullets_hit += 1
 	debug_print("ai", "Bullet hit zombie. Total hits: " + str(bullets_hit))
-	
 
 func print_ai_stats():
-	"""Print current AI debug statistics"""
 	if ai_debug:
 		print("=== AI DEBUG STATS ===")
-		print("Active zombies: ", zombie_count)
+		print("Active zombies: ", get_active_zombie_count())
 		print("Zombies killed: ", zombies_killed)
 		print("Bullets fired: ", bullets_fired)
 		print("Bullets hit: ", bullets_hit)
-
 		if bullets_fired > 0:
 			var hit_accuracy = float(bullets_hit) / float(bullets_fired) * 100.0
 			print("Hit accuracy: ", "%.1f" % hit_accuracy, "%")
-
 		print("======================")
 
-
 func reset_ai_stats():
-	"""Reset all AI counters"""
-	zombie_count = 0
+	"""Reset all AI counters - FIX: Now properly resets all stats"""
 	zombies_killed = 0
 	bullets_fired = 0
 	bullets_hit = 0
 	debug_print("ai", "AI stats reset")
-
 
 func monitor_memory():
 	"""Memory monitoring function called by other scripts"""
@@ -133,3 +119,6 @@ func monitor_memory():
 func toggle_debug_health():
 	show_debug_health = !show_debug_health
 	# Hide/show debug health bar
+
+func get_active_zombie_count():
+	return get_tree().get_nodes_in_group("zombies").size()
