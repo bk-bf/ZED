@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://ygkdo5jj8q38"]
+
+[ext_resource type="Script" uid="uid://dgmpdd7b3xlwx" path="res://scripts/debug/debug_health_bar.gd" id="1_kl6vv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d7g2v"]
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+
+[node name="DebugHealthBar" type="Control"]
+layout_mode = 3
+anchor_left = 0.03
+anchor_top = 0.021
+anchor_right = 0.03
+anchor_bottom = 0.021
+offset_left = -34.56
+offset_top = -13.608
+offset_right = 36.44
+offset_bottom = 13.392
+script = ExtResource("1_kl6vv")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_d7g2v")
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

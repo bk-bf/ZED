@@ -6,6 +6,7 @@ var memory_monitoring: bool = false
 var collision_debug: bool = false
 var ai_debug: bool = false
 var physics_debug: bool = false
+@export var show_debug_health: bool = true
 
 # AI Debug counters
 var zombie_count: int = 0
@@ -128,3 +129,7 @@ func monitor_memory():
 	# Print every 60 frames (1 second at 60fps)
 	if Engine.get_process_frames() % 60 == 0:
 		debug_print("memory", "Nodes: " + str(node_count) + " | Objects: " + str(object_count) + " | Orphans: " + str(orphan_nodes))
+
+func toggle_debug_health():
+	show_debug_health = !show_debug_health
+	# Hide/show debug health bar

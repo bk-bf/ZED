@@ -175,18 +175,17 @@
 # Day 3: Health & Consequences (2025-05-27)
 
 ## Sub-task 3.1: Player Health System
-1. [ ] Create `scripts/mechanics/health_system.gd` with max_health (100) and current_health properties
-2. [ ] Add health system to player_controller.gd with `take_damage(amount)` function
-3. [ ] Create simple health bar UI scene (`scenes/ui/health_bar.tscn`) with ProgressBar node
-4. [ ] Connect health bar to player health and position in top-left corner
-5. [ ] Test health bar updates when player takes damage (use debug key to test)
+1. [x] Create `scripts/mechanics/health_system.gd` with max_health (100) and current_health properties
+2. [x] Add health system to player_controller.gd with `take_damage(amount)` function
+3. [x] Create simple health bar UI scene (`scenes/ui/health_bar.tscn`) with ProgressBar node
+4. [x] Connect health bar to player health and position in top-left corner
 
 ## Sub-task 3.2: Zombie Contact Damage
-1. [ ] Add Area2D child to zombie for damage detection (separate from bullet collision)
-2. [ ] Set Area2D collision mask to detect player layer only
-3. [ ] Implement `_on_damage_area_entered()` in zombie.gd to damage player on contact
-4. [ ] Add damage cooldown (1 second) to prevent instant death from single zombie
-5. [ ] Test zombie damages player when touching, health bar decreases
+1. [x] Add Area2D child to zombie for damage detection (separate from bullet collision)
+2. [x] Set Area2D collision mask to detect player layer only
+3. [x] Implement `_on_damage_area_body_entered()` in zombie.gd to damage player on contact
+4. [x] Add damage cooldown (1 second) to prevent instant death from single zombie
+5. [x] Test zombie damages player when touching, health bar decreases
 
 ## Sub-task 3.3: Death and Restart System
 1. [ ] Add `die()` function to player_controller.gd that triggers on health <= 0

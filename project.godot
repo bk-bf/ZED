@@ -23,6 +23,10 @@ DebugManager="*res://scripts/debug/debug_manager.gd"
 
 settings/stdout/verbose_stdout=true
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 move_up={

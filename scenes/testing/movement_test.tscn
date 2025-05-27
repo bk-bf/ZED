@@ -8,26 +8,30 @@
 [node name="MovementTest" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_uspyl")]
-position = Vector2(400, 300)
+position = Vector2(576, 324)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
+[node name="UI" type="CanvasLayer" parent="Player/Camera2D"]
+follow_viewport_enabled = true
+
 [node name="Zombie5" parent="." instance=ExtResource("1_8rjut")]
-position = Vector2(231, 444)
+position = Vector2(451, 498)
 
 [node name="Zombie4" parent="." instance=ExtResource("1_8rjut")]
-position = Vector2(523, 122)
+position = Vector2(620, 115)
 
 [node name="Zombie3" parent="." instance=ExtResource("1_8rjut")]
-position = Vector2(183, 223)
+position = Vector2(355, 315)
 
 [node name="Zombie2" parent="." instance=ExtResource("1_8rjut")]
-position = Vector2(612, 285)
+position = Vector2(776, 208)
 
 [node name="Zombie" parent="." instance=ExtResource("1_8rjut")]
-position = Vector2(345, 118)
+position = Vector2(397, 143)
 
 [node name="Walls" type="Node2D" parent="."]
+position = Vector2(156, 25)
 
 [node name="TopWall" parent="Walls" instance=ExtResource("3_8rjut")]
 position = Vector2(400, 16)
