@@ -24,32 +24,48 @@ ZED/
 │   │   └── zombie_data.gd
 │   └── unused_systems/
 │       ├── entity_manager.gd
+│       ├── placeholder_manager.gd
 │       └── trigger_optimization.gd
 ├── scenes/
 │   ├── base/
 │   ├── core/
 │   ├── debug/
 │   │   └── performance_tracker.tscn
+│   │   └── debug_health_bar.tscn
 │   ├── gameplay/
 │   │   ├── buildings/
 │   │   ├── enemies/
+│   │   │   └── zombie.tscn
 │   │   ├── items/
-│   │   └── player/
+│   │   ├── player/
+│   │   └── projectiles/
+│   │       └── bullet.tscn
 │   ├── testing/
 │   │   ├── horizontal_wall.tscn
 │   │   ├── movement_test.tscn
+│   │   ├── combat_test.tscn
 │   │   ├── player.tscn
 │   │   └── vertical_wall.tscn
 │   └── ui/
+│       └── health_bar.tscn
 ├── scripts/
 │   ├── core/
 │   │   ├── jolt_config.gd
-│   │   └── physics_layers.gd
+│   │   ├── physics_layers.gd
+│   │   └── debug_manager.gd
 │   ├── debug/
 │   │   ├── performance_tracker.gd
-│   │   └── physics_monitor.gd
+│   │   ├── physics_monitor.gd
+│   │   └── debug_health_bar.gd
+│   ├── entities/
+│   │   ├── player_data.gd
+│   │   └── zombie_data.gd
+│   ├── interfaces/
+│   │   └── damage_interface.gd
 │   ├── mechanics/
-│   │   └── player_controller.gd
+│   │   ├── player_controller.gd
+│   │   ├── zombie.gd
+│   │   └── bullet.gd
 │   └── systems/
 ├── assets/
 │   ├── final/
@@ -66,11 +82,15 @@ ZED/
     ├── overview/
     │   ├── DAILY_TASKS.md
     │   ├── Project_Structure.md
+    │   ├── Core_Mechanics.md
     │   └── ROADMAP.md
     └── reports/
         ├── personal/
         │   └── Project_Overview_25.05.md
         └── public/
+            ├── Progress_Report_25.05.md
+            ├── Progress_Report_26.05.md
+            └── Progress_Report_27.05.md
 ```
 
 ## Asset Naming Convention

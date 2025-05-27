@@ -207,3 +207,44 @@
 **Next Day Preview:** Day 4 will add limited ammo system, forcing players to make tactical decisions about when to engage vs when to conserve resources.
 
 ---
+
+# Day 4: Resource Management (2025-05-28)
+
+## Sub-task 4.1: Item Database Foundation
+1. [ ] Create `ItemData` resource class with `id`, `name`, `type`, `stack_size`, and `drop_chance` properties
+2. [ ] Create `ItemDatabase` resource class with `items` array and `get_item_by_id()` lookup method
+3. [ ] Define basic ammo item in database: `"pistol_ammo"` with `stack_size = 30` and `drop_chance = 0.6`
+4. [ ] Add `dropped_by` array to `ItemData` specifying which enemies drop each item type
+5. [ ] Create `item_database.tres` resource file with initial ammo configuration
+
+## Sub-task 4.2: Limited Ammo System with Database Integration
+1. [ ] Update `PlayerData` to use `ItemDatabase` for `ammo_count` and `max_ammo` from `"pistol_ammo"` item
+2. [ ] Create ammo counter UI showing current/max ammo from database item properties
+3. [ ] Implement `can_shoot()` method that checks current ammo against database item `stack_size`
+4. [ ] Update `shoot_bullet()` to consume ammo and prevent shooting when inventory is empty
+5. [ ] Add "No ammo!" feedback when attempting to shoot with zero ammo
+
+## Sub-task 4.3: Database-Driven Drop System
+1. [ ] Create `ItemPickup` scene with `Area2D` collision and configurable `ItemData` reference
+2. [ ] Implement zombie death drop logic that queries `ItemDatabase` for droppable items
+3. [ ] Add `drop_chance` calculation and random amount generation from database min/max values
+4. [ ] Position item pickups at death location using `ItemData` configuration
+5. [ ] Connect pickup visual appearance to `ItemData` type (yellow for ammo, etc.)
+
+## Sub-task 4.4: Item Collection and Inventory Integration
+1. [ ] Implement pickup detection that identifies `ItemData` type and amount from database
+2. [ ] Add `collect_item(item_data, amount)` method to `PlayerData` respecting database `stack_size`
+3. [ ] Create pickup feedback system showing item name and amount from database properties
+4. [ ] Integrate collection events with `DebugManager` for item tracking statistics
+5. [ ] Handle "inventory full" scenarios based on database `stack_size` limits
+
+## Sub-task 4.5: Resource Scarcity and Tactical Balance
+1. [ ] Configure database drop rates to create ammo scarcity (reduce `drop_chance` to 0.4)
+2. [ ] Adjust starting ammo to 15 bullets and zombie health to require 3-4 shots per kill
+3. [ ] Implement ammo warning system at 25% remaining based on database `max_ammo`
+4. [ ] Test tactical scenarios where players must choose engagement vs. conservation
+5. [ ] Validate that database-driven loot creates meaningful resource management decisions
+
+**Expected Result:** Player starts with limited ammo, collects database-defined drops from zombies, and faces tactical decisions about resource conservation. All items, drop rates, and stack sizes are configurable through data files without code changes.
+
+---

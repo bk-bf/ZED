@@ -24,20 +24,20 @@
 - [x] **PLAYABLE:** Add 5 static zombies (red squares) in test room
 - [x] **PLAYABLE:** Bullets destroy zombies on contact
 - [x] **TESTABLE:** Core combat loop works - walk, aim, shoot, kill
-- [x] Define primary mechanic: tactical building clearance with resource management consequences
+- [x] **DOCUMENTATION** Define primary mechanic: tactical building clearance with resource management consequences
 
 ### Day 3: Health & Consequences (2025-05-27)
 - [x] **PLAYABLE:** Add player health system with visual health bar
 - [x] **PLAYABLE:** Zombies damage player on contact
 - [x] **PLAYABLE:** Death restarts the test scene (consequence simulation)
-- [ ] Implement basic damage system for all entities
+- [x] **FOUNDATION:** Implement basic damage system for all entities
 
 ### Day 4: Resource Management (2025-05-28)
-- [ ] **PLAYABLE:** Limited ammo system with ammo counter UI
-- [ ] **PLAYABLE:** Ammo pickups spawn when zombies die
-- [ ] **PLAYABLE:** Player must collect ammo to continue fighting
-- [ ] **TESTABLE:** Tactical decisions about ammo conservation
-- [ ] Basic inventory system for carried items
+- [ ] **FOUNDATION:** Item database system with configurable drop rates and properties
+- [ ] **PLAYABLE:** Database-driven limited ammo system with counter UI
+- [ ] **PLAYABLE:** Database-configured ammo pickups spawn from zombie deaths
+- [ ] **PLAYABLE:** Item collection system respecting database stack limits
+- [ ] **TESTABLE:** Resource scarcity creates tactical engagement decisions
 
 ### Day 5: Simple AI & Challenge (2025-05-29)
 - [ ] **PLAYABLE:** Zombies chase player when in range
