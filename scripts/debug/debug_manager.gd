@@ -28,6 +28,8 @@ func _input(event):
 				toggle_ai_debug()
 			KEY_F6:
 				toggle_physics_debug()
+			KEY_F7:
+				test_item_data_system()
 
 func toggle_memory_monitoring():
 	memory_monitoring = not memory_monitoring
@@ -134,3 +136,30 @@ func toggle_debug_health():
 
 func get_active_zombie_count():
 	return get_tree().get_nodes_in_group("zombies").size()
+
+# basic ItemData system test currently only for placeholder pistol ammo
+func test_item_data_system():
+	print("\n=== ItemData System Test ===")
+	
+	# Test getting placeholder pistol ammo
+	var pistol_ammo = ItemData.get_item_by_id("placeholder_pistol_ammo")
+	
+	if pistol_ammo:
+		print("✓ Found item: ", pistol_ammo.name)
+		print("✓ ID: ", pistol_ammo.id)
+		print("✓ Type: ", pistol_ammo.type)
+		print("✓ Stack size: ", pistol_ammo.stack_size)
+	else:
+		print("✗ Failed to find placeholder_pistol_ammo")
+	
+	# Test invalid ID
+	var invalid_item = ItemData.get_item_by_id("nonexistent_item")
+	if invalid_item == null:
+		print("✓ Correctly returned null for invalid ID")
+	else:
+		print("✗ Should have returned null for invalid ID")
+	
+	print("=== Test Complete ===\n")
+
+func log_debug(message: String):
+	print("[DEBUG] ", message)

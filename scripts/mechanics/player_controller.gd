@@ -3,7 +3,7 @@ extends CharacterBody2D
 class_name PlayerController
 
 # Movement properties
-@export var player_data: PlayerData
+@export var player_data: PlayerDataAutoload
 @export var speed: float = 200.0
 
 # Bullet system
@@ -11,10 +11,11 @@ class_name PlayerController
 var bullet_preload: PackedScene
 
 func _ready():
-	# Initialize PlayerData if not assigned
-	if not player_data:
-		player_data = PlayerData.new()
-		print("Created new PlayerData - Health: ", player_data.health, "/", player_data.max_health)
+	# Add player to the "player" group for detection systems
+	add_to_group("player")
+	
+	# Use the singleton PlayerData instead of creating new instance
+	player_data = PlayerDataAutoload
 	
 	# Sync speed with PlayerData
 	speed = player_data.speed
@@ -22,13 +23,13 @@ func _ready():
 	# Collision layers for player
 	collision_layer = PhysicsLayers.PLAYER
 	collision_mask = PhysicsLayers.PLAYER_MASK
-	
+
 	# Preload bullet scene
 	bullet_preload = preload("res://scenes/gameplay/items/ammo/bullet.tscn")
-	
+
 	# Set starting position to scence position
 	player_data.position = position
-	
+
 	setup_camera_limits()
 	setup_camera_ui()
 
@@ -123,7 +124,7 @@ func shoot_bullet(direction: Vector2):
 		
 		# Track bullet firing for debug
 		DebugManager.register_bullet_fired()
-		DebugManager.debug_print("combat", "Ammo remaining: " + str(player_data.ammo_count))
+		DebugManager.debug_print("combat", "Ammo remaining: " + str(player_data.current_ammo))
 
 func handle_movement():
 	var input_vector = Vector2.ZERO

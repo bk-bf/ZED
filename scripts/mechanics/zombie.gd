@@ -125,10 +125,40 @@ func die():
 	set_collision_layer_value(2, false)
 	set_collision_mask_value(1, false)
 	
+	# call loot drop
+	var loot_drops = zombie_data.get_loot_drops()
+	for drop in loot_drops:
+		print("Dropped ", drop["amount"], " of ", drop["item_id"])
+
+	# drop an item pickup at zombie's death position - DEFER THIS
+	call_deferred("_create_pickups")
+	
 	# Remove after brief delay
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
+func _create_pickups():
+	# Update ZombieData with current world position before creating pickups
+	zombie_data.position = global_position
+	"""Create pickup items - called deferred to avoid physics state conflicts"""
+	var pickup_items = zombie_data.create_pickup_items()
+	
+	for pickup_item in pickup_items:
+		# Load the scene and instantiate it
+		var pickup_scene = preload("res://scenes/gameplay/items/item_pickup.tscn")
+		var pickup_instance = pickup_scene.instantiate()
+		
+		# Setup the pickup with data
+		pickup_instance.setup(
+			pickup_item["item_id"],
+			pickup_item["amount"],
+			pickup_item["position"]
+		)
+		
+		# Add to scene
+		get_tree().current_scene.add_child(pickup_instance)
+
+	
 # Future expansion methods (ready for Day 5 AI)
 func get_health_percentage() -> float:
 	"""Get health as percentage for UI/AI decisions"""

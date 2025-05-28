@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://bubwyw73jjfc7"]
+
+[ext_resource type="Script" uid="uid://bcuuebmnb4svn" path="res://scripts/mechanics/item_pickup.gd" id="1_rgimq"]
+[ext_resource type="FontFile" uid="uid://bksyp6roatbdh" path="res://assets/fonts/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="2_bghib"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5531f"]
+radius = 16.0
+
+[node name="ItemPickup" type="Area2D"]
+script = ExtResource("1_rgimq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5531f")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "
+"
+color = Color(0.718637, 0.717792, 0, 1)
+
+[node name="Label" type="Label" parent="CollisionShape2D"]
+offset_left = -9.0
+offset_top = -4.0
+offset_right = 9.0
+offset_bottom = 7.0
+theme_override_fonts/font = ExtResource("2_bghib")
+theme_override_font_sizes/font_size = 7
+text = "Ammo"

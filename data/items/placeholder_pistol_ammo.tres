@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://g8cu5xas52i3"]
+
+[ext_resource type="Script" uid="uid://8armwbirt0xc" path="res://scripts/entities/item_data.gd" id="1_ukn0d"]
+
+[resource]
+script = ExtResource("1_ukn0d")
+id = "placeholder_pistol_ammo"
+name = "Placeholder Pistol Ammunition"
+type = 0
+stack_size = 30
+metadata/_custom_type_script = "uid://8armwbirt0xc"

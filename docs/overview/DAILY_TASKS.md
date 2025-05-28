@@ -211,25 +211,24 @@
 # Day 4: Resource Management (2025-05-28)
 
 ## Sub-task 4.1: ItemData Foundation with Static Database
-1. [ ] Create `ItemData` resource class with `id`, `name`, `type`, `stack_size` properties and static database methods
-2. [ ] Implement static `get_item_by_id()` and `get_items_by_type()` methods with automatic `.tres` file loading
-3. [ ] Create `pistol_ammo` ItemData with 30 `stack_size` and save as `res://data/items/pistol_ammo.tres`
-4. [ ] Add `ItemType` enum (`AMMO`, `WEAPON`, `MEDICAL`, `CONSUMABLE`, `EQUIPMENT`) to `ItemData` class
-5. [ ] Test `ItemData.get_item_by_id("pistol_ammo")` returns correct item properties
+1. [x] Create `ItemData` resource class with `id`, `name`, `type`, `stack_size` properties and static database methods
+2. [x] Implement static `get_item_by_id()` and `get_items_by_type()` methods with automatic `.tres` file loading
+3. [x] Create `placeholder_pistol_ammo` ItemData with 30 `stack_size` and save as `res://data/items/placeholder_pistol_ammo.tres`
+4. [x] Add `ItemType` enum (`AMMO`, `WEAPON`, `MEDICAL`, `CONSUMABLE`, `EQUIPMENT`,etc.) to `ItemData` class
+5. [x] Test `ItemData.get_item_by_id("placeholder_pistol_ammo")` returns correct item properties
 
 ## Sub-task 4.2: Dictionary-Based Zombie Loot Pools
-1. [ ] Add `loot_pool` Dictionary to ZombieData with `"pistol_ammo": 1.0` (100% drop chance)
-2. [ ] Add `loot_amounts` Dictionary to ZombieData with amount ranges per item type
-3. [ ] Implement `get_loot_drops()` method that iterates `loot_pool` and generates drop arrays
-4. [ ] Update zombie `die()` function to call `get_loot_drops()` and spawn pickups accordingly
-5. [ ] Test zombie death consistently drops 5-15 pistol ammo with 100% reliability
+1. [x] Add `loot_pool` Dictionary to ZombieData with `"pistol_ammo": 1.0` (100% drop chance)
+2. [x] Add `loot_amounts` Dictionary to ZombieData with amount ranges per item type
+3. [x] Implement `get_loot_drops()` method that iterates `loot_pool` and generates drop arrays
+4. [x] Update zombie `die()` function to call `get_loot_drops()` and spawn pickups accordingly
+5. [x] Test zombie death consistently drops 3-8 pistol ammo with 100% reliability
 
 ## Sub-task 4.3: Ammo System Integration with ItemData
-1. [ ] Update `PlayerData` to reference `ItemData.get_item_by_id("pistol_ammo")` for ammo properties
-2. [ ] Modify `can_shoot()` method to check current ammo against `ItemData` `stack_size` limits
-3. [ ] Create ammo counter UI displaying current/max from `ItemData` properties
-4. [ ] Update `shoot_bullet()` to consume ammo and show "No ammo!" when inventory empty
-5. [ ] Test ammo system respects `ItemData` configuration without hardcoded values
+1. [x] Update `PlayerData` to reference `ItemData.get_item_by_id("placeholder_pistol_ammo")` for ammo properties
+2. [ ] Create ammo counter UI displaying current/max from `ItemData` properties
+3. [x] Update `shoot_bullet()` to consume ammo and show "No ammo!" when inventory empty
+4. [ ] Test ammo system respects `ItemData` configuration without hardcoded values
 
 ## Sub-task 4.4: Item Pickup and Collection System
 1. [ ] Create `ItemPickup` scene with `setup(item_data, amount)` method for configurable drops
