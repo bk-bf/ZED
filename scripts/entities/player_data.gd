@@ -13,6 +13,8 @@ class_name PlayerData
 @export var inventory: Dictionary = {}
 @export var resistances := {DamageInterface.DamageType.CONTACT: 0.0} # 20% contact resistance
 
+signal ammo_changed(current_ammo: int, max_ammo: int)
+
 func _ready():
 	# Initialize ItemData database
 	ItemData.initialize_database()
@@ -40,6 +42,7 @@ func can_shoot() -> bool:
 
 func use_ammo():
 	current_ammo = max(0, current_ammo - 1)
+	ammo_changed.emit(current_ammo, max_ammo) # Add signal emission for UI updates
 
 func add_item(item_id: String, amount: int = 1) -> bool:
 	DebugManager.log_debug("PlayerData: add_item() called with item_id='" + item_id + "', amount=" + str(amount))
@@ -60,6 +63,7 @@ func add_item(item_id: String, amount: int = 1) -> bool:
 		
 		if amount_to_add > 0:
 			current_ammo += amount_to_add
+			ammo_changed.emit(current_ammo, max_ammo) # Emit signal for UI update
 			DebugManager.log_debug("PlayerData: Added " + str(amount_to_add) + " ammo. Total: " + str(current_ammo))
 			return true
 		else:
@@ -67,9 +71,4 @@ func add_item(item_id: String, amount: int = 1) -> bool:
 			return false
 	
 	DebugManager.log_debug("PlayerData: Item type not handled: " + str(item_data.type))
-	return false
-
-	
-	# For other item types (future expansion)
-	DebugManager.log_debug("PlayerData: Item type not yet supported: " + str(item_data.type))
 	return false

@@ -51,7 +51,7 @@ static func initialize_database():
 	placeholder_pistol_ammo.id = "placeholder_pistol_ammo"
 	placeholder_pistol_ammo.name = "Pistol Ammunition"
 	placeholder_pistol_ammo.type = ItemType.AMMO
-	placeholder_pistol_ammo.stack_size = 30
+	placeholder_pistol_ammo.stack_size = 25
 	
 	var placeholder_health_kit = ItemData.new()
 	placeholder_health_kit.id = "placeholder_health_kit "

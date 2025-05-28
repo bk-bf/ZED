@@ -11,7 +11,8 @@ func setup(pickup_item_id: String, pickup_amount: int, pickup_position: Vector2)
 	item_id = pickup_item_id
 	amount = pickup_amount
 	position = pickup_position
-	
+
+# might have to rewrite the debug messages used here
 func _on_body_entered(body):
 	DebugManager.log_debug("ItemPickup: Body entered - " + str(body.name))
 	if body.is_in_group("player"):

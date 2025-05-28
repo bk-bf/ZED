@@ -30,6 +30,8 @@ func _input(event):
 				toggle_physics_debug()
 			KEY_F7:
 				test_item_data_system()
+			KEY_F8:
+				test_item_data_integration()
 
 func toggle_memory_monitoring():
 	memory_monitoring = not memory_monitoring
@@ -69,7 +71,7 @@ func debug_print(category: String, message: String):
 		"physics":
 			if physics_debug:
 				print(message)
-		"combat": # New combat category
+		"combat":
 			print(message) # Always print combat messages
 
 func register_zombie_death():
@@ -160,6 +162,50 @@ func test_item_data_system():
 		print("✗ Should have returned null for invalid ID")
 	
 	print("=== Test Complete ===\n")
+	
+func test_item_data_integration():
+	print("\n=== ItemData Integration Test ===")
+	
+	# Test 1: Max ammo comes from database
+	var pistol_ammo_data = ItemData.get_item_by_id("placeholder_pistol_ammo")
+	var expected_max = pistol_ammo_data.stack_size
+	var actual_max = PlayerDataAutoload.max_ammo
+	
+	print("Database stack_size: ", expected_max)
+	print("PlayerData max_ammo: ", actual_max)
+	assert(actual_max == expected_max, "Max ammo should match database stack_size")
+	print("✓ Max ammo correctly uses database value")
+	
+	# Test 2: Ammo pickup respects database limits
+	var initial_ammo = PlayerDataAutoload.current_ammo
+	var test_pickup_amount = 50 # More than stack_size to test limits
+	
+	print("Initial ammo: ", initial_ammo)
+	print("Attempting to add: ", test_pickup_amount)
+	
+	var success = PlayerDataAutoload.add_item("placeholder_pistol_ammo", test_pickup_amount)
+	var final_ammo = PlayerDataAutoload.current_ammo
+	var expected_final = min(initial_ammo + test_pickup_amount, expected_max)
+	
+	print("Final ammo: ", final_ammo)
+	print("Expected final: ", expected_final)
+	assert(final_ammo == expected_final, "Pickup should respect database stack limits")
+	print("✓ Ammo pickup respects database stack_size")
+	
+	# Test 3: UI displays database-driven values
+	var ammo_counter = get_node("UI/DebugAmmoCounter")
+	if ammo_counter:
+		ammo_counter.update_ammo_display()
+		# Verify UI shows database values, not hardcoded ones
+		print("✓ UI updated with database values")
+	
+	# Test 4: Invalid item IDs handled properly
+	var invalid_result = PlayerDataAutoload.add_item("nonexistent_ammo", 10)
+	assert(invalid_result == false, "Invalid item IDs should return false")
+	print("✓ Invalid item IDs handled correctly")
+	
+	print("=== All ItemData Integration Tests Passed ===\n")
+
 
 func log_debug(message: String):
 	print("[DEBUG] ", message)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ygkdo5jj8q38"]
+[gd_scene load_steps=4 format=3 uid="uid://ygkdo5jj8q38"]
 
 [ext_resource type="Script" uid="uid://dgmpdd7b3xlwx" path="res://scripts/debug/debug_health_bar.gd" id="1_kl6vv"]
+[ext_resource type="FontFile" uid="uid://cuyf3efx1af52" path="res://assets/fonts/Roboto_Condensed/RobotoCondensed-ExtraBold.ttf" id="2_str3o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d7g2v"]
 content_margin_top = 0.0
@@ -25,6 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_str3o")
 theme_override_styles/fill = SubResource("StyleBoxFlat_d7g2v")
 
 [node name="HealthLabel" type="Label" parent="."]
@@ -34,3 +36,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_str3o")

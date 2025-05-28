@@ -53,13 +53,19 @@ func handle_shoot_input():
 
 func setup_camera_ui():
 	var ui_layer = CanvasLayer.new()
-	ui_layer.name = "CameraUI"
-	ui_layer.offset = Vector2(10, 5) # This moves the entire layer
+	ui_layer.name = "UI"
+	ui_layer.offset = Vector2(10, 5)
 	add_child(ui_layer)
 	
+	# Health bar
 	var debug_health_ui = preload("res://scenes/ui/debug_health_bar.tscn").instantiate()
 	ui_layer.add_child(debug_health_ui)
 	debug_health_ui.setup(player_data)
+	
+	# Ammo counter
+	var ammo_counter_ui = preload("res://scenes/ui/debug_ammo_counter.tscn").instantiate()
+	ui_layer.add_child(ammo_counter_ui)
+	ammo_counter_ui.setup(player_data)
 
 func get_resistances() -> Dictionary:
 	return player_data.get_resistances() if player_data else {}
@@ -124,7 +130,8 @@ func shoot_bullet(direction: Vector2):
 		
 		# Track bullet firing for debug
 		DebugManager.register_bullet_fired()
-		DebugManager.debug_print("combat", "Ammo remaining: " + str(player_data.current_ammo))
+		DebugManager.debug_print("combat", "[COMBAT] Ammo remaining: " + str(player_data.current_ammo))
+
 
 func handle_movement():
 	var input_vector = Vector2.ZERO

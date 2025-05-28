@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxgtp4t3rk202"]
+
+[ext_resource type="FontFile" uid="uid://cuyf3efx1af52" path="res://assets/fonts/Roboto_Condensed/RobotoCondensed-ExtraBold.ttf" id="1_ggdyt"]
+[ext_resource type="Script" uid="uid://br37dfe7egukx" path="res://scripts/debug/debug_ammo_counter.gd" id="1_i5ugf"]
+
+[node name="DebugAmmoCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 49.0
+offset_bottom = 20.0
+script = ExtResource("1_i5ugf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 22.0
+
+[node name="CurrentAmmoLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ggdyt")
+text = "12"
+
+[node name="SeparatorLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ggdyt")
+text = "/"
+
+[node name="MaxAmmoLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ggdyt")
+text = "30"

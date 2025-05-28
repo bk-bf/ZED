@@ -33,11 +33,10 @@
 - [x] **FOUNDATION:** Implement basic damage system for all entities
 
 ### **Day 4: Resource Management (2025-05-28)**
-- [ ] **FOUNDATION:** ItemData class with static database methods and dictionary-based zombie loot pools
-- [ ] **PLAYABLE:** Dictionary-driven ammo system with ItemData integration and counter UI
-- [ ] **PLAYABLE:** Loot pool-configured pickups spawn from zombie death with configurable drop rates
-- [ ] **PLAYABLE:** ItemData-respecting collection system with stack limits and pickup feedback
-- [ ] **TESTABLE:** Data-configured resource scarcity creates tactical engagement decisions
+- [x] **FOUNDATION:** ItemData class with static database methods and dictionary-based zombie loot pools
+- [x] **PLAYABLE:** Dictionary-driven ammo system with ItemData integration and counter UI
+- [x] **PLAYABLE:** Loot pool-configured pickups spawn from zombie death with configurable drop rates
+- [x] **PLAYABLE:** ItemData-respecting collection system with stack limits and pickup feedback
 
 ### Day 5: Simple AI & Challenge (2025-05-29)
 - [ ] **PLAYABLE:** Zombies chase player when in range

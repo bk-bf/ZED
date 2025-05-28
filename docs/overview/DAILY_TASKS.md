@@ -226,22 +226,15 @@
 
 ## Sub-task 4.3: Ammo System Integration with ItemData
 1. [x] Update `PlayerData` to reference `ItemData.get_item_by_id("placeholder_pistol_ammo")` for ammo properties
-2. [ ] Create ammo counter UI displaying current/max from `ItemData` properties
+2. [x] Create ammo counter UI displaying current/max from `ItemData` properties
 3. [x] Update `shoot_bullet()` to consume ammo and show "No ammo!" when inventory empty
-4. [ ] Test ammo system respects `ItemData` configuration without hardcoded values
+4. [x] Test ammo system respects `ItemData` configuration without hardcoded values
 
 ## Sub-task 4.4: Item Pickup and Collection System
-1. [ ] Create `ItemPickup` scene with `setup(item_data, amount)` method for configurable drops
-2. [ ] Implement pickup collision detection that identifies `ItemData` type and amount
-3. [ ] Add `collect_item()` method to `PlayerData` respecting `ItemData` `stack_size` limits
-4. [ ] Create pickup feedback showing item name and amount from `ItemData` properties
-5. [ ] Test pickup collection updates ammo counter and respects maximum capacity
+1. [x] Create `ItemPickup` scene with `setup(item_data, amount)` method for configurable drops
+2. [x] Implement pickup collision detection that identifies `ItemData` type and amount
+3. [x] Add `add_item()` method to `PlayerData` respecting `ItemData` `stack_size` limits
+4. [x] Create pickup feedback showing item name and amount from `ItemData` properties
+5. [x] Test pickup collection updates ammo counter and respects maximum capacity
 
-## Sub-task 4.5: Resource Scarcity Balance Through Data Configuration
-1. [ ] Adjust zombie `loot_pool` `drop_chance` to 0.6 and reduce starting ammo to 15 bullets
-2. [ ] Configure zombie health and `ItemData` ammo amounts to require tactical engagement decisions
-3. [ ] Implement ammo warning system at 25% remaining based on `ItemData` max values
-4. [ ] Test scenarios where players must choose between aggressive vs. conservative tactics
-5. [ ] Validate that dictionary-driven loot creates meaningful resource management pressure
-
-**Expected Result:** Player inventory, ammo, and loot are fully data-driven. All item properties, drop rates, and collection mechanics are configured through `ItemData` and `ZombieData` dictionaries. Players experience tactical resource scarcity with immediate visual feedback and configurable balance parameters.
+**Expected Result:** Player inventory, ammo, and loot are fully data-driven. All item properties, drop rates, and collection mechanics are configured through `ItemData` and `ZombieData` dictionaries. 
