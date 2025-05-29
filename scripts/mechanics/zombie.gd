@@ -8,38 +8,82 @@ var is_dead: bool = false
 var damage_area: Area2D # Store reference to damage area
 var player_in_damage_area: bool = false # Track if player is in damage area
 
+
 func _ready():
-	# Initialize ZombieData if not assigned
+	_initialize_zombie_data()
+	_setup_damage_area()
+	_setup_sight_range()
+	_setup_collision_layers()
+	_setup_visual_state()
+	add_to_group("zombies")
+
+func _initialize_zombie_data():
 	if not zombie_data:
 		zombie_data = ZombieData.new()
 		print("Created new ZombieData - Health: ", zombie_data.health, "/", zombie_data.max_health)
-	
-	call_deferred("_set_zombie_color") # set color after ready to avoid conflicts with physics state
-	# Create damage detection area
+
+func _setup_damage_area():
 	damage_area = Area2D.new()
 	damage_area.name = "DamageArea"
 	add_child(damage_area)
 	
-	# Create collision shape for damage area
 	var damage_collision = CollisionShape2D.new()
 	var damage_shape = CircleShape2D.new()
 	damage_shape.radius = 25
 	damage_collision.shape = damage_shape
 	damage_area.add_child(damage_collision)
 	
-	# Set collision layers for damage detection
 	damage_area.collision_mask = PhysicsLayers.PLAYER
 	damage_area.collision_layer = 0
 	
-	# Connect both enter AND exit signals
+	_connect_damage_signals()
+
+func _setup_sight_range():
+	var sight_range = $SightRange
+	sight_range.collision_layer = 0
+	sight_range.collision_mask = PhysicsLayers.PLAYER
+	
+	_connect_sight_signals()
+
+func _setup_collision_layers():
+	collision_layer = PhysicsLayers.ENEMIES
+	collision_mask = PhysicsLayers.PLAYER | PhysicsLayers.WALLS
+
+func _setup_visual_state():
+	call_deferred("_set_zombie_color")
+
+func _connect_damage_signals():
 	damage_area.body_entered.connect(_on_damage_area_body_entered)
 	damage_area.body_exited.connect(_on_damage_area_body_exited)
+
+func _connect_sight_signals():
+	var sight_range = $SightRange
+	sight_range.body_entered.connect(_on_player_entered_sight)
+	sight_range.body_exited.connect(_on_player_left_sight)
 	
-	# add to "zombies" group for tracking
-	add_to_group("zombies")
+func _on_player_entered_sight(body):
+	if body.is_in_group("player") and _has_line_of_sight(body):
+		zombie_data.state = ZombieData.ZombieState.CHASING
+		zombie_data.target_position = body.global_position
+		call_deferred("_set_zombie_color")
 
-	print("Zombie damage area setup complete")
+func _has_line_of_sight(player) -> bool:
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(
+		global_position,
+		player.global_position
+	)
+	query.collision_mask = PhysicsLayers.WALLS # Only check for walls
+	query.exclude = [self] # Don't hit the zombie itself
+	
+	var result = space_state.intersect_ray(query)
+	return result.is_empty() # True if no walls block the view
 
+func _on_player_left_sight(body):
+	if body.is_in_group("player"):
+		# Don't immediately go IDLE - we have a target position to search
+		# The chase_player method will handle reaching the target
+		pass
 
 func _physics_process(delta):
 	if not zombie_data:
@@ -47,53 +91,84 @@ func _physics_process(delta):
 		
 	match zombie_data.state:
 		ZombieData.ZombieState.IDLE:
-			detect_player()
+			# Do nothing - wait for sight range signal
+			pass
 		ZombieData.ZombieState.CHASING:
-			chase_player(delta)
+			chase_target(delta)
 
-func detect_player():
+
+func _get_avoidance_direction(target_direction: Vector2) -> Vector2:
+	var space_state = get_world_2d().direct_space_state
+	
+	# Check if direct path is blocked
+	var query = PhysicsRayQueryParameters2D.create(
+		global_position,
+		global_position + target_direction * 64.0 # Look ahead 64 pixels
+	)
+	query.collision_mask = PhysicsLayers.WALLS
+	query.exclude = [self]
+	
+	var result = space_state.intersect_ray(query)
+	
+	if result.is_empty():
+		# Direct path is clear
+		return target_direction
+	
+	# Path is blocked, try left and right alternatives
+	var left_direction = target_direction.rotated(-PI / 3) # 60 degrees left
+	var right_direction = target_direction.rotated(PI / 3) # 60 degrees right
+	
+	# Test left path
+	query.to = global_position + left_direction * 64.0
+	var left_result = space_state.intersect_ray(query)
+	
+	# Test right path  
+	query.to = global_position + right_direction * 64.0
+	var right_result = space_state.intersect_ray(query)
+	
+	# Choose the clearest path
+	if left_result.is_empty() and right_result.is_empty():
+		# Both paths clear, choose randomly to prevent predictable behavior
+		return left_direction if randf() > 0.5 else right_direction
+	elif left_result.is_empty():
+		return left_direction
+	elif right_result.is_empty():
+		return right_direction
+	else:
+		# Both blocked, try sharper angles
+		return target_direction.rotated(PI / 2) # 90 degree turn
+
+func chase_target(delta):
 	var player = get_tree().get_first_node_in_group("player")
-	if player and global_position.distance_to(player.global_position) <= zombie_data.sight_range:
-		zombie_data.state = ZombieData.ZombieState.CHASING
-		call_deferred("_set_zombie_color")
-
-func lose_player():
-	var player = get_tree().get_first_node_in_group("player")
-	if not player:
-		zombie_data.state = ZombieData.ZombieState.IDLE
-		call_deferred("_set_zombie_color")
-		return
 	
-	var distance = global_position.distance_to(player.global_position)
-	var lose_range = zombie_data.sight_range + 50.0
-	
-	if distance > lose_range:
-		zombie_data.state = ZombieData.ZombieState.IDLE
-		zombie_data.target_position = Vector2.ZERO
-		call_deferred("_set_zombie_color")
-
-func chase_player(delta):
-	# First check if we should lose the target
-	lose_player()
-	
-	# Only continue chasing if still in CHASING state
-	if zombie_data.state != ZombieData.ZombieState.CHASING:
-		return
-	
-	var direction = get_direction_to_player()
-	if direction != Vector2.ZERO:
-		velocity = direction * zombie_data.speed
-		move_and_slide()
+	if player and _is_player_in_sight_range(player) and _has_line_of_sight(player):
+		# Player is visible - chase directly with obstacle avoidance
+		var target_direction = (player.global_position - global_position).normalized()
+		var movement_direction = _get_avoidance_direction(target_direction)
+		velocity = movement_direction * zombie_data.speed
+		zombie_data.target_position = player.global_position
 		
-		# Update target position for pathfinding
-		var player = get_tree().get_first_node_in_group("player")
-		if player:
-			zombie_data.target_position = player.global_position
-
-
-func move_toward_target(delta, direction):
-	velocity = direction * zombie_data.speed
+	elif zombie_data.target_position != Vector2.ZERO:
+		# Player not visible - move to last known position with avoidance
+		var target_direction = (zombie_data.target_position - global_position).normalized()
+		var movement_direction = _get_avoidance_direction(target_direction)
+		velocity = movement_direction * zombie_data.speed * 0.7
+		
+		if global_position.distance_to(zombie_data.target_position) < 32.0:
+			zombie_data.target_position = Vector2.ZERO
+			zombie_data.state = ZombieData.ZombieState.IDLE
+			call_deferred("_set_zombie_color")
+	else:
+		zombie_data.state = ZombieData.ZombieState.IDLE
+		call_deferred("_set_zombie_color")
+	
 	move_and_slide()
+
+
+func _is_player_in_sight_range(player) -> bool:
+	var sight_range = $SightRange
+	return sight_range.overlaps_body(player)
+
 
 func _process(delta):
 	zombie_data.update_cooldown(delta)

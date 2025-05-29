@@ -94,20 +94,22 @@ func take_damage(amount: int, damage_type: DamageInterface.DamageType = DamageIn
 	
 	if player_data.health <= 0:
 		die()
-		
+
 func die():
-	"""Handle player death - restart scene for Day 3 consequence simulation"""
+	"""Handle player death - restart scene"""
 	print("Player died! Restarting scene...")
 	
 	# Visual death feedback
 	modulate = Color.RED
 	
-	# FIX: Reset debug stats before scene restart
-	DebugManager.reset_ai_stats()
-	
 	# Brief delay before restart
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
+	
+	# FIX: Reset debug stats before scene restart
+	DebugManager.reset_ai_stats()
+	# Reset PlayerData singleton to default values
+	PlayerDataAutoload.reset_to_defaults()
 
 func heal(amount: int):
 	"""Heal player up to max health"""

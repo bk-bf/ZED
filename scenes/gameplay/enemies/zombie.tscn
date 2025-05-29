@@ -1,16 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsvwgterct27"]
+[gd_scene load_steps=5 format=3 uid="uid://dsvwgterct27"]
 
 [ext_resource type="Script" uid="uid://gor1acg3lxpy" path="res://scripts/mechanics/zombie.gd" id="1_opfcu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ey4e"]
-size = Vector2(32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_opfcu"]
 radius = 20.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ey4e"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v8sk5"]
+radius = 350.0
+
 [node name="Zombie" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_opfcu")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+shape = SubResource("CircleShape2D_opfcu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_8ey4e")
@@ -31,8 +40,8 @@ size_flags_vertical = 4
 color = Color(0.662215, 0.215734, 0.193434, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="DamageArea" type="Area2D" parent="."]
+[node name="SightRange" type="Area2D" parent="."]
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
-shape = SubResource("CircleShape2D_opfcu")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
+shape = SubResource("CircleShape2D_v8sk5")

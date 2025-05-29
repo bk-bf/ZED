@@ -2,7 +2,6 @@
 extends Node
 class_name PlayerData
 
-@export var instance_id: int = 0
 @export var position: Vector2 = Vector2.ZERO
 @export var health: int = 100
 @export var max_health: int = 100
@@ -14,6 +13,7 @@ class_name PlayerData
 @export var resistances := {DamageInterface.DamageType.CONTACT: 0.0} # 20% contact resistance
 
 signal ammo_changed(current_ammo: int, max_ammo: int)
+signal health_changed(health: int, max_health: int)
 
 func _ready():
 	# Initialize ItemData database
@@ -72,3 +72,19 @@ func add_item(item_id: String, amount: int = 1) -> bool:
 	
 	DebugManager.log_debug("PlayerData: Item type not handled: " + str(item_data.type))
 	return false
+
+func reset_to_defaults():
+	"""Reset player data to starting values for new game/death"""
+	health = max_health
+	
+	# Reset ammo to starting amount from ItemData
+	var ammo_item = ItemData.get_item_by_id("placeholder_pistol_ammo")
+	if ammo_item:
+		current_ammo = 15 # Starting ammo amount
+		max_ammo = ammo_item.stack_size
+	
+	# Emit signals to update UI
+	health_changed.emit(health)
+	ammo_changed.emit(current_ammo)
+	
+	print("PlayerData reset to defaults - Health: ", health, ", Ammo: ", current_ammo)

@@ -2,13 +2,12 @@
 extends Resource
 class_name ZombieData
 
-@export var instance_id: int = -1
 @export var position: Vector2 = Vector2.ZERO
 @export var health: int = 100
 @export var speed: float = 50.0
 @export var max_health: int = 100
 @export var damage: int = 25
-@export var sight_range: float = 300.0
+@export var sight_range: float = 350.0 # Used in Area2D for sight detection
 @export var target_position: Vector2 = Vector2.ZERO
 @export var is_active: bool = true
 

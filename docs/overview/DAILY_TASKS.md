@@ -258,11 +258,11 @@ Based on your ZED project's playable-first development philosophy and the establ
 5. [x] Test zombie state changes work correctly with visual feedback (color changes)
 
 **Sub-task 1.3: Chase behavior optimization**
-1. [ ] Add `target_position` property to track last known player location
-2. [ ] Implement pathfinding around walls using simple obstacle avoidance
-3. [ ] Add slight randomization to movement to prevent perfect stacking
-4. [ ] Ensure zombies don't push each other through walls during chase
-5. [ ] Test multiple zombies chase player without getting stuck on walls
+1. [x] Add `target_position` property to track last known player location
+2. [x] Implement pathfinding around walls using simple obstacle avoidance
+3. [x] Add slight randomization to movement to prevent perfect stacking
+4. [x] Ensure zombies don't push each other through walls during chase
+5. [-] Test multiple zombies chase player without getting stuck on walls
 
 ### **Task 2: Create zombie variety - different types with unique stats and behaviors**
 
