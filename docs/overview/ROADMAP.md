@@ -39,7 +39,7 @@
 - [x] **PLAYABLE:** ItemData-respecting collection system with stack limits and pickup feedback
 
 ### Day 5: Simple AI & Challenge (2025-05-29)
-- [ ] **PLAYABLE:** Zombies chase player when in range
+- [x] **PLAYABLE:** Zombies chase player when in range
 - [ ] **PLAYABLE:** Different zombie types with different speeds/health
 - [ ] **PLAYABLE:** Spawn waves of zombies for escalating challenge
 - [ ] **TESTABLE:** Tactical positioning and kiting mechanics
