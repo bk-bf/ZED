@@ -238,3 +238,124 @@
 5. [x] Test pickup collection updates ammo counter and respects maximum capacity
 
 **Expected Result:** Player inventory, ammo, and loot are fully data-driven. All item properties, drop rates, and collection mechanics are configured through `ItemData` and `ZombieData` dictionaries. 
+
+Based on your ZED project's playable-first development philosophy and the established task breakdown pattern, here are the detailed subtasks for Day 5:
+
+## Day 5: Simple AI & Challenge (2025-05-29)
+
+**Sub-task 1.1: Basic zombie movement foundation**
+1. [x] Add `speed` property to ZombieData with default value 50 pixels/second
+2. [x] Implement `get_direction_to_player()` method in zombie.gd calculating normalized vector
+3. [x] Add `move_toward_target(delta)` method using CharacterBody2D velocity and move_and_slide()
+4. [x] Set zombie detection range to 300 pixels using distance calculation
+5. [x] Test single zombie follows player smoothly when approached
+
+**Sub-task 1.2: Detection and state management**
+1. [x] Create ZombieState enum with IDLE, CHASING, ATTACKING states in zombie.gd
+2. [x] Implement `detect_player()` method checking distance and line-of-sight
+3. [x] Add state transition logic - IDLE to CHASING when player enters range
+4. [x] Implement `lose_player()` method returning to IDLE when player escapes sight_range 
+5. [x] Test zombie state changes work correctly with visual feedback (color changes)
+
+**Sub-task 1.3: Chase behavior optimization**
+1. [ ] Add `target_position` property to track last known player location
+2. [ ] Implement pathfinding around walls using simple obstacle avoidance
+3. [ ] Add slight randomization to movement to prevent perfect stacking
+4. [ ] Ensure zombies don't push each other through walls during chase
+5. [ ] Test multiple zombies chase player without getting stuck on walls
+
+### **Task 2: Create zombie variety - different types with unique stats and behaviors**
+
+**Sub-task 2.1: Zombie type system foundation**
+1. [ ] Create ZombieType enum with WALKER, RUNNER, BRUTE types in ZombieData
+2. [ ] Add `zombie_type` property to ZombieData with type-specific stat loading
+3. [ ] Define type stats: WALKER (100hp, 50speed), RUNNER (75hp, 100speed), BRUTE (200hp, 30speed)
+4. [ ] Update zombie.gd to use ZombieData type properties for health and speed
+5. [ ] Test each zombie type spawns with correct stats and visual differentiation
+
+**Sub-task 2.2: Visual type identification**
+1. [ ] Assign distinct colors: WALKER (red), RUNNER (orange), BRUTE (dark red)
+2. [ ] Scale zombie ColorRect based on type: WALKER (32x32), RUNNER (24x24), BRUTE (48x48)
+3. [ ] Add type indicator to DebugManager zombie counter display
+4. [ ] Ensure collision shapes match visual sizes for each type
+5. [ ] Test all three types are visually distinct and properly sized
+
+**Sub-task 2.3: Type-specific behavior implementation**
+1. [ ] Add `damage_amount` property varying by type: WALKER (25), RUNNER (20), BRUTE (40)
+2. [ ] Implement different detection ranges: WALKER (150), RUNNER (200), BRUTE (100)
+3. [ ] Add type-specific movement patterns: RUNNER uses burst movement, BRUTE charges
+4. [ ] Update zombie spawning to randomly select from available types
+5. [ ] Test each type behaves distinctly and creates different tactical challenges
+
+### **Task 3: Implement wave spawning system - escalating zombie pressure over time**
+
+**Sub-task 3.1: Wave manager foundation**
+1. [ ] Create `scripts/managers/wave_manager.gd` as AutoLoad singleton
+2. [ ] Add wave configuration: wave_number, zombies_per_wave, spawn_delay properties
+3. [ ] Implement `start_wave()` method spawning zombies at timed intervals
+4. [ ] Add spawn points around room perimeter avoiding player starting position
+5. [ ] Test first wave spawns 3 zombies with 2-second intervals
+
+**Sub-task 3.2: Escalation mechanics**
+1. [ ] Implement wave progression: each wave adds +2 zombies and reduces spawn delay by 0.2s
+2. [ ] Add zombie type distribution: early waves mostly WALKERS, later waves include RUNNERS/BRUTES
+3. [ ] Create `calculate_next_wave()` method determining composition and timing
+4. [ ] Add wave completion detection when all zombies in current wave are eliminated
+5. [ ] Test wave difficulty increases appropriately over 3-4 waves
+
+**Sub-task 3.3: Wave UI and feedback**
+1. [ ] Add wave counter UI showing "Wave X/∞" in top-right corner
+2. [ ] Implement wave start notification with 3-second countdown
+3. [ ] Add zombie remaining counter for current wave
+4. [ ] Create wave completion message with brief pause before next wave
+5. [ ] Test wave progression provides clear feedback and appropriate pacing
+
+### **Task 4: Validate tactical positioning mechanics - kiting, chokepoints, resource management**
+
+**Sub-task 4.1: Kiting mechanics validation**
+1. [ ] Test player can maintain distance from WALKER zombies while shooting
+2. [ ] Verify RUNNER zombies create pressure requiring tactical repositioning
+3. [ ] Ensure ammunition scarcity forces careful shot placement during kiting
+4. [ ] Test corner and wall usage for breaking line-of-sight and resetting zombie pursuit
+5. [ ] Validate that kiting feels tactical rather than tedious
+
+**Sub-task 4.2: Chokepoint and positioning tactics**
+1. [ ] Test doorway positioning allows engaging one zombie at a time
+2. [ ] Verify wall corners provide cover and tactical advantage
+3. [ ] Ensure zombie pathfinding creates natural chokepoints at room entrances
+4. [ ] Test that positioning mistakes result in being overwhelmed by multiple zombies
+5. [ ] Validate that good positioning conserves ammunition and health
+
+**Sub-task 4.3: Resource pressure and decision making**
+1. [ ] Test ammunition scarcity creates meaningful engagement vs. avoidance decisions
+2. [ ] Verify health damage from poor positioning has lasting consequences
+3. [ ] Ensure wave escalation creates increasing resource pressure over time
+4. [ ] Test that players must balance aggressive clearing vs. conservative survival
+5. [ ] Validate that tactical mistakes have clear consequences while good play is rewarded
+
+### **Task 5: Implement basic fog of war system - exploration and tactical information management**
+
+**Sub-task 5.1: Fog of war rendering foundation**
+1. [ ] Create `scripts/systems/fog_of_war.gd` managing visibility states
+2. [ ] Add CanvasLayer with black ColorRect covering entire screen
+3. [ ] Implement circular vision radius around player (100 pixel radius)
+4. [ ] Use CanvasItem custom drawing to create visibility holes in fog
+5. [ ] Test fog covers unseen areas and reveals areas around player
+
+**Sub-task 5.2: Memory and exploration tracking**
+1. [ ] Add explored area tracking using TileMap or area grid system
+2. [ ] Implement "memory" state showing previously visited areas in gray
+3. [ ] Ensure currently visible areas show full color and detail
+4. [ ] Add smooth transition between unexplored (black), memory (gray), and visible (full color)
+5. [ ] Test exploration reveals room layout permanently while maintaining current vision limits
+
+**Sub-task 5.3: Tactical information integration**
+1. [ ] Hide zombie positions outside current vision radius
+2. [ ] Show zombie last-known positions in memory areas as faded indicators
+3. [ ] Ensure fog of war affects zombie detection - they can't see player through walls
+4. [ ] Add sound cues for zombie movement outside vision range
+5. [ ] Test fog of war creates tactical decisions about room entry and positioning
+
+**Expected Result:** Zombies actively hunt the player with distinct types creating varied threats. Wave system provides escalating challenge. Fog of war adds strategic exploration element. Core tactical loop of positioning, resource management, and information control is fully functional.
+
+**Next Day Preview:** Day 6 will add multiple connected rooms with doors and progression mechanics, building toward the complete building clearance concept.

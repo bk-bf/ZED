@@ -5,8 +5,11 @@ class_name ZombieData
 @export var instance_id: int = -1
 @export var position: Vector2 = Vector2.ZERO
 @export var health: int = 100
+@export var speed: float = 50.0
 @export var max_health: int = 100
 @export var damage: int = 25
+@export var sight_range: float = 300.0
+@export var target_position: Vector2 = Vector2.ZERO
 @export var is_active: bool = true
 
 # damage cooldown
@@ -15,6 +18,17 @@ var damage_cooldown_duration: float = 1.0 # second
 
 # loot pool dictionary
 @export var loot_pool: Dictionary = {}
+
+# Zombie states
+@export var state: ZombieState = ZombieState.IDLE
+
+enum ZombieState {
+	IDLE,
+	PATROLLING,
+	CHASING,
+	ATTACKING,
+	DEAD
+}
 
 func _init():
 	health = max_health

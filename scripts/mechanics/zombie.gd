@@ -6,6 +6,7 @@ class_name Zombie
 @export var armor: Resource = null # ArmorData resource
 var is_dead: bool = false
 var damage_area: Area2D # Store reference to damage area
+var player_in_damage_area: bool = false # Track if player is in damage area
 
 func _ready():
 	# Initialize ZombieData if not assigned
@@ -13,6 +14,7 @@ func _ready():
 		zombie_data = ZombieData.new()
 		print("Created new ZombieData - Health: ", zombie_data.health, "/", zombie_data.max_health)
 	
+	call_deferred("_set_zombie_color") # set color after ready to avoid conflicts with physics state
 	# Create damage detection area
 	damage_area = Area2D.new()
 	damage_area.name = "DamageArea"
@@ -38,7 +40,60 @@ func _ready():
 
 	print("Zombie damage area setup complete")
 
-var player_in_damage_area: bool = false
+
+func _physics_process(delta):
+	if not zombie_data:
+		return
+		
+	match zombie_data.state:
+		ZombieData.ZombieState.IDLE:
+			detect_player()
+		ZombieData.ZombieState.CHASING:
+			chase_player(delta)
+
+func detect_player():
+	var player = get_tree().get_first_node_in_group("player")
+	if player and global_position.distance_to(player.global_position) <= zombie_data.sight_range:
+		zombie_data.state = ZombieData.ZombieState.CHASING
+		call_deferred("_set_zombie_color")
+
+func lose_player():
+	var player = get_tree().get_first_node_in_group("player")
+	if not player:
+		zombie_data.state = ZombieData.ZombieState.IDLE
+		call_deferred("_set_zombie_color")
+		return
+	
+	var distance = global_position.distance_to(player.global_position)
+	var lose_range = zombie_data.sight_range + 50.0
+	
+	if distance > lose_range:
+		zombie_data.state = ZombieData.ZombieState.IDLE
+		zombie_data.target_position = Vector2.ZERO
+		call_deferred("_set_zombie_color")
+
+func chase_player(delta):
+	# First check if we should lose the target
+	lose_player()
+	
+	# Only continue chasing if still in CHASING state
+	if zombie_data.state != ZombieData.ZombieState.CHASING:
+		return
+	
+	var direction = get_direction_to_player()
+	if direction != Vector2.ZERO:
+		velocity = direction * zombie_data.speed
+		move_and_slide()
+		
+		# Update target position for pathfinding
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			zombie_data.target_position = player.global_position
+
+
+func move_toward_target(delta, direction):
+	velocity = direction * zombie_data.speed
+	move_and_slide()
 
 func _process(delta):
 	zombie_data.update_cooldown(delta)
@@ -92,34 +147,19 @@ func take_damage(amount: int, damage_type: DamageInterface.DamageType):
 	if zombie_data.health <= 0 and not is_dead:
 		die()
 
-func show_damage_flash():
-	"""Flash zombie white briefly to indicate damage"""
-	var color_rect = get_node("CollisionShape2D/ColorRect")
-	if color_rect:
-		# Flash bright white for damage
-		color_rect.modulate = Color.WHITE * 2.0 # Bright white flash
-		
-		# Return to normal color after brief delay
-		await get_tree().create_timer(0.1).timeout
-		
-		# Only reset if zombie is still alive
-		if zombie_data.is_alive() and not is_dead:
-			color_rect.modulate = Color.WHITE
-
 func die():
 	"""Handle zombie death"""
 	if is_dead:
 		return
 	
 	is_dead = true
+	zombie_data.state = ZombieData.ZombieState.DEAD # Set state first
 	
 	# Register death with debug manager
 	DebugManager.register_zombie_death()
 	
-	# Visual feedback - change to dark red for death (distinct from damage flash)
-	var color_rect = get_node("CollisionShape2D/ColorRect")
-	if color_rect:
-		color_rect.color = Color.DARK_RED
+	# Visual feedback using consistent color system
+	call_deferred("_set_zombie_color")
 	
 	# Disable collision
 	set_collision_layer_value(2, false)
@@ -136,6 +176,7 @@ func die():
 	# Remove after brief delay
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
+
 
 func _create_pickups():
 	# Update ZombieData with current world position before creating pickups
@@ -163,3 +204,49 @@ func _create_pickups():
 func get_health_percentage() -> float:
 	"""Get health as percentage for UI/AI decisions"""
 	return zombie_data.health / float(zombie_data.max_health)
+
+func get_direction_to_player() -> Vector2:
+	# Get the player node from the scene
+	var player = get_tree().get_first_node_in_group("player")
+	if not player:
+		print("Warning: No player found in scene")
+		return Vector2.ZERO
+	
+	# Calculate direction vector from zombie to player
+	var direction = (player.global_position - global_position).normalized()
+	return direction
+
+
+func show_damage_flash():
+	"""Flash zombie white briefly to indicate damage"""
+	var color_rect = get_node("CollisionShape2D/ColorRect")
+	if color_rect:
+		# Flash bright white for damage
+		color_rect.modulate = Color.WHITE * 2.0 # Bright white flash
+		
+		# Return to normal color after brief delay
+		await get_tree().create_timer(0.1).timeout
+		
+		# Only reset if zombie is still alive - use centralized color system
+		if zombie_data.is_alive() and not is_dead:
+			color_rect.modulate = Color.WHITE # Reset modulation
+			call_deferred("_set_zombie_color") # Apply correct state color
+
+
+func _set_zombie_color():
+	var color_rect = $CollisionShape2D/ColorRect
+	if not color_rect:
+		print("Warning: ColorRect not found in zombie")
+		return
+	
+	match zombie_data.state:
+		ZombieData.ZombieState.IDLE:
+			color_rect.color = Color.PURPLE
+		ZombieData.ZombieState.CHASING:
+			color_rect.color = Color.DARK_GREEN
+		ZombieData.ZombieState.ATTACKING:
+			color_rect.color = Color.ORANGE
+		ZombieData.ZombieState.DEAD:
+			color_rect.color = Color.DARK_RED
+		_:
+			color_rect.color = Color.RED
