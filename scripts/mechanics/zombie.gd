@@ -17,6 +17,7 @@ func _ready():
 	_setup_visual_state()
 	add_to_group("zombies")
 
+
 func _initialize_zombie_data():
 	if not zombie_data:
 		zombie_data = ZombieData.new()
@@ -176,6 +177,14 @@ func _is_player_in_sight_range(player) -> bool:
 
 
 func _process(delta):
+	var fog_system = get_tree().get_first_node_in_group("fog_of_war")
+	if fog_system:
+		# Fog system handles visibility through signals
+		pass
+	else:
+		# Fallback if no fog system
+		modulate = Color.WHITE
+
 	zombie_data.update_cooldown(delta)
 	
 	if player_in_damage_area && zombie_data.can_damage():
@@ -319,14 +328,27 @@ func _set_zombie_color():
 		print("Warning: ColorRect not found in zombie")
 		return
 	
+	# Base colors for each zombie type
+	var base_color: Color
+	match zombie_data.zombie_type:
+		EntitiesType.ZombieType.WALKER:
+			base_color = Color.WEB_GREEN
+		EntitiesType.ZombieType.RUNNER:
+			base_color = Color.ORANGE
+		EntitiesType.ZombieType.BRUTE:
+			base_color = Color.DARK_RED
+		_:
+			base_color = Color.RED
+	
+	# Modify base color based on state
 	match zombie_data.state:
 		ZombieData.ZombieState.IDLE:
-			color_rect.color = Color.GREEN
+			color_rect.color = base_color.darkened(0.3) # Darker when idle
 		ZombieData.ZombieState.CHASING:
-			color_rect.color = Color.DARK_GREEN
+			color_rect.color = base_color # Full brightness when chasing
 		ZombieData.ZombieState.ATTACKING:
-			color_rect.color = Color.ORANGE
+			color_rect.color = base_color.lightened(0.4) # Brighter when attacking
 		ZombieData.ZombieState.DEAD:
-			color_rect.color = Color.DARK_RED
+			color_rect.color = Color.BLACK # All types same death color
 		_:
-			color_rect.color = Color.RED
+			color_rect.color = base_color

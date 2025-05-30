@@ -21,11 +21,6 @@ static func apply_damage(source, target, base_damage: int, damage_type: DamageTy
     var damage_type_name = DamageType.keys()[damage_type]
 
      # Log combat damage
-    DebugManager.debug_print_combat_damage(
-        target.name,
-        final_damage,
-        damage_type_name,
-        resistance * 100
-    )
+    DebugManager.debug_print_combat_damage(target, final_damage, damage_type, resistance)
     
     return final_damage

@@ -77,7 +77,7 @@ func debug_print(category: String, message: String):
 func register_zombie_death():
 	"""Called when zombie dies"""
 	zombies_killed += 1
-	debug_print("ai", "Zombie died. Remaining: " + str(zombie_count) + " | Total killed: " + str(zombies_killed))
+	debug_print("ai", get_detailed_zombie_info())
 
 func register_bullet_fired():
 	"""Called when bullet is fired"""
@@ -92,8 +92,7 @@ func register_bullet_hit():
 func print_ai_stats():
 	if ai_debug:
 		print("=== AI DEBUG STATS ===")
-		print("Active zombies: ", get_active_zombie_count())
-		print("Zombies killed: ", zombies_killed)
+		print(get_detailed_zombie_info()) # Use the new detailed zombie info
 		print("Bullets fired: ", bullets_fired)
 		print("Bullets hit: ", bullets_hit)
 		if bullets_fired > 0:
@@ -121,16 +120,28 @@ func monitor_memory():
 	if Engine.get_process_frames() % 60 == 0:
 		debug_print("memory", "Nodes: " + str(node_count) + " | Objects: " + str(object_count) + " | Orphans: " + str(orphan_nodes))
 
-func debug_print_combat_damage(target_name: String, final_damage: int, damage_type: String, resistance_percent: float):
+func debug_print_combat_damage(target_node: Node, final_damage: int, damage_type: DamageInterface.DamageType, resistance_percent: float):
 	"""Log detailed combat damage events"""
+	var target_name = "Unknown"
+	
+	# Check if target has zombie_data and zombie_type
+	if target_node.has_method("get") and "zombie_data" in target_node and target_node.zombie_data:
+		target_name = EntitiesType.get_zombie_type_name(target_node.zombie_data.zombie_type)
+	elif target_node.is_in_group("player"):
+		target_name = "Player"
+	else:
+		target_name = target_node.get_class()
+	
+	# Convert enum value to string name using find_key()
+	var damage_type_string = DamageInterface.DamageType.find_key(damage_type)
+	
 	var message = "%s took %s %s damage (Resisted: %.1f%%)" % [
 		target_name,
 		final_damage,
-		damage_type,
+		damage_type_string,
 		resistance_percent
 	]
 	debug_print("combat", message)
-
 
 func toggle_debug_health():
 	show_debug_health = !show_debug_health
@@ -138,6 +149,32 @@ func toggle_debug_health():
 
 func get_active_zombie_count():
 	return get_tree().get_nodes_in_group("zombies").size()
+
+func get_zombie_type_counts() -> Dictionary:
+	var type_counts = {
+		EntitiesType.ZombieType.WALKER: 0,
+		EntitiesType.ZombieType.RUNNER: 0,
+		EntitiesType.ZombieType.BRUTE: 0
+	}
+	
+	var zombies = get_tree().get_nodes_in_group("zombies")
+	for zombie in zombies:
+		if zombie.zombie_data and zombie.zombie_data.zombie_type in type_counts:
+			type_counts[zombie.zombie_data.zombie_type] += 1
+	
+	return type_counts
+
+func get_detailed_zombie_info() -> String:
+	var type_counts = get_zombie_type_counts()
+	var total = get_active_zombie_count()
+	
+	var walker_count = type_counts[EntitiesType.ZombieType.WALKER]
+	var runner_count = type_counts[EntitiesType.ZombieType.RUNNER]
+	var brute_count = type_counts[EntitiesType.ZombieType.BRUTE]
+	
+	return "Active zombies: %d | W:%d R:%d B:%d | Killed: %d" % [
+		total, walker_count, runner_count, brute_count, zombies_killed
+	]
 
 # basic ItemData system test currently only for placeholder pistol ammo
 func test_item_data_system():

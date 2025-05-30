@@ -3,11 +3,11 @@ extends Resource
 class_name ZombieData
 
 @export var position: Vector2 = Vector2.ZERO
-@export var health: int = 100
-@export var speed: float = 50.0
-@export var max_health: int = 100
-@export var damage: int = 25
-@export var sight_range: float = 350.0 # Used in Area2D for sight detection
+@export var health: int
+@export var speed: float
+@export var max_health: int
+@export var damage: int
+@export var sight_range: float # Used in Area2D for sight detection
 @export var target_position: Vector2 = Vector2.ZERO
 @export var is_active: bool = true
 
@@ -34,26 +34,28 @@ enum ZombieState {
 
 func _init():
 	_setup_type_stats()
-	health = max_health
 	setup_loot_pool()
 
 func _setup_type_stats():
 	match zombie_type:
 		EntitiesType.ZombieType.WALKER:
 			max_health = 100
-			speed = 50.0
+			health = max_health
+			speed = 100.0
 			damage = 25
-			sight_range = 300.0
+			sight_range = 350.0
 		EntitiesType.ZombieType.RUNNER:
 			max_health = 75
-			speed = 100.0
+			health = max_health
+			speed = 250.0
 			damage = 20
 			sight_range = 350.0
 		EntitiesType.ZombieType.BRUTE:
 			max_health = 200
-			speed = 30.0
-			damage = 40
-			sight_range = 250.0
+			health = max_health
+			speed = 70.0
+			damage = 45
+			sight_range = 300.0
 
 # Set up default loot pool with 100% pistol ammo drop chance
 # Combined structure: item_id -> {chance: float, min_amount: int, max_amount: int}

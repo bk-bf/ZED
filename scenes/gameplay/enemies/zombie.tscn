@@ -45,3 +45,4 @@ collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
 shape = SubResource("CircleShape2D_v8sk5")
+debug_color = Color(0.29365, 0.615119, 0.386231, 0.42)

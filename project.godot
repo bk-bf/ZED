@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="top_down_apocalypse_looter_shoter"
-run/main_scene="uid://clfg7irsq22k1"
+run/main_scene="uid://ct1xua5v3bt5k"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -26,6 +26,8 @@ settings/stdout/verbose_stdout=true
 
 [display]
 
+window/size/viewport_width=1344
+window/size/viewport_height=840
 window/stretch/mode="canvas_items"
 
 [input]

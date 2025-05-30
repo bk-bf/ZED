@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct1xua5v3bt5k"]
+
+[ext_resource type="PackedScene" uid="uid://brmwpmml8y2as" path="res://scenes/testing/player.tscn" id="1_mqrhu"]
+[ext_resource type="PackedScene" uid="uid://bu4ws6y1ixer0" path="res://scenes/gameplay/player/fog_of_war.tscn" id="2_1sj2b"]
+[ext_resource type="PackedScene" uid="uid://bdrvxmbo0ap8e" path="res://scenes/testing/horizontal_wall.tscn" id="2_jqaj7"]
+[ext_resource type="PackedScene" uid="uid://dsvwgterct27" path="res://scenes/gameplay/enemies/zombie.tscn" id="2_jw1p3"]
+[ext_resource type="PackedScene" uid="uid://dx7abjien1uq" path="res://scenes/testing/vertical_wall.tscn" id="3_4hdlt"]
+[ext_resource type="PackedScene" uid="uid://cfkakjgwytkbt" path="res://scenes/testing/spawn_manger.tscn" id="4_jqaj7"]
+[ext_resource type="PackedScene" uid="uid://bmjq20cylqgsn" path="res://scenes/testing/spawn_area_300px.tscn" id="5_4hdlt"]
+
+[node name="CombatTest" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_mqrhu")]
+position = Vector2(-246, -9)
+
+[node name="FogOfWar" parent="." instance=ExtResource("2_1sj2b")]
+position = Vector2(-246, -9)
+
+[node name="Walls" type="Node2D" parent="."]
+position = Vector2(156, 25)
+
+[node name="TopWall" parent="Walls" instance=ExtResource("2_jqaj7")]
+position = Vector2(400, 16)
+
+[node name="BottomWall" parent="Walls" instance=ExtResource("2_jqaj7")]
+position = Vector2(400, 584)
+
+[node name="LeftWall" parent="Walls" instance=ExtResource("3_4hdlt")]
+position = Vector2(14, 510)
+
+[node name="RightWall" parent="Walls" instance=ExtResource("3_4hdlt")]
+position = Vector2(784, 300)
+
+[node name="SpawnManger" parent="." instance=ExtResource("4_jqaj7")]
+zombie_scene = ExtResource("2_jw1p3")
+
+[node name="SpawnAreas" type="Node2D" parent="."]
+position = Vector2(-22, 1)
+
+[node name="SpawnArea" parent="SpawnAreas" instance=ExtResource("5_4hdlt")]
+position = Vector2(370, -240)
+
+[node name="SpawnArea2" parent="SpawnAreas" instance=ExtResource("5_4hdlt")]
+position = Vector2(-104, 535)
+
+[node name="SpawnArea3" parent="SpawnAreas" instance=ExtResource("5_4hdlt")]
+position = Vector2(494, 321)
