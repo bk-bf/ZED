@@ -295,29 +295,42 @@ Looking at your updated ROADMAP and the decision to remove wave spawning in favo
 4. [x] Test corner and wall usage for breaking line-of-sight and resetting zombie pursuit
 5. [x] Validate that kiting feels tactical rather than tedious
 
-### **Task 3: Implement basic fog of war system - exploration and tactical information management**
+### **Task 3: Implement Area2D sight range system with memory and wall occlusion**
 
-**Sub-task 3.1: Fog of war rendering foundation**
-1. [ ] Create `scripts/systems/fog_of_war.gd` managing visibility states
-2. [ ] Add CanvasLayer with black ColorRect covering entire screen
-3. [ ] Implement circular vision radius around player (100 pixel radius)
-4. [ ] Use CanvasItem custom drawing to create visibility holes in fog
-5. [ ] Test fog covers unseen areas and reveals areas around player
+**Sub-task 3.1: Player sight range and zombie visibility foundation**
+1. [x] Create `scripts/systems/player_sight.gd` managing zombie visibility states
+2. [x] Add Area2D "SightRange" to player with CircleShape2D collision detection
+3. [x] Implement zombie detection on `body_entered`/`body_exited` signals from player's sight range
+4. [x] Add raycasting line-of-sight checks to prevent zombie detection through walls
+5. [x] Test zombies become visible when entering player sight range and have clear line-of-sight
 
-**Sub-task 3.2: Memory and exploration tracking**
-1. [ ] Add explored area tracking using TileMap or area grid system
-2. [ ] Implement "memory" state showing previously visited areas in gray
-3. [ ] Ensure currently visible areas show full color and detail
-4. [ ] Add smooth transition between unexplored (black), memory (gray), and visible (full color)
-5. [ ] Test exploration reveals room layout permanently while maintaining current vision limits
+**Sub-task 3.2: Memory system and explored area tracking**
+1. [x] Implement explored area grid system tracking previously visited locations
+2. [x] Add memory entity system showing zombies in darkened state when behind walls in explored areas
+3. [x] Implement position freezing for memory entities (zombies don't move when in memory state)
+4. [x] Add proper state management for visible/hidden/memory zombie states
+5. [~~] **CRITICAL BUG**: Fix memory system corruption causing zombies to disappear or show inverted visibility
 
-**Sub-task 3.3: Tactical information integration**
-1. [ ] Hide zombie positions outside current vision radius
-2. [ ] Show zombie last-known positions in memory areas as faded indicators
-3. [ ] Ensure fog of war affects zombie detection - they can't see player through walls
-4. [ ] Add sound cues for zombie movement outside vision range
-5. [ ] Test fog of war creates tactical decisions about room entry and positioning
+**Sub-task 3.3: Debug visualization and system validation**
+1. [x] Add F6 debug toggle for player sight range visualization (green circle)
+2. [x] Implement F7 debug toggle for zombie sight ranges (red circles with transparency)
+3. [x] Create comprehensive zombie state debugging (F9) showing detection, memory, and movement states
+4. [x] Add debug output for sight range signals and line-of-sight calculations
+5. [~~] **NEEDS COMPLETION**: Validate system stability and fix race conditions between signals and raycasting
 
-**Expected Result:** Zombies actively hunt the player with distinct types creating varied threats. Spawn manager provides controlled tactical challenges. Fog of war adds strategic exploration element. Core tactical loop of positioning, resource management, and information control is fully functional.
+**Expected Result:** Player has visible sight range showing which zombies can be detected. Zombies behind walls in explored areas appear as darkened memories. System provides tactical information about enemy positions while requiring exploration to reveal new areas.
 
-**Next Day Preview:** Day 6 will add multiple connected rooms with doors and progression mechanics, building toward the complete building clearance concept using hand-crafted layouts.
+**CRITICAL BLOCKER**: BUG-005 (Player Vision System Memory Corruption) must be resolved before proceeding to Day 6. The sight range and memory systems are experiencing race conditions and state management conflicts that make the core visibility mechanic unreliable.
+
+**Completion Status**: 
+- ✅ Core sight range detection working
+- ✅ Basic memory system implemented  
+- ✅ Debug visualization complete
+- ❌ **System reliability critical failure** - requires immediate fix
+- ❌ Memory corruption during wall transitions
+- ❌ Inverted visibility logic under certain conditions
+
+**Next Steps**: 
+1. **IMMEDIATE**: Debug and fix PlayerSight memory system (BUG-005)
+2. **THEN**: Validate system works reliably with rapid movement and shooting
+3. **THEN**: Proceed to Day 6 multi-room implementation

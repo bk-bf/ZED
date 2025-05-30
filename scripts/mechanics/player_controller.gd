@@ -32,6 +32,7 @@ func _ready():
 
 	setup_camera_limits()
 	setup_camera_ui()
+	_setup_sight_range()
 
 func _input(event):
 	"""Handle all input events - mouse clicks for shooting"""
@@ -154,3 +155,20 @@ func setup_camera_limits():
 		return
 
 	print("Camera limits set: ", camera.limit_left, ", ", camera.limit_top, " to ", camera.limit_right, ", ", camera.limit_bottom)
+
+func _setup_sight_range():
+	# Create sight range if it doesn't exist
+	var sight_range = get_node_or_null("SightRange")
+	if not sight_range:
+		sight_range = Area2D.new()
+		sight_range.name = "SightRange"
+		add_child(sight_range)
+		
+		var collision_shape = CollisionShape2D.new()
+		var circle_shape = CircleShape2D.new()
+		circle_shape.radius = 500.0 # Adjust as needed
+		collision_shape.shape = circle_shape
+		sight_range.add_child(collision_shape)
+	
+	sight_range.collision_layer = 0
+	sight_range.collision_mask = PhysicsLayers.ENEMIES

@@ -43,7 +43,7 @@ Build immediately testable core gameplay loop
 ### **Day 5: Simple AI Challenge (2025-05-29)**
 - [x] **PLAYABLE**: Zombies chase player when in range
 - [x] **PLAYABLE**: Different zombie types with different speeds/health
-- [ ] **PLAYABLE**: Implement basic fog of war - unvisited areas are black, visited areas show in memory
+- [-] **PLAYABLE**: Implement basic fog of war - unvisited areas are black, visited areas show in memory
 
 ### **Day 6: Room Progression (2025-05-30)**
 - [ ] **PLAYABLE**: Multiple connected rooms with doors using hand-crafted layouts

@@ -31,7 +31,7 @@ func _input(event):
 			KEY_F7:
 				test_item_data_system()
 			KEY_F8:
-				test_item_data_integration()
+				debug_all_zombie_states()
 
 func toggle_memory_monitoring():
 	memory_monitoring = not memory_monitoring
@@ -243,6 +243,26 @@ func test_item_data_integration():
 	
 	print("=== All ItemData Integration Tests Passed ===\n")
 
+
+func debug_all_zombie_states():
+	print("\n=== ZOMBIE STATE DEBUG ===")
+	var zombies = get_tree().get_nodes_in_group("zombies")
+	
+	if zombies.is_empty():
+		print("No zombies found in scene!")
+		return
+	
+	print("Found ", zombies.size(), " zombies:")
+	
+	for i in range(zombies.size()):
+		var zombie = zombies[i]
+		print("\n--- Zombie ", i + 1, " ---")
+		if zombie.has_method("debug_zombie_state"):
+			zombie.debug_zombie_state()
+		else:
+			print("ERROR: Zombie missing debug_zombie_state() method")
+	
+	print("=== END ZOMBIE DEBUG ===\n")
 
 func log_debug(message: String):
 	print("[DEBUG] ", message)

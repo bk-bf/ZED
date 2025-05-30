@@ -5,9 +5,9 @@ class_name SpawnManager
 @export var zombie_scene: PackedScene
 @export var spawn_on_ready: bool = true
 @export var max_zombies: int = 50
-@export var walker_percentage: float = 0.6 # 60%
-@export var runner_percentage: float = 0.2 # 20%
-@export var brute_percentage: float = 0.2 # 20%
+@export var walker_percentage: float = 0.7
+@export var runner_percentage: float = 0.2
+@export var brute_percentage: float = 0.1
 
 func _ready():
     if spawn_on_ready:
@@ -58,7 +58,7 @@ func spawn_zombie_at_random_area(type: EntitiesType.ZombieType, spawn_areas: Arr
     
     # Use call_deferred to add child after scene initialization
     get_tree().current_scene.call_deferred("add_child", zombie)
-    print("Spawned ", EntitiesType.get_zombie_type_name(type), " at ", spawn_position)
+   # print("Spawned ", EntitiesType.get_zombie_type_name(type), " at ", spawn_position)
 
 func get_random_position_in_area(area: Area2D) -> Vector2:
     var collision_shape = area.get_node("CollisionShape2D")

@@ -49,21 +49,183 @@ Using Eisenhower Matrix for prioritization:
 
 ---
 
-**Next Review:** Day 6 - After core AI features complete  
-**Bug Count:** 3 active, 1 resolved  
-**Critical Path Impact:** None (no Quadrant 1 bugs)  
-**Development Confidence:** High - all bugs are manageable and don't block core development
+**Last Updated:** 2025-05-31
+
+**Next Review:** IMMEDIATE - Critical vision system bug blocking development  
+**Bug Count:** 5 active (1 CRITICAL), 1 resolved  
+**Critical Path Impact:** SEVERE - BUG-005 blocks all feature development  
+**Development Confidence:** LOW - Core vision system compromised, requires immediate attention
+
+**DEVELOPMENT STATUS: PAUSED** - Critical bug resolution required before proceeding
 
 
 ## **Quadrant 1: Critical Bugs (Fix Immediately)**
 
-*Currently no critical bugs blocking core development*
+---
+
+### **[ ] BUG-005: Player Vision System Memory Corruption**
+**Priority:** CRITICAL  
+**Severity:** High  
+**Status:** ACTIVE - BLOCKING DEVELOPMENT  
+**Reported:** 2025-05-31  
+**Component:** PlayerSight Memory & Raycasting System
+
+**Description:**  
+Critical failures in the player vision/memory system causing zombies to completely disappear or appear inconsistently. The raycasting line-of-sight checks and memory state management are interfering with each other, creating inverted visibility behavior.
+
+**Critical Issues:**
+1. **Memory Corruption**: Moving back and forth behind walls causes zombies to be completely removed from vision instead of being stored in memory
+2. **Inverted Visibility Logic**: Zombies behind walls vanish when entering sight range, then appear in memory when leaving sight range (opposite of expected behavior)
+3. **Shooting Interference**: Rapid shooting while moving behind walls exacerbates memory corruption
+4. **State Management Conflicts**: Raycasting checks and memory system are not properly synchronized
+
+**Impact:**
+- **GAME-BREAKING**: Core tactical mechanic completely unreliable
+- **Player Experience**: Confusing and frustrating gameplay with zombies randomly appearing/disappearing
+- **Development Blocker**: Cannot proceed with feature development while core vision system is broken
+- **System Integrity**: Memory state corruption may affect other dependent systems
+
+**Reproduction Steps:**
+1. Approach zombies until they are visible and in sight range
+2. Move player behind wall (zombies should become memory - darkened but visible)
+3. Move back and forth between behind wall and line-of-sight multiple times
+4. Fire bullets during movement transitions
+5. **Result**: Zombies completely disappear or show inverted visibility behavior
+
+**Expected Behavior:**
+- Zombies in explored areas should remain visible as memories (darkened) when behind walls
+- Zombies should become fully visible when line-of-sight is restored
+- Memory state should persist regardless of player movement patterns
+- Shooting should not affect vision state management
+
+**Actual Behavior:**
+- Zombies completely vanish from view when they should be in memory
+- Visibility logic appears inverted (visible when should be memory, memory when should be visible)
+- System becomes increasingly unreliable with repeated wall transitions
+- Memory corruption accumulates over time
+
+**Technical Root Cause (Suspected):**
+- Race conditions between Area2D signals and raycasting checks
+- Conflicting state management between `visible_entities`, `entities_in_range`, and `memory_entities` arrays
+- Position freezing for memory entities interfering with real-time state updates
+- Signal timing issues causing state transitions to occur out of order
+
+**System Components Affected:**
+- `PlayerSight._process()` continuous line-of-sight checking
+- `PlayerSight._on_entity_entered_sight()` / `_on_entity_left_sight()` signal handlers
+- Memory entity position freezing in `_process()` loop
+- `_add_to_memory()` / `_remove_from_memory()` state management
+- `_show_entity()` / `_hide_entity()` visibility control
+
+**Business Impact:**
+- **Development Velocity**: Blocks all feature development until resolved
+- **Core Gameplay**: Tactical stealth/visibility mechanics unusable
+- **Player Trust**: Game appears fundamentally broken
+- **Technical Debt**: May require significant refactoring of vision system
+
+**Required Resolution:**
+Complete audit and potential refactor of PlayerSight system:
+1. Separate raycasting checks from Area2D signal handling
+2. Implement proper state machine for entity visibility states
+3. Fix memory entity position management conflicts
+4. Add comprehensive state validation and error handling
+5. Implement debug logging for state transitions
+
+**Estimated Effort:** 8-12 hours (critical system refactor)  
+**Business Value:** CRITICAL (core gameplay mechanic)  
+**Target Resolution:** IMMEDIATE (Day 6 - before any new features)  
+**Dependencies:** None - all other development blocked until resolved
+
+**Debug Priority:** 
+- Add comprehensive logging to all vision state transitions
+- Implement state validation checks
+- Create test scenarios for systematic debugging
+- Consider temporary simplified implementation if refactor too complex
+
+**Workaround:** None viable - affects core player experience
 
 ---
 
 ## **Quadrant 2: Important, Not Urgent (Schedule Next Sprint)**
 
-### **[ ] BUG-001: Zombie Collision Overlap**
+### **[ ] BUG-001: Zombie Movement Algorithm Inefficiency**
+**Priority:** High  
+**Severity:** Medium  
+**Status:** Documented for A* Replacement  
+**Reported:** 2025-05-29  
+**Updated:** 2025-05-31  
+**Component:** Zombie AI Movement System
+
+**Description:**  
+Current zombie movement algorithm exhibits multiple pathfinding failures including:
+- Zombies freezing in place during chase state despite having valid velocity
+- Getting permanently stuck against walls and corners
+- Inconsistent obstacle avoidance causing repetitive movement patterns
+- Ray-cast based avoidance creates stuttering behavior around complex geometry
+
+**Impact:**
+- Breaks core chase mechanics unpredictably
+- Creates frustrating player experience when zombies fail to pursue
+- Affects tactical gameplay when zombies become non-threatening
+- Reduces AI believability and game polish
+
+**Detailed Issues:**
+1. **Freeze Bug**: Zombies enter CHASING state with detected player and velocity but remain stationary
+2. **Wall Sticking**: Simple ray-cast avoidance gets caught in infinite loops against walls
+3. **Corner Traps**: 60-degree avoidance angles insufficient for complex corner navigation
+4. **State Confusion**: Line-of-sight checks interfere with movement state management
+
+**Debug Evidence:**
+```
+State: CHASING
+Detected Player: Player:<CharacterBody2D#39107691860>
+Target Position: (196.4155, 63.00317)
+Current Position: (208.0752, 129.9806)
+Velocity: (0.0, -246.2958)  // Has velocity but not moving
+Player In Range: true
+Has Line of Sight: true
+```
+
+**Technical Root Cause:**
+Current movement system uses simple ray-casting with hardcoded angle rotations. This approach:
+- Cannot handle complex pathfinding scenarios
+- Lacks proper obstacle memory or planning
+- Has no fallback for completely blocked scenarios
+- Creates movement conflicts between different AI states
+
+**Planned Resolution:**
+Replace entire movement algorithm with A* pathfinding implementation:
+- Grid-based or navigation mesh pathfinding
+- Proper path planning and following
+- Robust obstacle handling
+- Separation from detection/state management systems
+
+**Estimated Effort:** 12-16 hours (complete system replacement)  
+**Business Value:** Very High (core gameplay mechanic)  
+**Target Resolution:** Day 8-9 (A* pathfinding implementation)  
+**Dependencies:** Core gameplay loop validation complete
+
+**Workaround:** None viable - fundamental algorithm limitation
+
+---
+
+### **[ ] BUG-002: Corner Navigation Inefficiency**
+**Priority:** Medium  
+**Severity:** Low  
+**Status:** Superseded by BUG-001  
+**Reported:** 2025-05-29  
+**Component:** Zombie Pathfinding
+
+**Description:**  
+*NOTE: This bug is a subset of BUG-001 and will be resolved by A* implementation*
+
+Zombies get temporarily stuck pressing against corners before eventually navigating around them. Movement appears "sticky" at wall intersections.
+
+**Target Resolution:** Resolved by A* pathfinding (BUG-001)
+
+---
+
+### **[ ] BUG-003: Zombie Collision Overlap**
 **Priority:** High  
 **Severity:** Medium  
 **Status:** Needs Investigation  
@@ -79,64 +241,19 @@ Zombies occasionally overlap with each other during movement, creating unrealist
 - May affect pathfinding calculations
 - Reduces tactical challenge when zombies cluster
 
-**Reproduction Steps:**
-1. Spawn multiple zombies in close proximity
-2. Have player move to trigger chase behavior
-3. Observe zombies converging on player position
-4. Notice occasional overlap/stacking
-
-**Expected Behavior:**  
-Zombies should maintain separation while pursuing player, creating natural spacing for tactical engagement.
-
 **Technical Notes:**
-- Likely related to CharacterBody2D collision layers
+- Separate from movement pathfinding issues (BUG-001)
+- Related to CharacterBody2D collision separation
 - May need zombie-to-zombie collision detection
 - Consider implementing separation steering behavior
 
 **Estimated Effort:** 4-6 hours  
 **Business Value:** High (affects core tactical gameplay)  
-**Target Resolution:** Day 6 (after core AI features complete)
+**Target Resolution:** Day 10 (after A* pathfinding stable)
 
 ---
 
-## **Quadrant 3: Urgent, Not Important (Investigate After Core Features)**
-
-### **[ ] BUG-002: Corner Navigation Inefficiency**
-**Priority:** Medium  
-**Severity:** Low  
-**Status:** Acknowledged  
-**Reported:** 2025-05-29  
-**Component:** Zombie Pathfinding
-
-**Description:**  
-Zombies get temporarily stuck pressing against corners before eventually navigating around them. Movement appears "sticky" at wall intersections.
-
-**Impact:**
-- Creates visual polish issues
-- Slightly reduces AI believability
-- Does not break core gameplay mechanics
-- May cause minor performance overhead from repeated collision checks
-
-**Reproduction Steps:**
-1. Position zombie with player on opposite side of corner
-2. Trigger chase behavior
-3. Observe zombie pressing into corner before pathfinding around
-4. Notice eventual successful navigation but inefficient movement
-
-**Expected Behavior:**  
-Zombies should smoothly navigate around corners without getting temporarily stuck.
-
-**Technical Notes:**
-- Current simple obstacle avoidance works but needs refinement
-- May require multiple raycasts with angle checking
-- Consider implementing corner detection and avoidance algorithms
-- Alternative: Add "unstuck" timer mechanism as temporary fix
-
-**Estimated Effort:** 6-8 hours (complex pathfinding optimization)  
-**Business Value:** Low-Medium (polish/feel improvement)  
-**Target Resolution:** Post Day 7 (after core loop validation)
-
-### **[ ] BUG-003: Intermittent Zombie Chase Detection Failure**
+### **[ ] BUG-004: Intermittent Zombie Chase Detection Failure**
 **Priority:** Medium  
 **Severity:** Low-Medium  
 **Status:** Needs Investigation  
@@ -144,32 +261,37 @@ Zombies should smoothly navigate around corners without getting temporarily stuc
 **Component:** Area2D Sight Detection
 
 **Description:**  
-Zombies occasionally fail to chase player when entering Area2D sight range. Signal emission appears inconsistent. Rare occurrence, exact reproduction steps unknown.
+*NOTE: May be related to BUG-001 movement conflicts*
 
-**Impact:**
-- Affects core chase mechanics unpredictably
-- Could create player confusion during testing
-- Does not completely break gameplay
-- Inconsistent player experience
+Zombies occasionally fail to chase player when entering Area2D sight range. Signal emission appears inconsistent. May be interference between detection and movement systems.
 
-**Reproduction Steps:**
-*Unable to consistently reproduce - appears random*
-1. Move player into zombie sight range
-2. Occasionally zombie fails to transition to chase state
-3. No clear pattern identified
+**Target Resolution:** Day 11 (after movement system stabilized)
 
-**Expected Behavior:**  
-Zombies should consistently detect and chase player when entering sight range Area2D.
+---
 
-**Technical Notes:**
-- May be related to Area2D signal timing
-- Could be collision layer configuration issue
-- Possible Godot engine timing bug
-- Consider adding debug logging to sight range signals
+## **Technical Debt - Movement System**
 
-**Estimated Effort:** 2-4 hours investigation  
-**Business Value:** Medium (affects core loop reliability)  
-**Target Resolution:** Day 6 (investigate during AI polish phase)
+### **Current Algorithm Limitations**
+- Ray-cast based obstacle avoidance (primitive approach)
+- No path planning or goal-oriented behavior
+- Hardcoded movement angles and distances
+- State management mixed with movement logic
+- No spatial awareness beyond immediate obstacles
+
+### **A* Implementation Plan**
+- Grid-based pathfinding for predictable behavior
+- Separation of pathfinding from movement execution
+- Configurable path recalculation frequency
+- Integration with existing zombie state system
+- Performance optimization for multiple zombies
+
+**Implementation Priority:** After core gameplay loop validation (Day 7+)
+
+---
+
+## **Quadrant 3: Urgent, Not Important (Investigate After Core Features)**
+
+---
 
 ---
 
