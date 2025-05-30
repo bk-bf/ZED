@@ -11,6 +11,13 @@ ZED/
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
+├── .godot/
+│   ├── editor/
+│   │   ├── editor_layout.cfg
+│   │   ├── filesystem_cache10
+│   │   ├── filesystem_update4
+│   │   └── [other editor files]
+│   └── [other Godot cache files]
 ├── .vscode/
 │   ├── launch.json
 │   └── settings.json
@@ -30,13 +37,16 @@ ZED/
 │   ├── base/
 │   ├── core/
 │   ├── debug/
-│   │   └── performance_tracker.tscn
+│   │   ├── performance_tracker.tscn
 │   │   └── debug_health_bar.tscn
 │   ├── gameplay/
 │   │   ├── buildings/
 │   │   ├── enemies/
 │   │   │   └── zombie.tscn
 │   │   ├── items/
+│   │   │   ├── ammo/
+│   │   │   │   └── bullet.tscn
+│   │   │   └── item_pickup.tscn
 │   │   ├── player/
 │   │   └── projectiles/
 │   │       └── bullet.tscn
@@ -47,6 +57,8 @@ ZED/
 │   │   ├── player.tscn
 │   │   └── vertical_wall.tscn
 │   └── ui/
+│       ├── debug_health_bar.tscn
+│       ├── debug_ammo_counter.tscn
 │       └── health_bar.tscn
 ├── scripts/
 │   ├── core/
@@ -65,10 +77,14 @@ ZED/
 │   ├── mechanics/
 │   │   ├── player_controller.gd
 │   │   ├── zombie.gd
-│   │   └── bullet.gd
+│   │   ├── bullet.gd
+│   │   └── item_pickup.gd
 │   └── systems/
 ├── assets/
 │   ├── final/
+│   ├── fonts/
+│   │   └── Roboto_Condensed/
+│   │       └── RobotoCondensed-ExtraBold.ttf
 │   ├── generated/
 │   └── placeholders/
 │       ├── audio/
@@ -77,20 +93,23 @@ ZED/
 ├── data/
 │   ├── buildings/
 │   ├── configs/
+│   ├── items/
 │   └── missions/
 └── docs/
     ├── overview/
+    │   ├── BUG_TRACKER.md
+    │   ├── Core_Mechanics.md
     │   ├── DAILY_TASKS.md
     │   ├── Project_Structure.md
-    │   ├── Core_Mechanics.md
     │   └── ROADMAP.md
     └── reports/
         ├── personal/
-        │   └── Project_Overview_25.05.md
+        │   └── Project_Overview_(intern_doc)25.05.md
         └── public/
             ├── Progress_Report_25.05.md
             ├── Progress_Report_26.05.md
-            └── Progress_Report_27.05.md
+            ├── Progress_Report_27.05.md
+            └── Progress_Report_28.05.md
 ```
 
 ## Asset Naming Convention

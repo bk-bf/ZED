@@ -85,6 +85,6 @@ func reset_to_defaults():
 	
 	# Emit signals to update UI
 	health_changed.emit(health)
-	ammo_changed.emit(current_ammo)
+	ammo_changed.emit(current_ammo, max_ammo)
 	
 	print("PlayerData reset to defaults - Health: ", health, ", Ammo: ", current_ammo)

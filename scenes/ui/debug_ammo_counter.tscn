@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bxgtp4t3rk202"]
 
 [ext_resource type="FontFile" uid="uid://cuyf3efx1af52" path="res://assets/fonts/Roboto_Condensed/RobotoCondensed-ExtraBold.ttf" id="1_ggdyt"]
-[ext_resource type="Script" uid="uid://br37dfe7egukx" path="res://scripts/debug/debug_ammo_counter.gd" id="1_i5ugf"]
+[ext_resource type="Script" path="res://scripts/ui/debug_ammo_counter.gd" id="1_i5ugf"]
 
 [node name="DebugAmmoCounter" type="Control"]
 layout_mode = 3
