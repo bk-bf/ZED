@@ -267,10 +267,10 @@ Based on your ZED project's playable-first development philosophy and the establ
 ### **Task 2: Create zombie variety - different types with unique stats and behaviors**
 
 **Sub-task 2.1: Zombie type system foundation**
-1. [ ] Create ZombieType enum with WALKER, RUNNER, BRUTE types in ZombieData
-2. [ ] Add `zombie_type` property to ZombieData with type-specific stat loading
-3. [ ] Define type stats: WALKER (100hp, 50speed), RUNNER (75hp, 100speed), BRUTE (200hp, 30speed)
-4. [ ] Update zombie.gd to use ZombieData type properties for health and speed
+1. [x] Create ZombieType enum with WALKER, RUNNER, BRUTE types in EntitesType
+2. [x] Add `zombie_type` property to ZombieData with type-specific stat loading
+3. [x] Define type stats: WALKER (100hp, 50speed), RUNNER (75hp, 100speed), BRUTE (200hp, 30speed)
+4. [x] Update zombie.gd to use ZombieData type properties for health and speed
 5. [ ] Test each zombie type spawns with correct stats and visual differentiation
 
 **Sub-task 2.2: Visual type identification**

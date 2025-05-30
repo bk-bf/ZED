@@ -1,7 +1,6 @@
 # ZED - Core Mechanics Documentation
 
-## Overview
-ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and Stalker Anomaly, set in a post-apocalyptic world. Players lead survivors through dangerous missions to collect resources, complete objectives, and extract safely while managing permanent consequences for failure.
+ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and Stalker Anomaly, set in a post-apocalyptic world. Players lead survivors through dangerous missions in hand-crafted building layouts to collect resources, complete objectives, and extract safely while managing permanent consequences for failure.
 
 ## Core Game Loop
 
@@ -12,7 +11,7 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **Loadout Preparation**: Equip weapons, medical supplies, and gear before deployment
 
 ### 2. Mission Execution Phase
-- **Deployment**: Get dropped into procedurally arranged building layouts
+- **Deployment**: Enter hand-crafted building layouts with tactical complexity
 - **Objective Completion**: Fulfill quest requirements (rescue, elimination, retrieval)
 - **Resource Collection**: Gather loot while managing inventory space and weight
 - **Threat Management**: Combat zombies, mutants, bandits, and environmental hazards
@@ -38,7 +37,7 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **True Death**: Character death is permanent and irreversible
 - **Survivor System**: Recruited NPCs can continue the mission/campaign
 - **Character Switching**: Can deploy either main character or recruited survivors
-- **Game Over Conditions**: 
+- **Game Over Conditions**:
   - All characters dead = campaign failure
   - Main character dead with no survivors = immediate game over
 - **Strategic Depth**: Forces careful survivor recruitment and risk management
@@ -54,7 +53,7 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **Both Difficulties**: Permanent death when killed in missions
 - **Mission Deployment**: Can be sent on missions instead of main character
 - **Specialized Skills**: Each survivor may have unique stats or abilities
-- **Backup Leadership**: Can continue campaign if main character dies (in Permadeath mode)
+- **Backup Leadership**: Can continue campaign if main character dies in Permadeath mode
 
 ### Risk Mitigation Strategies
 
@@ -89,7 +88,6 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **Survivor Impact**: Remaining characters may suffer morale penalties
 - **Strategic Reassessment**: May need to recruit new team members
 - **Campaign Continuation**: Switch to surviving character or face game over
-
 
 ## Resource and Loot System
 
@@ -164,18 +162,24 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 - **Timing**: Choosing when to push forward vs. when to extract
 - **Resource Management**: Balancing current needs vs. future preparation
 
-## Procedural Generation System
+## Hand-Crafted Building System
 
 ### Building Layouts
-- **Template Variations**: 3-4 different layouts per building type
-- **Dynamic Arrangement**: Room connections and enemy placement vary
-- **Thematic Consistency**: Loot and threats match location type
-- **Extraction Randomization**: Exit points change each mission
+- **Template Mastery**: 3-4 carefully designed layouts per building type for tactical depth
+- **Learnable Patterns**: Players develop expertise through repeated exposure
+- **Tactical Complexity**: Each layout presents unique positioning challenges and opportunities
+- **Strategic Depth**: Knowledge of layouts becomes a core player skill
+
+### Dynamic Mission Elements
+- **Loot Randomization**: Resource spawns vary while maintaining location logic
+- **Extraction Variability**: Exit points rotate between predetermined tactical positions
+- **Mission Objectives**: Quest requirements change while using consistent building layouts
+- **Environmental States**: Door locks, lighting, and accessibility vary by mission parameters
 
 ### Progression Integration
-- **Unlocked Content**: New building types become available over time
-- **Difficulty Scaling**: Enemy density and types increase with progression
-- **Reward Scaling**: Better loot becomes available in advanced areas
+- **Unlocked Buildings**: New hand-crafted locations become available over time
+- **Difficulty Scaling**: Enemy density and types increase with progression in known layouts
+- **Tactical Evolution**: Players must adapt strategies as threats evolve in familiar environments
 
 ## Success Metrics
 
@@ -193,4 +197,4 @@ ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and
 
 ---
 
-*This document defines the core mechanics that drive player engagement through meaningful risk/reward decisions and permanent progression consequences.*
+This document defines the core mechanics that drive player engagement through meaningful risk/reward decisions, tactical mastery of hand-crafted environments, and permanent progression consequences.

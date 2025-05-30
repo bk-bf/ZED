@@ -11,9 +11,9 @@ var player_in_damage_area: bool = false # Track if player is in damage area
 
 func _ready():
 	_initialize_zombie_data()
-	_setup_damage_area()
-	_setup_sight_range()
 	_setup_collision_layers()
+	_setup_sight_range()
+	_setup_damage_area()
 	_setup_visual_state()
 	add_to_group("zombies")
 
@@ -42,6 +42,11 @@ func _setup_sight_range():
 	var sight_range = $SightRange
 	sight_range.collision_layer = 0
 	sight_range.collision_mask = PhysicsLayers.PLAYER
+	
+	# Update the CircleShape2D radius to match zombie_data.sight_range
+	var collision_shape = sight_range.get_node("CollisionShape2D")
+	if collision_shape and collision_shape.shape is CircleShape2D:
+		collision_shape.shape.radius = zombie_data.sight_range
 	
 	_connect_sight_signals()
 
@@ -142,17 +147,17 @@ func chase_target(delta):
 	var player = get_tree().get_first_node_in_group("player")
 	
 	if player and _is_player_in_sight_range(player) and _has_line_of_sight(player):
-		# Player is visible - chase directly with obstacle avoidance
+		# Use zombie_data.speed instead of hardcoded value
 		var target_direction = (player.global_position - global_position).normalized()
 		var movement_direction = _get_avoidance_direction(target_direction)
-		velocity = movement_direction * zombie_data.speed
+		velocity = movement_direction * zombie_data.speed # <-- Uses type-specific speed
 		zombie_data.target_position = player.global_position
 		
 	elif zombie_data.target_position != Vector2.ZERO:
-		# Player not visible - move to last known position with avoidance
+		# Use zombie_data.speed for search movement too
 		var target_direction = (zombie_data.target_position - global_position).normalized()
 		var movement_direction = _get_avoidance_direction(target_direction)
-		velocity = movement_direction * zombie_data.speed * 0.7
+		velocity = movement_direction * zombie_data.speed * 0.7 # <-- Uses type-specific speed
 		
 		if global_position.distance_to(zombie_data.target_position) < 32.0:
 			zombie_data.target_position = Vector2.ZERO
@@ -316,7 +321,7 @@ func _set_zombie_color():
 	
 	match zombie_data.state:
 		ZombieData.ZombieState.IDLE:
-			color_rect.color = Color.PURPLE
+			color_rect.color = Color.GREEN
 		ZombieData.ZombieState.CHASING:
 			color_rect.color = Color.DARK_GREEN
 		ZombieData.ZombieState.ATTACKING:

@@ -18,6 +18,9 @@ var damage_cooldown_duration: float = 1.0 # second
 # loot pool dictionary
 @export var loot_pool: Dictionary = {}
 
+# Zombie Type
+@export var zombie_type: EntitiesType.ZombieType = EntitiesType.ZombieType.WALKER
+
 # Zombie states
 @export var state: ZombieState = ZombieState.IDLE
 
@@ -30,16 +33,36 @@ enum ZombieState {
 }
 
 func _init():
+	_setup_type_stats()
 	health = max_health
-	
-	# Set up default loot pool with 100% pistol ammo drop chance
-	# Combined structure: item_id -> {chance: float, min_amount: int, max_amount: int}
+	setup_loot_pool()
+
+func _setup_type_stats():
+	match zombie_type:
+		EntitiesType.ZombieType.WALKER:
+			max_health = 100
+			speed = 50.0
+			damage = 25
+			sight_range = 300.0
+		EntitiesType.ZombieType.RUNNER:
+			max_health = 75
+			speed = 100.0
+			damage = 20
+			sight_range = 350.0
+		EntitiesType.ZombieType.BRUTE:
+			max_health = 200
+			speed = 30.0
+			damage = 40
+			sight_range = 250.0
+
+# Set up default loot pool with 100% pistol ammo drop chance
+# Combined structure: item_id -> {chance: float, min_amount: int, max_amount: int}
+func setup_loot_pool():
 	loot_pool["placeholder_pistol_ammo"] = {
 		"chance": 1.0,
 		"min_amount": 3,
 		"max_amount": 8
 	}
-
 
 func get_resistances() -> Dictionary:
 	return {
