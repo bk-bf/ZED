@@ -1,6 +1,6 @@
 # ZED - Bug Tracker
 
-**Project:** ZED - Zombie Extraction Deliverance  
+**Project:** ZED 
 **Development Philosophy:** Playable-First Development  
 **Last Updated:** 2025-05-29
 
