@@ -1,21 +1,17 @@
-# Development Progress Report - Day 3 Health & Consequences
+# Development Progress Report - Day 3: Health & Consequences
 **Date:** May 27, 2025  
 **Project:** ZED  
 **Development Philosophy:** Playable-First Development
 
----
-
-## **Executive Summary**
+## Executive Summary
 
 Day 3 successfully implemented ZED's health and damage system, creating the essential vulnerability mechanics that transform the game from a simple shooting gallery into a tactical risk/reward experience. Building on Day 2's combat foundation, today's work established player health consequences, zombie contact damage, and a universal damage architecture that will scale throughout the project's commercial development.
 
 The session demonstrated the complexity of implementing seemingly simple features in a maintainable way, with significant architectural decisions around damage interfaces, resistance systems, and code organization that will impact the entire 28-day development timeline.
 
----
+## The Health System Foundation
 
-## **The Health System Foundation**
-
-### **Player Vulnerability Implementation**
+### Player Vulnerability Implementation
 
 The development began with implementing player health as a core vulnerability mechanic. Rather than hardcoding health values directly into the player controller, the it was decided to maintained architectural consistency by routing health management through the existing PlayerData system established on Day 1.
 
@@ -25,17 +21,15 @@ The player health system includes:
 - **Death consequences** through scene restart, simulating the extraction shooter's high-stakes gameplay
 - **Debug integration** with comprehensive health monitoring through the established DebugManager
 
-### **Visual Health Bar Architecture**
+### Visual Health Bar Architecture
 
 A significant portion of development time focused on creating a debug health bar that would provide immediate visual feedback during testing. The initial approach of positioning UI elements in world space created persistent positioning issues that led to exploring Godot's CanvasLayer system.
 
 The final implementation uses a camera-following UI layer that renders in screen space, ensuring the health bar remains visible in the top-left corner regardless of player movement. This architectural decision supports the playable-first development philosophy by providing immediate, reliable feedback during all testing scenarios.
 
----
+## Zombie Contact Damage System
 
-## **Zombie Contact Damage System**
-
-### **Area2D Implementation Strategy**
+### Area2D Implementation Strategy
 
 The zombie contact damage system required implementing a separate collision detection system from the existing bullet collision. The development team chose Area2D over CharacterBody2D collision checking based on Godot best practices for contact detection without physical collision interference.
 
@@ -45,7 +39,7 @@ Key implementation features:
 - **Continuous damage detection** while player remains in contact with zombie
 - **Signal-based architecture** using `body_entered` and `body_exited` for efficient detection
 
-### **Continuous Damage Challenge**
+### Continuous Damage Challenge
 
 A significant technical challenge emerged when implementing continuous damage. The initial approach only triggered damage on first contact, requiring players to exit and re-enter the damage area for subsequent damage. The solution involved combining Godot's signal system with continuous overlap checking in the zombie's `_process()` function.
 

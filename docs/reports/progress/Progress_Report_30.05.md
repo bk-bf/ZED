@@ -1,16 +1,11 @@
-**Date:** May 31, 2025  
+# Development Progress Report - Day 5: Zombie Type System & Vision System Implementation
+**Date:** May 30, 2025  
 **Project:** ZED  
 **Development Philosophy:** Playable-First Development
 
----
-
-# **Development Progress Report - Day 5 Zombie Type System & Vision System Implementation**
+## Executive Summary
 
 Day 5 marked a significant evolution in ZED's tactical complexity, successfully implementing a sophisticated zombie type system with distinct behavioral characteristics while undertaking an ambitious transition from fog of war to a real-time Area2D sight range and memory system. Building on Day 4's resource management foundation, today's work established both the core enemy variety that transforms basic combat into nuanced tactical gameplay and a foundation for advanced vision mechanics. However, the session also revealed critical system integration challenges that require immediate resolution before proceeding with feature development.
-
----
-
-## **Executive Summary**
 
 The day began with ambitious plans to implement both zombie type differentiation and a comprehensive fog of war system. Through methodical development and iterative problem-solving, the focus evolved to implement a more sophisticated Area2D-based sight range system with memory mechanics and wall occlusion. While significant progress was made on both zombie variety and vision systems, critical bugs emerged in the vision system's memory management that must be resolved before proceeding to Day 6.
 
@@ -25,11 +20,9 @@ The day began with ambitious plans to implement both zombie type differentiation
 - **Zombie Movement Pathfinding**: Fundamental limitations in ray-cast based obstacle avoidance causing zombies to freeze during chase
 - **System Integration Conflicts**: Multiple systems controlling entity visibility creating unreliable state management
 
----
+## The Zombie Type System Foundation
 
-## **The Zombie Type System Foundation**
-
-### **EntitiesType Enum Architecture**
+### EntitiesType Enum Architecture
 
 The development began by establishing a robust type system through the EntitiesType enum, creating a foundation that supports both current zombie variety and future expansion to specialized variants. Rather than hardcoding zombie properties, the system implements type-specific stat allocation:
 
@@ -41,7 +34,7 @@ EntitiesType.ZombieType.BRUTE: max_health = 200, speed = 70.0, damage = 45
 
 This stat distribution creates immediate tactical differentiation - WALKERS provide manageable standard threats, RUNNERS force constant repositioning through superior speed, and BRUTES create high-stakes positioning decisions through devastating damage potential.
 
-### **Visual Differentiation Through Color Coding**
+### Visual Differentiation Through Color Coding
 
 A sophisticated color system was implemented that combines type identification with state feedback:
 
@@ -51,11 +44,9 @@ A sophisticated color system was implemented that combines type identification w
 
 The color system integrates with existing state management while maintaining clear type identification, supporting the tactical decision-making that defines the extraction shooter genre.
 
----
+## Spawn System Evolution - From Waves to Game Stages
 
-## **Spawn System Evolution - From Waves to Game Stages**
-
-### **The Wave System Rejection**
+### The Wave System Rejection
 
 A significant architectural decision emerged when evaluating the planned wave spawning system. Through careful analysis of the game's tactical extraction concept, it became clear that arbitrary waves of zombies contradicted the realistic building clearance vision. This led to a fundamental shift in approach:
 
@@ -67,7 +58,7 @@ A significant architectural decision emerged when evaluating the planned wave sp
 **Solution: Game Stage System**
 The wave system was replaced with a time-based game stage progression (SPARSE → CROWDED → PACKED) that activates different spawn points as mission time progresses. This approach creates organic difficulty escalation while supporting the planned hand-crafted building layouts.
 
-### **Percentage-Based Spawn Distribution**
+### Percentage-Based Spawn Distribution
 
 A sophisticated spawn manager was implemented using percentage-based zombie type distribution:
 
@@ -79,15 +70,13 @@ brute_percentage: 20% - Delivers high-stakes tactical challenges
 
 This distribution ensures varied tactical encounters while maintaining predictable challenge scaling, supporting both immediate testing and long-term balance iteration.
 
----
+## Vision System Implementation - From Fog of War to Real-Time Sight Range
 
-## **Vision System Implementation - From Fog of War to Real-Time Sight Range**
-
-### **The Fog of War to Area2D Transition**
+### The Fog of War to Area2D Transition
 
 Initial development focused on implementing a traditional fog of war system, but through experimentation and system design analysis, a more sophisticated approach emerged using Area2D sight detection combined with raycasting validation. This transition represented a significant architectural decision that prioritized real-time tactical information over static exploration mechanics.
 
-### **PlayerSight System Architecture**
+### PlayerSight System Architecture
 
 A comprehensive `PlayerSight` system was implemented featuring:
 
@@ -106,11 +95,9 @@ A comprehensive `PlayerSight` system was implemented featuring:
 - **F7 Zombie Sight Ranges**: Red transparent circles for zombie AI detection areas
 - **F9 Comprehensive State Debug**: Detailed zombie state information for system validation
 
----
+## Critical System Issues Discovered
 
-## **Critical System Issues Discovered**
-
-### **Vision System Memory Corruption (BUG-005)**
+### Vision System Memory Corruption (BUG-005)
 
 During extensive testing of the vision system, critical reliability issues emerged that classify as game-breaking bugs:
 
@@ -129,7 +116,7 @@ During extensive testing of the vision system, critical reliability issues emerg
 **System Impact:**
 The vision system represents a core tactical mechanic essential for extraction shooter gameplay. These reliability issues fundamentally compromise player trust in the game's information systems and create unpredictable tactical scenarios that undermine strategic decision-making.
 
-### **Zombie Movement Pathfinding Limitations (BUG-001)**
+### Zombie Movement Pathfinding Limitations (BUG-001)
 
 Parallel to vision system development, significant limitations were identified in the zombie movement system:
 
@@ -145,11 +132,9 @@ The current ray-cast based obstacle avoidance represents a fundamental architect
 **Resolution Strategy:**
 Complete replacement with A* pathfinding implementation scheduled for post-core gameplay validation (Day 8-9). This represents a significant but necessary technical debt that affects zombie believability but does not block core tactical validation.
 
----
+## Development Process Insights and Strategic Decisions
 
-## **Development Process Insights and Strategic Decisions**
-
-### **Bug Prioritization and Development Blocking**
+### Bug Prioritization and Development Blocking
 
 The discovery of critical vision system bugs required immediate prioritization assessment:
 
@@ -163,7 +148,7 @@ The discovery of critical vision system bugs required immediate prioritization a
 - Can be worked around temporarily while planning proper A* implementation
 - Scheduled for systematic replacement rather than incremental fixes
 
-### **Technical Debt Documentation**
+### Technical Debt Documentation
 
 Extensive documentation was created in the BUG_TRACKER.md system to properly categorize and prioritize the discovered issues:
 
@@ -174,11 +159,9 @@ Extensive documentation was created in the BUG_TRACKER.md system to properly cat
 
 This documentation approach ensures that technical debt is properly managed and prioritized according to commercial development needs rather than perfectionist engineering impulses.
 
----
+## Technical Architecture Decisions
 
-## **Technical Architecture Decisions**
-
-### **Area2D Spawn System Implementation**
+### Area2D Spawn System Implementation
 
 Rather than coordinate-based spawning, the system implements Area2D spawn zones that provide:
 - **Visual design integration** - spawn areas visible in editor during level design
@@ -187,18 +170,16 @@ Rather than coordinate-based spawning, the system implements Area2D spawn zones 
 
 The CircleShape2D approach was chosen over RectangleShape2D for more natural, organic spawn distribution that avoids predictable grid patterns.
 
-### **TestSpawnManager Architecture**
+### TestSpawnManager Architecture
 
 A comprehensive spawn management system was created that separates concerns effectively:
 - **SpawnArea scenes** - Simple spatial markers with no logic
 - **TestSpawnManager** - Centralized spawning logic with percentage-based distribution
 - **Integration with existing systems** - Works seamlessly with established collision layers and group management
 
----
+## Debug Infrastructure Enhancement
 
-## **Debug Infrastructure Enhancement**
-
-### **Type-Specific Debug Information**
+### Type-Specific Debug Information
 
 The established DebugManager system was enhanced to provide detailed zombie type tracking:
 
@@ -208,7 +189,7 @@ Active zombies: 6 | W:3 R:2 B:1 | Killed: 12
 
 This detailed breakdown enables immediate validation of spawn distribution and type balance during testing, supporting the data-driven balance iteration essential for tactical gameplay refinement.
 
-### **Combat Damage Logging Enhancement**
+### Combat Damage Logging Enhancement
 
 The damage logging system was refined to display zombie types rather than generic node references:
 
