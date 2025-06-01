@@ -1,4 +1,17 @@
 # scripts/debug/debug_manager.gd
+# Debug key bindings:
+# F3: Memory monitoring toggle
+# F4: Collision debug toggle  
+# F5: AI debug toggle
+# F6: Player sight range visualization toggle
+# F7: Zombie sight range visualization toggle
+# F8: Debug all zombie states
+# F9: Vision state logging toggle
+# F10: Vision signal logging toggle
+# F11: Vision memory logging toggle
+# F12: All vision logging toggle
+# ESC: Reset vision debug state tracking
+
 extends Node
 
 # Debug toggles
@@ -15,7 +28,7 @@ var bullets_fired: int = 0
 var bullets_hit: int = 0
 
 func _ready():
-	print("🔧 Debug Manager initialized")
+	pass
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -27,11 +40,103 @@ func _input(event):
 			KEY_F5:
 				toggle_ai_debug()
 			KEY_F6:
-				toggle_physics_debug()
+				toggle_player_sight_range_debug()
 			KEY_F7:
-				test_item_data_system()
+				toggle_zombie_sight_range_debug()
 			KEY_F8:
 				debug_all_zombie_states()
+			KEY_F9:
+				toggle_vision_state_logging()
+			KEY_F10:
+				toggle_vision_signal_logging()
+			KEY_F11:
+				toggle_vision_memory_logging()
+			KEY_F12:
+				toggle_all_vision_logging()
+			KEY_ESCAPE:
+				reset_vision_debug_state()
+
+func toggle_player_sight_range_debug():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.debug_enabled = !player_sight.debug_enabled
+		print("🔧 Player sight range debug: ", "ON" if player_sight.debug_enabled else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func toggle_zombie_sight_range_debug():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.debug_zombie_sight_enabled = !player_sight.debug_zombie_sight_enabled
+		player_sight._toggle_all_zombie_sight_debug()
+		print("🔧 Zombie sight range debug: ", "ON" if player_sight.debug_zombie_sight_enabled else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func debug_all_zombie_states():
+	print("\n=== ZOMBIE STATE DEBUG ===")
+	var zombies = get_tree().get_nodes_in_group("zombies")
+	
+	if zombies.is_empty():
+		print("No zombies found in scene!")
+		return
+	
+	print("Found ", zombies.size(), " zombies:")
+	
+	for i in range(zombies.size()):
+		var zombie = zombies[i]
+		print("\n--- Zombie ", i + 1, " ---")
+		if zombie.has_method("debug_zombie_state"):
+			zombie.debug_zombie_state()
+		else:
+			print("ERROR: Zombie missing debug_zombie_state() method")
+	
+	print("=== END ZOMBIE DEBUG ===\n")
+
+func toggle_vision_state_logging():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.debug_state_logging = !player_sight.debug_state_logging
+		print("🔧 Vision state logging: ", "ON" if player_sight.debug_state_logging else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func toggle_vision_signal_logging():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.debug_signal_logging = !player_sight.debug_signal_logging
+		print("🔧 Vision signal logging: ", "ON" if player_sight.debug_signal_logging else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func toggle_vision_memory_logging():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.debug_memory_logging = !player_sight.debug_memory_logging
+		print("🔧 Vision memory logging: ", "ON" if player_sight.debug_memory_logging else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func toggle_all_vision_logging():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		var new_state = !player_sight.debug_state_logging
+		player_sight.debug_state_logging = new_state
+		player_sight.debug_signal_logging = new_state
+		player_sight.debug_raycast_logging = new_state
+		player_sight.debug_memory_logging = new_state
+		player_sight.debug_verbose_logging = new_state
+		print("🔧 All vision logging: ", "ON" if new_state else "OFF")
+	else:
+		print("ERROR: PlayerSight not found!")
+
+func reset_vision_debug_state():
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight and player_sight.has_method("reset_debug_state_tracking"):
+		player_sight.reset_debug_state_tracking()
+		print("🔧 Vision debug state tracking reset")
+	else:
+		print("ERROR: PlayerSight not found or missing reset method!")
 
 func toggle_memory_monitoring():
 	memory_monitoring = not memory_monitoring
@@ -56,69 +161,16 @@ func toggle_physics_debug():
 	var status = "ENABLED" if physics_debug else "DISABLED"
 	print("🔧 Physics debug: ", status)
 
-func debug_print(category: String, message: String):
-	"""Centralized debug printing with category filtering"""
-	match category:
-		"memory":
-			if memory_monitoring:
-				print(message)
-		"collision":
-			if collision_debug:
-				print(message)
-		"ai":
-			if ai_debug:
-				print(message)
-		"physics":
-			if physics_debug:
-				print(message)
-		"combat":
-			print(message) # Always print combat messages
-
-func register_zombie_death():
-	"""Called when zombie dies"""
-	zombies_killed += 1
-	debug_print("ai", get_detailed_zombie_info())
-
-func register_bullet_fired():
-	"""Called when bullet is fired"""
-	bullets_fired += 1
-	debug_print("ai", "Bullet fired. Total shots: " + str(bullets_fired))
-
-func register_bullet_hit():
-	"""Called when bullet hits a zombie (not necessarily kills)"""
-	bullets_hit += 1
-	debug_print("ai", "Bullet hit zombie. Total hits: " + str(bullets_hit))
-
-func print_ai_stats():
-	if ai_debug:
-		print("=== AI DEBUG STATS ===")
-		print(get_detailed_zombie_info()) # Use the new detailed zombie info
-		print("Bullets fired: ", bullets_fired)
-		print("Bullets hit: ", bullets_hit)
-		if bullets_fired > 0:
-			var hit_accuracy = float(bullets_hit) / float(bullets_fired) * 100.0
-			print("Hit accuracy: ", "%.1f" % hit_accuracy, "%")
-		print("======================")
-
-func reset_ai_stats():
-	"""Reset all AI counters - FIX: Now properly resets all stats"""
-	zombies_killed = 0
-	bullets_fired = 0
-	bullets_hit = 0
-	debug_print("ai", "AI stats reset")
-
 func monitor_memory():
-	"""Memory monitoring function called by other scripts"""
+	"""Monitor memory usage if memory monitoring is enabled"""
 	if not memory_monitoring:
 		return
-
-	var node_count = Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	var object_count = Performance.get_monitor(Performance.OBJECT_COUNT)
-	var orphan_nodes = Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
-
-	# Print every 60 frames (1 second at 60fps)
+		
+	var memory_usage = OS.get_static_memory_usage()
+	
+	# Only print every 60 frames (once per second at 60 FPS)
 	if Engine.get_process_frames() % 60 == 0:
-		debug_print("memory", "Nodes: " + str(node_count) + " | Objects: " + str(object_count) + " | Orphans: " + str(orphan_nodes))
+		print("🔧 Memory: %.2f MB" % (memory_usage / 1024.0 / 1024.0))
 
 func debug_print_combat_damage(target_node: Node, final_damage: int, damage_type: DamageInterface.DamageType, resistance_percent: float):
 	"""Log detailed combat damage events"""
@@ -143,12 +195,84 @@ func debug_print_combat_damage(target_node: Node, final_damage: int, damage_type
 	]
 	debug_print("combat", message)
 
-func toggle_debug_health():
-	show_debug_health = !show_debug_health
-	# Hide/show debug health bar
+func register_zombie_death():
+	"""Called when zombie dies"""
+	zombies_killed += 1
+	debug_print("ai", get_detailed_zombie_info())
 
-func get_active_zombie_count():
-	return get_tree().get_nodes_in_group("zombies").size()
+func register_bullet_fired():
+	"""Called when player fires a bullet"""
+	increment_bullets_fired()
+
+func register_bullet_hit():
+	"""Called when a bullet hits a target"""
+	increment_bullets_hit()
+
+func register_zombie_killed():
+	"""Called when a zombie is killed"""
+	increment_zombies_killed()
+
+func register_zombie_spawned():
+	"""Called when a zombie is spawned"""
+	zombie_count += 1
+
+func register_zombie_removed():
+	"""Called when a zombie is removed from scene"""
+	zombie_count = max(0, zombie_count - 1)
+
+func reset_ai_stats():
+	"""Reset all AI debug statistics"""
+	zombie_count = 0
+	zombies_killed = 0
+	bullets_fired = 0
+	bullets_hit = 0
+	print("🔧 AI stats reset")
+
+func get_accuracy() -> float:
+	"""Get current shooting accuracy percentage"""
+	if bullets_fired == 0:
+		return 0.0
+	return (float(bullets_hit) / float(bullets_fired)) * 100.0
+
+func debug_print(category: String, message: String):
+	"""Centralized debug printing with category filtering"""
+	match category:
+		"memory":
+			if memory_monitoring:
+				print(message)
+		"collision":
+			if collision_debug:
+				print(message)
+		"ai":
+			if ai_debug:
+				print(message)
+		"physics":
+			if physics_debug:
+				print(message)
+
+func print_ai_stats():
+	print("=== AI DEBUG STATS ===")
+	print("Zombies Active: ", zombie_count)
+	print("Zombies Killed: ", zombies_killed)
+	print("Bullets Fired: ", bullets_fired)
+	print("Bullets Hit: ", bullets_hit)
+	if bullets_fired > 0:
+		var accuracy = float(bullets_hit) / float(bullets_fired) * 100.0
+		print("Accuracy: %.1f%%" % accuracy)
+	print("======================")
+
+# Called by other systems to update debug counters
+func increment_bullets_fired():
+	bullets_fired += 1
+
+func increment_bullets_hit():
+	bullets_hit += 1
+
+func increment_zombies_killed():
+	zombies_killed += 1
+
+func update_zombie_count(count: int):
+	zombie_count = count
 
 func get_zombie_type_counts() -> Dictionary:
 	var type_counts = {
@@ -164,6 +288,9 @@ func get_zombie_type_counts() -> Dictionary:
 	
 	return type_counts
 
+func get_active_zombie_count():
+	return get_tree().get_nodes_in_group("zombies").size()
+
 func get_detailed_zombie_info() -> String:
 	var type_counts = get_zombie_type_counts()
 	var total = get_active_zombie_count()
@@ -176,93 +303,13 @@ func get_detailed_zombie_info() -> String:
 		total, walker_count, runner_count, brute_count, zombies_killed
 	]
 
-# basic ItemData system test currently only for placeholder pistol ammo
-func test_item_data_system():
-	print("\n=== ItemData System Test ===")
-	
-	# Test getting placeholder pistol ammo
-	var pistol_ammo = ItemData.get_item_by_id("placeholder_pistol_ammo")
-	
-	if pistol_ammo:
-		print("✓ Found item: ", pistol_ammo.name)
-		print("✓ ID: ", pistol_ammo.id)
-		print("✓ Type: ", pistol_ammo.type)
-		print("✓ Stack size: ", pistol_ammo.stack_size)
-	else:
-		print("✗ Failed to find placeholder_pistol_ammo")
-	
-	# Test invalid ID
-	var invalid_item = ItemData.get_item_by_id("nonexistent_item")
-	if invalid_item == null:
-		print("✓ Correctly returned null for invalid ID")
-	else:
-		print("✗ Should have returned null for invalid ID")
-	
-	print("=== Test Complete ===\n")
-	
-func test_item_data_integration():
-	print("\n=== ItemData Integration Test ===")
-	
-	# Test 1: Max ammo comes from database
-	var pistol_ammo_data = ItemData.get_item_by_id("placeholder_pistol_ammo")
-	var expected_max = pistol_ammo_data.stack_size
-	var actual_max = PlayerDataAutoload.max_ammo
-	
-	print("Database stack_size: ", expected_max)
-	print("PlayerData max_ammo: ", actual_max)
-	assert(actual_max == expected_max, "Max ammo should match database stack_size")
-	print("✓ Max ammo correctly uses database value")
-	
-	# Test 2: Ammo pickup respects database limits
-	var initial_ammo = PlayerDataAutoload.current_ammo
-	var test_pickup_amount = 50 # More than stack_size to test limits
-	
-	print("Initial ammo: ", initial_ammo)
-	print("Attempting to add: ", test_pickup_amount)
-	
-	var success = PlayerDataAutoload.add_item("placeholder_pistol_ammo", test_pickup_amount)
-	var final_ammo = PlayerDataAutoload.current_ammo
-	var expected_final = min(initial_ammo + test_pickup_amount, expected_max)
-	
-	print("Final ammo: ", final_ammo)
-	print("Expected final: ", expected_final)
-	assert(final_ammo == expected_final, "Pickup should respect database stack limits")
-	print("✓ Ammo pickup respects database stack_size")
-	
-	# Test 3: UI displays database-driven values
-	var ammo_counter = get_node("UI/DebugAmmoCounter")
-	if ammo_counter:
-		ammo_counter.update_ammo_display()
-		# Verify UI shows database values, not hardcoded ones
-		print("✓ UI updated with database values")
-	
-	# Test 4: Invalid item IDs handled properly
-	var invalid_result = PlayerDataAutoload.add_item("nonexistent_ammo", 10)
-	assert(invalid_result == false, "Invalid item IDs should return false")
-	print("✓ Invalid item IDs handled correctly")
-	
-	print("=== All ItemData Integration Tests Passed ===\n")
-
-
-func debug_all_zombie_states():
-	print("\n=== ZOMBIE STATE DEBUG ===")
-	var zombies = get_tree().get_nodes_in_group("zombies")
-	
-	if zombies.is_empty():
-		print("No zombies found in scene!")
-		return
-	
-	print("Found ", zombies.size(), " zombies:")
-	
-	for i in range(zombies.size()):
-		var zombie = zombies[i]
-		print("\n--- Zombie ", i + 1, " ---")
-		if zombie.has_method("debug_zombie_state"):
-			zombie.debug_zombie_state()
-		else:
-			print("ERROR: Zombie missing debug_zombie_state() method")
-	
-	print("=== END ZOMBIE DEBUG ===\n")
 
 func log_debug(message: String):
-	print("[DEBUG] ", message)
+	"""General debug logging function for system events"""
+	if ai_debug: # Use ai_debug flag to control general debug logging
+		print("🔧 DEBUG: ", message)
+
+# Alternative: More specific logging with categories
+func log_debug_categorized(category: String, message: String):
+	"""Debug logging with category support"""
+	debug_print(category, "🔧 " + message)
