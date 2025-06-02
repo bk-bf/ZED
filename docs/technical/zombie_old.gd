@@ -142,11 +142,6 @@ func _draw():
 			draw_arc(Vector2.ZERO, sight_radius, 0, TAU, 64, Color(1, 0, 0, 0.15), 1.5)
 			# REMOVED: Exit position circles - no more weird yellow/red circles
 
-func _get_zombie_sight_radius() -> float:
-	if zombie_data:
-		return zombie_data.sight_range
-	return 150.0 # Default sight range
-
 # NEW: Enhanced player detection with position tracking
 func _on_player_entered_zombie_sight(body):
 	if body.is_in_group("player"):
@@ -270,58 +265,58 @@ func _physics_process(delta):
 	# Always call move_and_slide() in physics process
 	move_and_slide()
 
+func _has_line_of_sight_to_player(player) -> bool:
+	if not player or not is_instance_valid(player):
+		return false
+		
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(
+		global_position,
+		player.global_position
+	)
+	query.collision_mask = PhysicsLayers.WALLS # Only check for walls
+	query.exclude = [self] # Don't hit the zombie itself
+	
+	var result = space_state.intersect_ray(query)
+	return result.is_empty() # True if no walls block the view
+
 func _is_player_in_zombie_sight_range(player) -> bool:
 	var sight_range = get_node_or_null("SightRange")
 	if not sight_range or not player:
 		return false
 	return sight_range.overlaps_body(player)
 
-
-func _has_line_of_sight_to_player(player) -> bool:
-	if not player or not is_instance_valid(player):
-		return false
+func _get_zombie_sight_radius() -> float:
+	"""Get the actual radius from the zombie's SightRange Area2D"""
+	if not sight_range_node:
+		return 0.0
 	
-	var space_state = get_world_2d().direct_space_state
-	if not space_state:
-		return false
+	var collision_shape = sight_range_node.get_node("CollisionShape2D")
+	if not collision_shape:
+		return 0.0
 	
-	var query = PhysicsRayQueryParameters2D.create(
-		global_position,
-		player.global_position
-	)
+	var shape = collision_shape.shape
+	if shape is CircleShape2D:
+		return shape.radius
 	
-	# FIXED: Only check for walls, exclude both zombie and player
-	query.collision_mask = PhysicsLayers.WALLS
-	query.exclude = [self, player] # Exclude both zombie and player
-	query.hit_from_inside = false # Don't hit from inside colliders
-	query.collide_with_areas = false # Don't hit Area2D nodes
-	query.collide_with_bodies = true # Only hit StaticBody2D/RigidBody2D walls
-	
-	var result = space_state.intersect_ray(query)
-	
-	# Debug visualization (optional - remove if not needed)
-	if debug_sight_enabled and result.size() > 0:
-		print("Zombie ", self.name, " LOS blocked by: ", result.collider.name, " at distance: ", global_position.distance_to(result.position))
-	
-	return result.is_empty() # True if no walls block the view
+	# Fallback to zombie_data
+	return zombie_data.sight_range if zombie_data else 150.0
 
 func _get_avoidance_direction(target_direction: Vector2) -> Vector2:
 	var space_state = get_world_2d().direct_space_state
 	
-	# FIXED: Also improve wall avoidance raycasting
+	# Check if direct path is blocked
 	var query = PhysicsRayQueryParameters2D.create(
 		global_position,
-		global_position + target_direction * 64.0
+		global_position + target_direction * 64.0 # Look ahead 64 pixels
 	)
 	query.collision_mask = PhysicsLayers.WALLS
 	query.exclude = [self]
-	query.hit_from_inside = false
-	query.collide_with_areas = false
-	query.collide_with_bodies = true
 	
 	var result = space_state.intersect_ray(query)
 	
 	if result.is_empty():
+		# Direct path is clear
 		return target_direction
 	
 	# Path is blocked, try left and right alternatives
@@ -338,6 +333,7 @@ func _get_avoidance_direction(target_direction: Vector2) -> Vector2:
 	
 	# Choose the clearest path
 	if left_result.is_empty() and right_result.is_empty():
+		# Both paths clear, choose randomly to prevent predictable behavior
 		return left_direction if randf() > 0.5 else right_direction
 	elif left_result.is_empty():
 		return left_direction
@@ -346,42 +342,6 @@ func _get_avoidance_direction(target_direction: Vector2) -> Vector2:
 	else:
 		# Both blocked, try sharper angles
 		return target_direction.rotated(PI / 2) # 90 degree turn
-
-# OPTIONAL: Add a debug method to test wall detection
-func debug_test_wall_detection():
-	"""Debug method to test if wall detection is working properly"""
-	var player = get_tree().get_first_node_in_group("player")
-	if not player:
-		print("No player found for wall detection test")
-		return
-	
-	var has_los = _has_line_of_sight_to_player(player)
-	var distance = global_position.distance_to(player.global_position)
-	var in_range = _is_player_in_zombie_sight_range(player)
-	
-	print("=== Wall Detection Test for ", self.name, " ===")
-	print("Player Distance: ", "%.1f" % distance)
-	print("Player In Sight Range: ", in_range)
-	print("Has Line of Sight: ", has_los)
-	
-	# Test raycast manually
-	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(global_position, player.global_position)
-	query.collision_mask = PhysicsLayers.WALLS
-	query.exclude = [self, player]
-	query.hit_from_inside = false
-	query.collide_with_areas = false
-	query.collide_with_bodies = true
-	
-	var result = space_state.intersect_ray(query)
-	if result.size() > 0:
-		print("Raycast blocked by: ", result.collider.name)
-		print("Hit position: ", result.position)
-		print("Distance to hit: ", "%.1f" % global_position.distance_to(result.position))
-	else:
-		print("Raycast clear - no walls detected")
-	
-	print("=== End Wall Detection Test ===")
 
 func _process(delta):
 	if is_dead:

@@ -15,12 +15,12 @@ var explored_areas: Dictionary = {}
 @export var debug_zombie_sight_enabled: bool = true # This is the master control
 var debug_circle: CircleShape2D
 
-# NEW: Debug flags for detailed state logging
-@export var debug_state_logging: bool = true
-@export var debug_signal_logging: bool = true
-@export var debug_raycast_logging: bool = true
-@export var debug_memory_logging: bool = true
-@export var debug_verbose_logging: bool = false # Extra detailed logs
+# NEW: Separated debug flags for different systems
+@export var debug_los_enabled: bool = false # Line of Sight debug logs
+@export var debug_sightrange_enabled: bool = false # Area2D sight range signal logs
+@export var debug_state_enabled: bool = false # State change logs
+@export var debug_memory_enabled: bool = false # Memory system logs
+@export var debug_verbose_enabled: bool = false # Periodic summary logs
 
 # NEW: State tracking for change detection
 var entity_los_states: Dictionary = {} # Track last known LOS state for each entity
@@ -100,43 +100,44 @@ func _initialize_all_zombie_visibility():
 
 func _process(_delta):
     # Only log critical state every 2 seconds, not every frame
-    if Engine.get_process_frames() % 120 == 0:
+    if debug_verbose_enabled and Engine.get_process_frames() % 120 == 0:
         _debug_log_critical_state()
     
-    # FIXED: Clean up invalid entities without forcing positions (Issue 3)
+    # Clean up invalid entities without forcing positions
     for entity in memory_entities.keys().duplicate():
         if not entity or not is_instance_valid(entity):
-            _debug_log_error("Invalid entity in memory_entities, removing: %s" % entity)
+            if debug_memory_enabled:
+                print("[MEMORY] Invalid entity in memory_entities, removing: %s" % entity)
             memory_entities.erase(entity)
     
-    # FIXED: Only check LOS for currently visible entities - don't touch memory
+    # Only check LOS for currently visible entities - don't touch memory
     for entity in visible_entities.duplicate():
         var has_los = _has_line_of_sight(entity)
-        _debug_log_raycast(entity, has_los, player.global_position.distance_to(entity.global_position))
+        _debug_log_los(entity, has_los, player.global_position.distance_to(entity.global_position))
         
         if not has_los and _can_change_entity_state(entity):
             # Entity lost LOS - move to memory if in explored area
             visible_entities.erase(entity)
             if _is_area_explored(entity.global_position):
-                _debug_log_state_change("Entity lost LOS - adding to memory: %s" % entity.name)
+                _debug_log_state("Entity lost LOS - adding to memory: %s" % entity.name)
                 _add_to_memory(entity)
             else:
-                _debug_log_state_change("Entity lost LOS - hiding (unexplored): %s" % entity.name)
+                _debug_log_state("Entity lost LOS - hiding (unexplored): %s" % entity.name)
                 _hide_entity_completely(entity)
     
-    # FIXED: Separate check for entities in range that aren't visible or in memory
+    # Separate check for entities in range that aren't visible or in memory
     for entity in entities_in_range.duplicate():
         # Skip entities already handled by visibility or memory systems
         if entity in visible_entities or entity in memory_entities:
             continue
             
         var has_los = _has_line_of_sight(entity)
-        _debug_log_raycast(entity, has_los, player.global_position.distance_to(entity.global_position))
+        _debug_log_los(entity, has_los, player.global_position.distance_to(entity.global_position))
         
         if has_los and _can_change_entity_state(entity):
             # Entity gained LOS - make visible
             visible_entities.append(entity)
-            _debug_log_state_change("Entity gained LOS - making visible: %s" % entity.name)
+            _debug_log_state("Entity gained LOS - making visible: %s" % entity.name)
             _show_entity(entity)
             _mark_area_explored(entity.global_position)
     
@@ -144,36 +145,36 @@ func _process(_delta):
     if debug_enabled:
         queue_redraw()
 
-# FIXED: Signal handlers respect memory system rules
+# Signal handlers respect memory system rules
 func _on_entity_entered_sight(body):
     if not body.is_in_group("zombies"):
         return
     
-    _debug_log_signal("ENTERED_SIGHT", body, "Type=%s" % body.get_class())
+    _debug_log_sightrange("ENTERED_SIGHT", body, "Type=%s" % body.get_class())
     
     # Add to entities in range regardless of line of sight
     if body not in entities_in_range:
         entities_in_range.append(body)
-        _debug_log_state_change("Added to entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
+        _debug_log_state("Added to entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
     
-    # FIXED: Don't automatically remove from memory - only if LOS is gained
+    # Don't automatically remove from memory - only if LOS is gained
     var has_los = _has_line_of_sight(body)
     
     if has_los:
-        _debug_log_raycast(body, true, player.global_position.distance_to(body.global_position))
+        _debug_log_los(body, true, player.global_position.distance_to(body.global_position))
         
         # Entity has LOS - remove from memory and make visible
         if body in memory_entities:
-            _debug_log_state_change("Entity gained LOS - removing from memory: %s" % body.name)
+            _debug_log_state("Entity gained LOS - removing from memory: %s" % body.name)
             _remove_from_memory(body)
         
         if body not in visible_entities:
             visible_entities.append(body)
-            _debug_log_state_change("Added to visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
+            _debug_log_state("Added to visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
             _show_entity(body)
             _mark_area_explored(body.global_position)
     else:
-        _debug_log_raycast(body, false, player.global_position.distance_to(body.global_position))
+        _debug_log_los(body, false, player.global_position.distance_to(body.global_position))
         # In range but behind wall - don't touch memory, just hide if not already in memory
         if body not in memory_entities:
             _hide_entity_completely(body)
@@ -182,63 +183,83 @@ func _on_entity_left_sight(body):
     if not body.is_in_group("zombies"):
         return
     
-    _debug_log_signal("LEFT_SIGHT", body, "WasVisible=%s WasInMemory=%s" % [body in visible_entities, body in memory_entities])
+    _debug_log_sightrange("LEFT_SIGHT", body, "WasVisible=%s WasInMemory=%s" % [body in visible_entities, body in memory_entities])
     
-    # Store current position before removing from tracking
-    var last_position = body.global_position
+    # Calculate the exact boundary position where zombie left sight range
+    var boundary_position = _calculate_sight_boundary_exit_position(body)
     
     # Remove from tracking arrays
     if body in entities_in_range:
         entities_in_range.erase(body)
-        _debug_log_state_change("Removed from entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
+        _debug_log_state("Removed from entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
     
     if body in visible_entities:
         visible_entities.erase(body)
-        _debug_log_state_change("Removed from visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
+        _debug_log_state("Removed from visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
     
-    # FIXED: Only add to memory if not already there and area is explored
-    if body not in memory_entities and _is_area_explored(last_position):
-        _debug_log_state_change("Entity left sight - adding to memory: %s" % body.name)
-        memory_entities[body] = last_position
-        _debug_log_memory_change("ADD_TO_MEMORY", body, last_position)
+    # Use boundary position for memory storage
+    if body not in memory_entities and _is_area_explored(boundary_position):
+        _debug_log_state("Entity left sight - adding to memory at boundary: %s" % body.name)
+        memory_entities[body] = boundary_position # Store boundary position, not current position
+        _debug_log_memory("ADD_TO_MEMORY", body, boundary_position)
         _add_to_memory(body)
     elif body not in memory_entities:
-        _debug_log_state_change("Entity left sight - hiding (unexplored): %s" % body.name)
+        _debug_log_state("Entity left sight - hiding (unexplored): %s" % body.name)
         _hide_entity_completely(body)
-    # If already in memory, leave it alone
 
-# FIXED: Memory management functions with proper state preservation
+func _calculate_sight_boundary_exit_position(entity: Node2D) -> Vector2:
+    """Calculate where the entity crossed the sight range boundary"""
+    if not player or not entity:
+        return entity.global_position
+    
+    var sight_radius = _get_sight_area_radius()
+    var player_to_entity = entity.global_position - player.global_position
+    var distance_to_entity = player_to_entity.length()
+    
+    # If entity is still within range, use current position (edge case)
+    if distance_to_entity <= sight_radius:
+        return entity.global_position
+    
+    # Calculate the boundary crossing point
+    var direction_to_entity = player_to_entity.normalized()
+    var boundary_position = player.global_position + (direction_to_entity * sight_radius)
+    
+    _debug_log_state("Calculated boundary exit position: %s (distance: %.1f)" % [boundary_position, sight_radius])
+    return boundary_position
+
+
 func _add_to_memory(entity):
     if not _can_change_entity_state(entity):
         return false
         
     if not _is_area_explored(entity.global_position):
-        _debug_log_visibility_change(entity, "HIDDEN_UNEXPLORED")
         return _hide_entity_completely(entity)
     
-    _debug_log_memory_change("ADD_TO_MEMORY", entity, entity.global_position)
-    _debug_log_visibility_change(entity, "MEMORY")
-    _record_entity_state_change(entity)
+    # Store the frozen position BEFORE adding to memory
+    var frozen_position = entity.global_position
+    memory_entities[entity] = frozen_position
     
-    # FIXED: Don't store position if already in memory
-    if entity not in memory_entities:
-        memory_entities[entity] = entity.global_position
+    # Actually freeze the entity's movement
+    if entity.has_method("set_memory_state"):
+        entity.set_memory_state(true, frozen_position)
     
-    # Show as memory - darkened and at FROZEN position
+    # Visual feedback for memory state
     entity.visible = true
     entity.modulate = Color(0.4, 0.4, 0.4, 1.0)
-    # CRITICAL FIX: Don't force position updates - let entity keep its current position
+    
+    _debug_log_memory("ADD_TO_MEMORY", entity, frozen_position)
+    _record_entity_state_change(entity)
     return true
+
 
 func _remove_from_memory(entity):
     """Remove entity from memory system - only when gaining LOS"""
     if entity in memory_entities:
         var stored_position = memory_entities[entity]
-        _debug_log_memory_change("REMOVE_FROM_MEMORY", entity, stored_position)
+        _debug_log_memory("REMOVE_FROM_MEMORY", entity, stored_position)
         memory_entities.erase(entity)
-        _debug_log_state_change("Entity removed from memory: %s" % entity.name)
+        _debug_log_state("Entity removed from memory: %s" % entity.name)
 
-# FIXED: Add validation method to check system consistency
 func _validate_memory_system():
     """Debug method to validate memory system consistency"""
     var issues = []
@@ -258,9 +279,9 @@ func _validate_memory_system():
             issues.append("Visible entity without LOS: %s" % entity.name)
     
     if issues.size() > 0:
-        _debug_log_error("Memory system validation failed:")
+        print("Memory system validation failed:")
         for issue in issues:
-            _debug_log_error("  - %s" % issue)
+            print("  - %s" % issue)
     else:
         print("Memory system validation: OK")
     
@@ -335,9 +356,11 @@ func _is_area_explored(pos: Vector2) -> bool:
     var grid_pos = Vector2(int(pos.x / 64), int(pos.y / 64))
     return explored_areas.get(grid_pos, false)
 
-# Enhanced debug helper methods - only log on state changes
-func _debug_log_raycast(entity: Node, has_los: bool, distance: float = 0.0):
-    if not debug_raycast_logging:
+# Enhanced debug helper methods - separated by category
+
+func _debug_log_los(entity: Node, has_los: bool, distance: float = 0.0):
+    """Log Line of Sight debug information"""
+    if not debug_los_enabled:
         return
         
     var entity_name = entity.name if entity else "NULL"
@@ -348,10 +371,19 @@ func _debug_log_raycast(entity: Node, has_los: bool, distance: float = 0.0):
         entity_los_states[entity] = has_los
         var timestamp = Time.get_time_string_from_system()
         var status = "GAINED" if has_los else "LOST"
-        print("[%s] RAYCAST_%s: Entity=%s Distance=%.1f" % [timestamp, status, entity_name, distance])
+        print("[%s] LOS_%s: Entity=%s Distance=%.1f" % [timestamp, status, entity_name, distance])
+
+func _debug_log_sightrange(signal_name: String, entity: Node, extra_info: String = ""):
+    """Log SightRange Area2D signal debug information"""
+    if not debug_sightrange_enabled:
+        return
+    var entity_name = entity.name if entity else "NULL"
+    var timestamp = Time.get_time_string_from_system()
+    print("[%s] SIGHTRANGE_%s: Entity=%s %s" % [timestamp, signal_name, entity_name, extra_info])
 
 func _debug_log_visibility_change(entity: Node, new_state: String):
-    if not debug_state_logging:
+    """Log visibility state changes"""
+    if not debug_state_enabled:
         return
         
     var entity_name = entity.name if entity else "NULL"
@@ -363,8 +395,9 @@ func _debug_log_visibility_change(entity: Node, new_state: String):
         var timestamp = Time.get_time_string_from_system()
         print("[%s] VISIBILITY_CHANGE: Entity=%s %s->%s" % [timestamp, entity_name, last_visibility_state, new_state])
 
-func _debug_log_memory_change(action: String, entity: Node, position: Vector2 = Vector2.ZERO):
-    if not debug_memory_logging:
+func _debug_log_memory(action: String, entity: Node, position: Vector2 = Vector2.ZERO):
+    """Log memory system changes"""
+    if not debug_memory_enabled:
         return
         
     var entity_name = entity.name if entity else "NULL"
@@ -377,27 +410,16 @@ func _debug_log_memory_change(action: String, entity: Node, position: Vector2 = 
         var timestamp = Time.get_time_string_from_system()
         print("[%s] MEMORY_%s: Entity=%s Position=%s" % [timestamp, action, entity_name, position])
 
-# Keep signal logging as-is since signals are already events
-func _debug_log_signal(signal_name: String, entity: Node, extra_info: String = ""):
-    if not debug_signal_logging:
-        return
-    var entity_name = entity.name if entity else "NULL"
-    var timestamp = Time.get_time_string_from_system()
-    print("[%s] SIGNAL_%s: Entity=%s %s" % [timestamp, signal_name, entity_name, extra_info])
-
-func _debug_log_state_change(message: String):
-    if not debug_state_logging:
+func _debug_log_state(message: String):
+    """Log general state changes"""
+    if not debug_state_enabled:
         return
     var timestamp = Time.get_time_string_from_system()
     print("[%s] STATE: %s" % [timestamp, message])
 
-func _debug_log_error(message: String):
-    var timestamp = Time.get_time_string_from_system()
-    print("[%s] ERROR: %s" % [timestamp, message])
-
-# Replace verbose with critical state summary
 func _debug_log_critical_state():
-    if not debug_verbose_logging:
+    """Log periodic state summary"""
+    if not debug_verbose_enabled:
         return
     var timestamp = Time.get_time_string_from_system()
     print("[%s] STATE_SUMMARY: InRange=%d Visible=%d Memory=%d" % [
@@ -419,8 +441,6 @@ func get_debug_info() -> Dictionary:
         "memory_entities": memory_entities.size(),
         "explored_areas": explored_areas.size()
     }
-
-# Add these helper methods after your existing debug methods
 
 func _can_change_entity_state(entity: Node2D) -> bool:
     """Check if enough time has passed since last state change for this entity"""
@@ -446,33 +466,33 @@ func _record_signal_processed():
     """Record that we just processed signals"""
     last_signal_process_time = Time.get_ticks_msec() / 1000.0
 
-# NEW: Deferred signal handlers (Issue 4 fix)
+# Deferred signal handlers
 
 func _handle_entity_entered(body):
     """Deferred handler for entity entered sight - prevents race conditions"""
     if not body or not is_instance_valid(body):
         return
         
-    _debug_log_signal("ENTERED_SIGHT", body, "Type=%s" % body.get_class())
+    _debug_log_sightrange("ENTERED_SIGHT", body, "Type=%s" % body.get_class())
     
     # Add to entities in range regardless of line of sight
     if body not in entities_in_range:
         entities_in_range.append(body)
-        _debug_log_state_change("Added to entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
+        _debug_log_state("Added to entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
     
     # Remove from memory if it was there
     _remove_from_memory(body)
     
     # Only make visible if there's line of sight AND debouncing allows
     if _has_line_of_sight(body):
-        _debug_log_raycast(body, true, player.global_position.distance_to(body.global_position))
+        _debug_log_los(body, true, player.global_position.distance_to(body.global_position))
         if body not in visible_entities and _can_change_entity_state(body):
             visible_entities.append(body)
-            _debug_log_state_change("Added to visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
+            _debug_log_state("Added to visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
             _show_entity(body)
             _mark_area_explored(body.global_position)
     else:
-        _debug_log_raycast(body, false, player.global_position.distance_to(body.global_position))
+        _debug_log_los(body, false, player.global_position.distance_to(body.global_position))
         # In range but behind wall - hide it (but don't add to memory yet)
         _hide_entity_completely(body)
 
@@ -481,7 +501,7 @@ func _handle_entity_left(body):
     if not body or not is_instance_valid(body):
         return
         
-    _debug_log_signal("LEFT_SIGHT", body, "WasVisible=%s WasInMemory=%s" % [body in visible_entities, body in memory_entities])
+    _debug_log_sightrange("LEFT_SIGHT", body, "WasVisible=%s WasInMemory=%s" % [body in visible_entities, body in memory_entities])
     
     # Store current position before removing from tracking
     var last_position = body.global_position
@@ -489,18 +509,18 @@ func _handle_entity_left(body):
     # Remove from both tracking arrays
     if body in entities_in_range:
         entities_in_range.erase(body)
-        _debug_log_state_change("Removed from entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
+        _debug_log_state("Removed from entities_in_range: %s (Total: %d)" % [body.name, entities_in_range.size()])
     if body in visible_entities:
         visible_entities.erase(body)
-        _debug_log_state_change("Removed from visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
+        _debug_log_state("Removed from visible_entities: %s (Total: %d)" % [body.name, visible_entities.size()])
     
     # Add to memory if area was explored AND debouncing allows, otherwise hide completely
     if _is_area_explored(last_position):
         memory_entities[body] = last_position
-        _debug_log_memory_change("ADD_TO_MEMORY", body, last_position)
+        _debug_log_memory("ADD_TO_MEMORY", body, last_position)
         _add_to_memory(body)
     else:
-        _debug_log_state_change("Hiding entity (not in explored area): %s" % body.name)
+        _debug_log_state("Hiding entity (not in explored area): %s" % body.name)
         _hide_entity_completely(body)
 
 

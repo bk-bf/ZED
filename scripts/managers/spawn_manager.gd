@@ -5,9 +5,9 @@ class_name SpawnManager
 @export var zombie_scene: PackedScene
 @export var spawn_on_ready: bool = true
 @export var max_zombies: int = 50
-@export var walker_percentage: float = 0.7
-@export var runner_percentage: float = 0.2
-@export var brute_percentage: float = 0.1
+@export var walker_percentage: float = 1.0
+@export var runner_percentage: float = 0.0
+@export var brute_percentage: float = 0.0
 
 func _ready():
     if spawn_on_ready:

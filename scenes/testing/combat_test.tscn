@@ -19,16 +19,16 @@ position = Vector2(-34, 315)
 [node name="Walls" type="Node2D" parent="."]
 position = Vector2(156, 25)
 
-[node name="TopWall" parent="Walls" instance=ExtResource("2_jqaj7")]
+[node name="TopWall" parent="Walls" groups=["walls"] instance=ExtResource("2_jqaj7")]
 position = Vector2(-362, 6)
 
-[node name="BottomWall" parent="Walls" instance=ExtResource("2_jqaj7")]
+[node name="BottomWall" parent="Walls" groups=["walls"] instance=ExtResource("2_jqaj7")]
 position = Vector2(-489, 819)
 
-[node name="LeftWall" parent="Walls" instance=ExtResource("3_4hdlt")]
+[node name="LeftWall" parent="Walls" groups=["walls"] instance=ExtResource("3_4hdlt")]
 position = Vector2(20, 505)
 
-[node name="RightWall" parent="Walls" instance=ExtResource("3_4hdlt")]
+[node name="RightWall" parent="Walls" groups=["walls"] instance=ExtResource("3_4hdlt")]
 position = Vector2(634, 509)
 
 [node name="SpawnManger" parent="." instance=ExtResource("4_jqaj7")]
