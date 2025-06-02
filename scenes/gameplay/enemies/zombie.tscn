@@ -11,7 +11,7 @@ size = Vector2(32, 32)
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8sk5"]
 radius = 350.0
 
-[node name="Zombie" type="CharacterBody2D"]
+[node name="Zombie" type="CharacterBody2D" groups=["zombies"]]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_opfcu")
@@ -38,7 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.662215, 0.215734, 0.193434, 1)
+color = Color(0.232746, 0.450557, 0.231418, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="SightRange" type="Area2D" parent="."]
@@ -46,4 +46,4 @@ collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
 shape = SubResource("CircleShape2D_v8sk5")
-debug_color = Color(0.29365, 0.615119, 0.386231, 0.42)
+debug_color = Color(0.705909, 0.462264, 0.436985, 0.42)

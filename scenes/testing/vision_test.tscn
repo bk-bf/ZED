@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://drm6y4y085k1k"]
+
+[ext_resource type="Script" uid="uid://cbese8htwyj5q" path="res://scripts/systems/player_sight.gd" id="1_sifha"]
+[ext_resource type="PackedScene" uid="uid://brmwpmml8y2as" path="res://scenes/testing/player.tscn" id="2_gtsmu"]
+[ext_resource type="PackedScene" uid="uid://dsvwgterct27" path="res://scenes/gameplay/enemies/zombie.tscn" id="3_pmoto"]
+[ext_resource type="PackedScene" uid="uid://dx7abjien1uq" path="res://scenes/testing/vertical_wall.tscn" id="4_ditlt"]
+
+[node name="VisionTest" type="Node2D"]
+
+[node name="PlayerSight" type="Node2D" parent="." groups=["player_sight"]]
+position = Vector2(-386, 526)
+script = ExtResource("1_sifha")
+
+[node name="Player" parent="." instance=ExtResource("2_gtsmu")]
+position = Vector2(-388, 527)
+
+[node name="Walls" type="Node2D" parent="."]
+position = Vector2(179, 81)
+
+[node name="LeftWall" parent="Walls" instance=ExtResource("4_ditlt")]
+position = Vector2(20, 505)
+
+[node name="Zombie" parent="." instance=ExtResource("3_pmoto")]
+position = Vector2(43, 530)

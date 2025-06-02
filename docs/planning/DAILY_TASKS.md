@@ -335,118 +335,128 @@ Based on your ZED project's playable-first development philosophy and the establ
 
 ---
 
-# Day 6: Critical Bug Resolution - Vision System Memory (2025-06-01)
+## BUG-005: Vision System Memory Corruption Troubleshooting (2025-06-01)
 
-## **PRIMARY OBJECTIVE: Fix BUG-005 - Player Vision System Memory Corruption**
+**CRITICAL BUG:** Fix race conditions and memory corruption in PlayerSight system
+**STATUS:** PARTIAL PROGRESS - 1 of 4 issues resolved
+**IMPACT:** Core tactical mechanic partially stabilized
 
-**CRITICAL STATUS:** Development blocked until vision system is reliable  
-**Expected Result:** PlayerSight system with predictable, bug-free memory behavior that supports tactical gameplay  
-**Success Metrics:** Memory entities persist correctly behind walls, no disappearing zombies, consistent visibility state management
+### 🔍 Root Cause Analysis Summary (From Debug Log)
 
----
+#### ✅ Issue 1: **Infinite Search Loop** - RESOLVED
+```
+Zombie @CharacterBody2D@82 searching at distance: 245.957443237305
+```
+**Root Cause**: No search timeout mechanism, zombies stuck endlessly searching
+**Fix Applied**: Implemented precise exit position tracking - zombies now move directly to player's sight range exit point and stop there
+**Status**: ✅ COMPLETED - Zombies no longer get stuck in infinite search loops
 
-### **Task 1: Diagnostic Analysis & Debug Infrastructure**
+#### ✅ Issue 2: **Rapid State Oscillation** - RESOLVED
+```
+[22:49:12] MEMORY_REMOVE_FROM_MEMORY: Entity=@CharacterBody2D@82 Position=(297.4263, -92.39612)
+[22:49:12] VISIBILITY_CHANGE: Entity=@CharacterBody2D@82 MEMORY->HIDDEN
+[22:49:12] RAYCAST_GAINED: Entity=@CharacterBody2D@82 Distance=509.3
+[22:49:12] VISIBILITY_CHANGE: Entity=@CharacterBody2D@82 HIDDEN->VISIBLE
+```
+**Root Cause**: No debouncing on state changes within PlayerSight
+**Required Fix**: Add minimum time interval between state changes
+**Status**: ✅ COMPLETED - debouncing has been implemented for zombie and player
 
-#### Sub-task 1.1: Implement comprehensive debug logging system
-1. [ ] Create `PlayerSightDebugger` scene with real-time state display showing `entities_in_range`, `visible_entities`, and `memory_entities` counts
-2. [ ] Add debug logging to every state transition in `_on_entity_entered_sight()` and `_on_entity_left_sight()` with timestamp and entity ID
-3. [ ] Implement `_validate_state_consistency()` method that checks for entities existing in multiple conflicting arrays
-4. [ ] Add debug overlay showing color-coded entity states: Green (visible), Yellow (in-range), Red (memory), Gray (hidden)
-5. [ ] Create debug input action to dump complete system state to console with entity positions and states
+#### ❌ Issue 3: **Memory System Position Conflicts** - NEEDS FIX
+```
+entity.global_position = memory_entities[entity] # Forces position in _process
+```
+**Root Cause**: PlayerSight forcibly moves entities during physics updates
+**Required Fix**: Use `call_deferred()` for position updates or stop forcing positions
 
-#### Sub-task 1.2: Systematic reproduction and state tracking
-1. [ ] Create controlled test scenario with 3 zombies at known positions and single wall for line-of-sight blocking
-2. [ ] Record baseline behavior: approach zombies, confirm visibility, move behind wall, verify memory state activation
-3. [ ] Execute problematic sequence: rapid back-and-forth movement while shooting to trigger memory corruption
-4. [ ] Document exact frame-by-frame state changes when corruption occurs using debug logging
-5. [ ] Identify specific trigger patterns: movement speed, shooting timing, wall transition frequency
+#### ❌ Issue 4: **Signal Timing Race Conditions** - NEEDS FIX
+```
+Area2D signals firing during physics state changes
+```
+**Root Cause**: Signals processed immediately during physics updates
+**Required Fix**: Use `call_deferred()` for signal processing
 
-#### Sub-task 1.3: Root cause analysis of race conditions
-1. [ ] Analyze timing conflicts between `_process()` continuous raycasting and Area2D signal emissions
-2. [ ] Investigate memory entity position freezing interference with real-time visibility checks
-3. [ ] Check for duplicate entity entries across `visible_entities`, `entities_in_range`, and `memory_entities` arrays
-4. [ ] Verify signal connection integrity and potential duplicate signal emissions
-5. [ ] Document suspected conflict points where multiple systems modify entity state simultaneously
+### Task 1: PlayerSight System Fixes (Issues 2, 3, 4)
 
----
+#### Sub-task 1.1: Implement state change debouncing (Issue 2)
+1. [ ] Add `last_state_change_time: Dictionary` to track per-entity change timing
+2. [ ] Add `min_state_change_interval: float = 0.1` (100ms minimum between changes)
+3. [ ] Create `_can_change_entity_state(entity)` method checking debounce timing
+4. [ ] Update `_show_entity()`, `_hide_entity()`, `_add_to_memory()` to use debouncing
+5. [ ] Test rapid state oscillation - verify changes limited to 10Hz maximum
 
-### **Task 2: State Management Architecture Refactor**
+#### Sub-task 1.2: Fix memory position management (Issue 3)
+1. [ ] Remove `entity.global_position = memory_entities[entity]` from `_process()`
+2. [ ] Store memory positions without forcing entity movement
+3. [ ] Update memory visual state without changing entity physics position
+4. [ ] Use `call_deferred()` for any remaining position updates
+5. [ ] Test memory entities - verify they don't teleport or cause physics conflicts
 
-#### Sub-task 2.1: Implement proper entity state machine
-1. [ ] Create `EntityVisibilityState` enum with `HIDDEN`, `VISIBLE`, `IN_RANGE_HIDDEN`, `IN_MEMORY` states
-2. [ ] Add `entity_states: Dictionary` to track each entity's current state instead of multiple arrays
-3. [ ] Implement `_set_entity_state(entity, new_state)` method with validation and transition logging
-4. [ ] Replace all array-based tracking with centralized state dictionary access
-5. [ ] Add state transition validation to prevent invalid state changes (e.g., HIDDEN to IN_MEMORY)
+#### Sub-task 1.3: Implement deferred signal processing (Issue 4)
+1. [ ] Update `_on_entity_entered_sight()` to use `call_deferred("_handle_entity_entered", body)`
+2. [ ] Update `_on_entity_left_sight()` to use `call_deferred("_handle_entity_left", body)`
+3. [ ] Create `_handle_entity_entered()` and `_handle_entity_left()` deferred methods
+4. [ ] Ensure all state changes happen outside physics frame processing
+5. [ ] Test signal timing - verify no race conditions during rapid movement
 
-#### Sub-task 2.2: Separate raycasting from signal handling
-1. [ ] Move continuous line-of-sight checking out of `_process()` into dedicated `_check_visibility_updates()` method
-2. [ ] Implement timer-based visibility updates (0.1 seconds) instead of every frame to reduce conflicts
-3. [ ] Create `_handle_area_signal(entity, entered: bool)` method that only manages range tracking
-4. [ ] Separate visibility logic from range tracking - signals only control `entities_in_range`, raycasting controls visibility
-5. [ ] Test that Area2D signals and raycasting checks no longer interfere with each other
+### Task 2: State Validation & Cleanup
 
-#### Sub-task 2.3: Fix memory entity position management
-1. [ ] Remove position freezing from `_process()` loop to eliminate continuous position overwriting
-2. [ ] Store memory positions only once when entity transitions to memory state
-3. [ ] Implement `_update_memory_entity_display()` that positions entity without affecting its actual transform
-4. [ ] Use visual offset or separate sprite positioning instead of modifying `global_position`
-5. [ ] Test memory entities remain stationary without interfering with visibility state transitions
+#### Sub-task 2.1: Implement comprehensive state validation
+1. [ ] Create `_validate_entity_state(entity)` method checking for conflicts
+2. [ ] Add validation: entity cannot be in multiple arrays simultaneously
+3. [ ] Add validation: memory entities must have stored positions
+4. [ ] Add validation: visible entities must have line-of-sight
+5. [ ] Test validation - trigger warnings for inconsistent states
 
----
+#### Sub-task 2.2: Create atomic state transitions
+1. [ ] Create `_transition_entity_state(entity, new_state)` method for safe changes
+2. [ ] Ensure all state changes go through single validation point
+3. [ ] Add rollback capability if state transition fails validation
+4. [ ] Implement proper cleanup when entities are destroyed/removed
+5. [ ] Test atomic transitions - verify no partial state changes
 
-### **Task 3: Robust State Validation & Error Handling**
+#### Sub-task 2.3: Enhanced debug validation
+1. [ ] Add state consistency checks to debug output
+2. [ ] Implement `_debug_validate_all_states()` method for system health check
+3. [ ] Add F12 debug key to trigger full system validation
+4. [ ] Log any state inconsistencies found during validation
+5. [ ] Test validation catches and reports all state corruption issues
 
-#### Sub-task 3.1: Implement comprehensive state validation
-1. [ ] Create `_validate_entity_state(entity)` method checking for state consistency and conflicts
-2. [ ] Add validation calls before and after every state transition to catch corruption immediately
-3. [ ] Implement automatic state cleanup when invalid states detected (entity in multiple conflicting states)
-4. [ ] Add error logging with stack traces when state validation fails
-5. [ ] Test validation system catches and recovers from state corruption without crashing
+### Task 3: System Integration Testing
 
-#### Sub-task 3.2: Add defensive programming practices
-1. [ ] Add null checks and `is_instance_valid()` verification before all entity operations
-2. [ ] Implement graceful degradation when entities are freed during state operations
-3. [ ] Add bounds checking for array operations and dictionary access
-4. [ ] Create fallback behavior when vision system detects critical errors (temporary disable memory)
-5. [ ] Test system handles edge cases: entities dying during state transitions, rapid scene changes
+#### Sub-task 3.1: Systematic reproduction scenario
+1. [ ] Set up test scene with single zombie behind wall corner
+2. [ ] Document exact player movement pattern that previously triggered bugs
+3. [ ] Record baseline behavior with all fixes applied
+4. [ ] Create reproducible test case validating all 4 issues are resolved
+5. [ ] Verify no regression in zombie search behavior (Issue 1 stays fixed)
 
-#### Sub-task 3.3: Performance optimization and cleanup
-1. [ ] Replace array duplicates with direct iteration to prevent modification during iteration issues
-2. [ ] Implement proper cleanup in `_exit_tree()` to prevent memory leaks when scene reloads
-3. [ ] Add entity cleanup when zombies die to remove them from all tracking systems
-4. [ ] Optimize line-of-sight checks using spatial partitioning or distance-based culling
-5. [ ] Test system performance with 20+ zombies and verify no memory leaks during extended play
+#### Sub-task 3.2: Multi-zombie stress testing
+1. [ ] Test with 5+ zombies in various sight/memory/hidden states
+2. [ ] Rapid movement through multiple wall transitions
+3. [ ] Test concurrent zombie AI + PlayerSight processing
+4. [ ] Verify system performance under stress conditions
+5. [ ] Document any remaining edge cases or performance issues
 
----
+#### Sub-task 3.3: Integration with zombie exit position tracking
+1. [ ] Verify PlayerSight fixes don't interfere with zombie exit position system
+2. [ ] Test zombie AI continues working correctly with debounced PlayerSight
+3. [ ] Ensure zombie sight ranges work independently of PlayerSight fixes
+4. [ ] Validate complete tactical visibility system functions as designed
+5. [ ] Document final system behavior and performance characteristics
 
-### **Task 4: Integration Testing & Validation**
+**Expected Result:** All 4 root causes of BUG-005 eliminated. Vision system stable and reliable. Zombies transition properly between visible/memory/hidden states without disappearing, oscillating, or causing physics conflicts.
 
-#### Sub-task 4.1: Systematic behavior verification
-1. [ ] Test baseline behavior: zombies become visible when approaching, hidden when leaving range
-2. [ ] Verify memory behavior: zombies in explored areas become darkened memories behind walls
-3. [ ] Test line-of-sight transitions: zombies appear/disappear correctly when walls block view
-4. [ ] Validate shooting interaction: bullets don't interfere with visibility state management
-5. [ ] Confirm no disappearing zombies during any normal gameplay scenarios
+**Critical Success Criteria:**
+- ✅ Zombie infinite search loops eliminated (Issue 1 - COMPLETED)
+- [ ] Zero rapid state oscillations during wall transitions (Issue 2)
+- [ ] No entity position teleporting or physics conflicts (Issue 3)
+- [ ] Stable signal processing without race conditions (Issue 4)
+- [ ] Tactical visibility system reliable for gameplay decisions
 
-#### Sub-task 4.2: Stress testing and edge cases
-1. [ ] Rapid movement test: move quickly back and forth behind walls 50+ times
-2. [ ] Simultaneous action test: shoot while transitioning between line-of-sight states
-3. [ ] Multi-zombie test: verify system handles 10+ zombies with complex wall layouts
-4. [ ] Scene transition test: reload scene and verify system initializes correctly
-5. [ ] Extended play test: 15-minute continuous play session with no vision system errors
-
-#### Sub-task 4.3: Final validation and documentation
-1. [ ] Complete final test run of original bug reproduction steps with no issues
-2. [ ] Verify all debug logging can be disabled for production without affecting functionality
-3. [ ] Update technical documentation with new state management architecture
-4. [ ] Create developer notes on vision system maintenance and debugging procedures
-5. [ ] Mark BUG-005 as RESOLVED with detailed resolution summary in bug tracker
-
----
-
-**Expected Result:** PlayerSight system with bulletproof state management that eliminates memory corruption. Zombies maintain consistent visibility behavior during all player movement patterns, supporting reliable tactical gameplay mechanics.
-
-**Next Day Preview:** Day 7 will focus on polishing the vision system UX and beginning work on the next critical gameplay feature while the vision foundation is solid.
-
----
+**Validation Tests:**
+- Move behind wall 10 times - zombies stay in memory (darkened) without oscillation
+- Rapid shooting while moving - no vision state corruption or conflicts
+- Multiple zombies behind different walls - all memory states preserved consistently
+- Line-of-sight restoration - all zombies become visible without position glitches
+- System handles 10+ entities in mixed states without performance degradation
