@@ -292,13 +292,13 @@ Zombies occasionally fail to chase player when entering Area2D sight range. Sign
 ## **Quadrant 3: Urgent, Not Important (Investigate After Core Features)**
 
 ---
-
+*No current items*
 ---
 
 ## **Quadrant 4: Backlog (Low Priority)**
 
-*No current backlog items*
-
+---
+*No current items*
 ---
 
 ## **Resolved Bugs**

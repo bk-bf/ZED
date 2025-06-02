@@ -241,77 +241,75 @@
 
 Based on your ZED project's playable-first development philosophy and the established task breakdown pattern, here are the detailed subtasks for Day 5:
 
-## Day 5: Simple AI & Challenge (2025-05-29)
+# Day 5: Simple AI & Challenge (2025-05-29)
 
-**Sub-task 1.1: Basic zombie movement foundation**
+### **Sub-task 1.1: Basic zombie movement foundation**
 1. [x] Add `speed` property to ZombieData with default value 50 pixels/second
 2. [x] Implement `get_direction_to_player()` method in zombie.gd calculating normalized vector
 3. [x] Add `move_toward_target(delta)` method using CharacterBody2D velocity and move_and_slide()
 4. [x] Set zombie detection range to 300 pixels using distance calculation
 5. [x] Test single zombie follows player smoothly when approached
 
-**Sub-task 1.2: Detection and state management**
+### **Sub-task 1.2: Detection and state management**
 1. [x] Create ZombieState enum with IDLE, CHASING, ATTACKING states in zombie.gd
 2. [x] Implement `detect_player()` method checking distance and line-of-sight
 3. [x] Add state transition logic - IDLE to CHASING when player enters range
 4. [x] Implement `lose_player()` method returning to IDLE when player escapes sight_range 
 5. [x] Test zombie state changes work correctly with visual feedback (color changes)
 
-**Sub-task 1.3: Chase behavior optimization**
+### **Sub-task 1.3: Chase behavior optimization**
 1. [x] Add `target_position` property to track last known player location
 2. [x] Implement pathfinding around walls using simple obstacle avoidance
 3. [x] Add slight randomization to movement to prevent perfect stacking
 4. [x] Ensure zombies don't push each other through walls during chase
 5. [-] Test multiple zombies chase player without getting stuck on walls
 
-### **Task 2: Create zombie variety - different types with unique stats and behaviors**
+## **Task 2: Create zombie variety - different types with unique stats and behaviors**
 
-**Sub-task 2.1: Zombie type system foundation**
+### **Sub-task 2.1: Zombie type system foundation**
 1. [x] Create ZombieType enum with WALKER, RUNNER, BRUTE types in EntitesType
 2. [x] Add `zombie_type` property to ZombieData with type-specific stat loading
 3. [x] Define type stats: WALKER (100hp, 50speed), RUNNER (75hp, 100speed), BRUTE (200hp, 30speed)
 4. [x] Update zombie.gd to use ZombieData type properties for health and speed
 5. [x] Test each zombie type spawns with correct stats and visual differentiation
 
-**Sub-task 2.2: Visual type identification**
+## **Sub-task 2.2: Visual type identification**
 1. [x] Assign distinct colors: WALKER (red), RUNNER (orange), BRUTE (dark red)
 2. [x] Add type indicator to DebugManager zombie counter display
 3. [x] Test all three types are visually distinct 
 
-**Sub-task 2.3: Type-specific behavior implementation**
+### **Sub-task 2.3: Type-specific behavior implementation**
 1. [x] Add `damage` property varying by type: WALKER (25), RUNNER (20), BRUTE (40)
 2. [x] Implement different detection ranges: WALKER (350), RUNNER (350), BRUTE (300)
 3. [x] Update zombie spawning to randomly select from available types
 4. [x] Test each type behaves distinctly and creates different tactical challenges
 
-Looking at your updated ROADMAP and the decision to remove wave spawning in favor of game stage systems in Phase 2, here are the rewritten daily tasks for Day 5:
+## **Task 3: Validate tactical positioning mechanics - kiting, chokepoints, resource management**
 
-### **Task 3: Validate tactical positioning mechanics - kiting, chokepoints, resource management**
-
-**Sub-task 3.1: Kiting mechanics validation**
+### **Sub-task 3.1: Kiting mechanics validation**
 1. [x] Test player can maintain distance from WALKER zombies while shooting
 2. [x] Verify RUNNER zombies create pressure requiring tactical repositioning  
 3. [x] Ensure ammunition scarcity forces careful shot placement during kiting
 4. [x] Test corner and wall usage for breaking line-of-sight and resetting zombie pursuit
 5. [x] Validate that kiting feels tactical rather than tedious
 
-### **Task 3: Implement Area2D sight range system with memory and wall occlusion**
+## **Task 3: Implement Area2D sight range system with memory and wall occlusion**
 
-**Sub-task 3.1: Player sight range and zombie visibility foundation**
+### **Sub-task 3.1: Player sight range and zombie visibility foundation**
 1. [x] Create `scripts/systems/player_sight.gd` managing zombie visibility states
 2. [x] Add Area2D "SightRange" to player with CircleShape2D collision detection
 3. [x] Implement zombie detection on `body_entered`/`body_exited` signals from player's sight range
 4. [x] Add raycasting line-of-sight checks to prevent zombie detection through walls
 5. [x] Test zombies become visible when entering player sight range and have clear line-of-sight
 
-**Sub-task 3.2: Memory system and explored area tracking**
+### **Sub-task 3.2: Memory system and explored area tracking**
 1. [x] Implement explored area grid system tracking previously visited locations
 2. [x] Add memory entity system showing zombies in darkened state when behind walls in explored areas
 3. [x] Implement position freezing for memory entities (zombies don't move when in memory state)
 4. [x] Add proper state management for visible/hidden/memory zombie states
 5. [~~] **CRITICAL BUG**: Fix memory system corruption causing zombies to disappear or show inverted visibility
 
-**Sub-task 3.3: Debug visualization and system validation**
+### **Sub-task 3.3: Debug visualization and system validation**
 1. [x] Add F6 debug toggle for player sight range visualization (green circle)
 2. [x] Implement F7 debug toggle for zombie sight ranges (red circles with transparency)
 3. [x] Create comprehensive zombie state debugging (F9) showing detection, memory, and movement states
@@ -334,3 +332,121 @@ Looking at your updated ROADMAP and the decision to remove wave spawning in favo
 1. **IMMEDIATE**: Debug and fix PlayerSight memory system (BUG-005)
 2. **THEN**: Validate system works reliably with rapid movement and shooting
 3. **THEN**: Proceed to Day 6 multi-room implementation
+
+---
+
+# Day 6: Critical Bug Resolution - Vision System Memory (2025-06-01)
+
+## **PRIMARY OBJECTIVE: Fix BUG-005 - Player Vision System Memory Corruption**
+
+**CRITICAL STATUS:** Development blocked until vision system is reliable  
+**Expected Result:** PlayerSight system with predictable, bug-free memory behavior that supports tactical gameplay  
+**Success Metrics:** Memory entities persist correctly behind walls, no disappearing zombies, consistent visibility state management
+
+---
+
+### **Task 1: Diagnostic Analysis & Debug Infrastructure**
+
+#### Sub-task 1.1: Implement comprehensive debug logging system
+1. [ ] Create `PlayerSightDebugger` scene with real-time state display showing `entities_in_range`, `visible_entities`, and `memory_entities` counts
+2. [ ] Add debug logging to every state transition in `_on_entity_entered_sight()` and `_on_entity_left_sight()` with timestamp and entity ID
+3. [ ] Implement `_validate_state_consistency()` method that checks for entities existing in multiple conflicting arrays
+4. [ ] Add debug overlay showing color-coded entity states: Green (visible), Yellow (in-range), Red (memory), Gray (hidden)
+5. [ ] Create debug input action to dump complete system state to console with entity positions and states
+
+#### Sub-task 1.2: Systematic reproduction and state tracking
+1. [ ] Create controlled test scenario with 3 zombies at known positions and single wall for line-of-sight blocking
+2. [ ] Record baseline behavior: approach zombies, confirm visibility, move behind wall, verify memory state activation
+3. [ ] Execute problematic sequence: rapid back-and-forth movement while shooting to trigger memory corruption
+4. [ ] Document exact frame-by-frame state changes when corruption occurs using debug logging
+5. [ ] Identify specific trigger patterns: movement speed, shooting timing, wall transition frequency
+
+#### Sub-task 1.3: Root cause analysis of race conditions
+1. [ ] Analyze timing conflicts between `_process()` continuous raycasting and Area2D signal emissions
+2. [ ] Investigate memory entity position freezing interference with real-time visibility checks
+3. [ ] Check for duplicate entity entries across `visible_entities`, `entities_in_range`, and `memory_entities` arrays
+4. [ ] Verify signal connection integrity and potential duplicate signal emissions
+5. [ ] Document suspected conflict points where multiple systems modify entity state simultaneously
+
+---
+
+### **Task 2: State Management Architecture Refactor**
+
+#### Sub-task 2.1: Implement proper entity state machine
+1. [ ] Create `EntityVisibilityState` enum with `HIDDEN`, `VISIBLE`, `IN_RANGE_HIDDEN`, `IN_MEMORY` states
+2. [ ] Add `entity_states: Dictionary` to track each entity's current state instead of multiple arrays
+3. [ ] Implement `_set_entity_state(entity, new_state)` method with validation and transition logging
+4. [ ] Replace all array-based tracking with centralized state dictionary access
+5. [ ] Add state transition validation to prevent invalid state changes (e.g., HIDDEN to IN_MEMORY)
+
+#### Sub-task 2.2: Separate raycasting from signal handling
+1. [ ] Move continuous line-of-sight checking out of `_process()` into dedicated `_check_visibility_updates()` method
+2. [ ] Implement timer-based visibility updates (0.1 seconds) instead of every frame to reduce conflicts
+3. [ ] Create `_handle_area_signal(entity, entered: bool)` method that only manages range tracking
+4. [ ] Separate visibility logic from range tracking - signals only control `entities_in_range`, raycasting controls visibility
+5. [ ] Test that Area2D signals and raycasting checks no longer interfere with each other
+
+#### Sub-task 2.3: Fix memory entity position management
+1. [ ] Remove position freezing from `_process()` loop to eliminate continuous position overwriting
+2. [ ] Store memory positions only once when entity transitions to memory state
+3. [ ] Implement `_update_memory_entity_display()` that positions entity without affecting its actual transform
+4. [ ] Use visual offset or separate sprite positioning instead of modifying `global_position`
+5. [ ] Test memory entities remain stationary without interfering with visibility state transitions
+
+---
+
+### **Task 3: Robust State Validation & Error Handling**
+
+#### Sub-task 3.1: Implement comprehensive state validation
+1. [ ] Create `_validate_entity_state(entity)` method checking for state consistency and conflicts
+2. [ ] Add validation calls before and after every state transition to catch corruption immediately
+3. [ ] Implement automatic state cleanup when invalid states detected (entity in multiple conflicting states)
+4. [ ] Add error logging with stack traces when state validation fails
+5. [ ] Test validation system catches and recovers from state corruption without crashing
+
+#### Sub-task 3.2: Add defensive programming practices
+1. [ ] Add null checks and `is_instance_valid()` verification before all entity operations
+2. [ ] Implement graceful degradation when entities are freed during state operations
+3. [ ] Add bounds checking for array operations and dictionary access
+4. [ ] Create fallback behavior when vision system detects critical errors (temporary disable memory)
+5. [ ] Test system handles edge cases: entities dying during state transitions, rapid scene changes
+
+#### Sub-task 3.3: Performance optimization and cleanup
+1. [ ] Replace array duplicates with direct iteration to prevent modification during iteration issues
+2. [ ] Implement proper cleanup in `_exit_tree()` to prevent memory leaks when scene reloads
+3. [ ] Add entity cleanup when zombies die to remove them from all tracking systems
+4. [ ] Optimize line-of-sight checks using spatial partitioning or distance-based culling
+5. [ ] Test system performance with 20+ zombies and verify no memory leaks during extended play
+
+---
+
+### **Task 4: Integration Testing & Validation**
+
+#### Sub-task 4.1: Systematic behavior verification
+1. [ ] Test baseline behavior: zombies become visible when approaching, hidden when leaving range
+2. [ ] Verify memory behavior: zombies in explored areas become darkened memories behind walls
+3. [ ] Test line-of-sight transitions: zombies appear/disappear correctly when walls block view
+4. [ ] Validate shooting interaction: bullets don't interfere with visibility state management
+5. [ ] Confirm no disappearing zombies during any normal gameplay scenarios
+
+#### Sub-task 4.2: Stress testing and edge cases
+1. [ ] Rapid movement test: move quickly back and forth behind walls 50+ times
+2. [ ] Simultaneous action test: shoot while transitioning between line-of-sight states
+3. [ ] Multi-zombie test: verify system handles 10+ zombies with complex wall layouts
+4. [ ] Scene transition test: reload scene and verify system initializes correctly
+5. [ ] Extended play test: 15-minute continuous play session with no vision system errors
+
+#### Sub-task 4.3: Final validation and documentation
+1. [ ] Complete final test run of original bug reproduction steps with no issues
+2. [ ] Verify all debug logging can be disabled for production without affecting functionality
+3. [ ] Update technical documentation with new state management architecture
+4. [ ] Create developer notes on vision system maintenance and debugging procedures
+5. [ ] Mark BUG-005 as RESOLVED with detailed resolution summary in bug tracker
+
+---
+
+**Expected Result:** PlayerSight system with bulletproof state management that eliminates memory corruption. Zombies maintain consistent visibility behavior during all player movement patterns, supporting reliable tactical gameplay mechanics.
+
+**Next Day Preview:** Day 7 will focus on polishing the vision system UX and beginning work on the next critical gameplay feature while the vision foundation is solid.
+
+---
