@@ -227,7 +227,6 @@ func _calculate_sight_boundary_exit_position(entity: Node2D) -> Vector2:
     _debug_log_state("Calculated boundary exit position: %s (distance: %.1f)" % [boundary_position, sight_radius])
     return boundary_position
 
-
 func _add_to_memory(entity):
     if not _can_change_entity_state(entity):
         return false
@@ -235,22 +234,20 @@ func _add_to_memory(entity):
     if not _is_area_explored(entity.global_position):
         return _hide_entity_completely(entity)
     
-    # Store the frozen position BEFORE adding to memory
+    # Store the frozen position
     var frozen_position = entity.global_position
     memory_entities[entity] = frozen_position
     
-    # Actually freeze the entity's movement
-    if entity.has_method("set_memory_state"):
-        entity.set_memory_state(true, frozen_position)
+    # CRITICAL FIX: Actually freeze the entity at memory position
+    if entity.has_method("set_memory_mode"):
+        entity.set_memory_mode(true, frozen_position)
     
     # Visual feedback for memory state
     entity.visible = true
     entity.modulate = Color(0.4, 0.4, 0.4, 1.0)
     
     _debug_log_memory("ADD_TO_MEMORY", entity, frozen_position)
-    _record_entity_state_change(entity)
     return true
-
 
 func _remove_from_memory(entity):
     """Remove entity from memory system - only when gaining LOS"""

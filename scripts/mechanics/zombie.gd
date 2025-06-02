@@ -17,6 +17,10 @@ var last_seen_player_position: Vector2 = Vector2.ZERO
 var player_exit_position: Vector2 = Vector2.ZERO
 var is_tracking_player: bool = false
 
+# NEW: In-memory mode for testing purposes
+var is_in_memory_mode: bool = false
+var memory_position: Vector2 = Vector2.ZERO
+
 # Debouncing state change to prevent rapid state changes
 var last_state_change_time: float = 0.0
 var min_state_change_interval: float = 0.1 # 100ms minimum
@@ -400,7 +404,21 @@ func _use_simple_movement(target_pos: Vector2, has_los: bool, is_in_range: bool,
 		zombie_data.detected_player = null
 		velocity = Vector2.ZERO
 
+func set_memory_mode(in_memory: bool, frozen_pos: Vector2 = Vector2.ZERO):
+	is_in_memory_mode = in_memory
+	if in_memory:
+		memory_position = frozen_pos
+		velocity = Vector2.ZERO # Stop movement immediately
+	else:
+		memory_position = Vector2.ZERO
+
 func _physics_process(delta):
+	# CRITICAL: Don't process physics if in memory mode
+	if is_in_memory_mode:
+		global_position = memory_position # Force position to frozen location
+		return
+		
+	# Normal physics processing only if not in memory
 	if not zombie_data or is_dead:
 		return
 	
@@ -443,6 +461,7 @@ func _physics_process(delta):
 			current_path.clear()
 	
 	move_and_slide()
+
 
 func _has_line_of_sight_to_player(player) -> bool:
 	if not player or not is_instance_valid(player):
