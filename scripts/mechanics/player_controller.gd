@@ -100,6 +100,11 @@ func die():
 	"""Handle player death - restart scene"""
 	print("Player died! Restarting scene...")
 	
+	# Clear memory before death
+	var player_sight = get_tree().get_first_node_in_group("player_sight")
+	if player_sight:
+		player_sight.clear_memory_on_death()
+	
 	# Visual death feedback
 	modulate = Color.RED
 	
@@ -107,15 +112,9 @@ func die():
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
 	
-	# FIX: Reset debug stats before scene restart
+	# Reset other systems
 	DebugManager.reset_ai_stats()
-	# Reset PlayerData singleton to default values
 	PlayerDataAutoload.reset_to_defaults()
-
-func heal(amount: int):
-	"""Heal player up to max health"""
-	player_data.health = min(player_data.max_health, player_data.health + amount)
-	print("Player healed ", amount, ". Health: ", player_data.health, "/", player_data.max_health)
 
 func shoot_bullet(direction: Vector2):
 	# Check ammo before shooting
