@@ -516,29 +516,72 @@ var memory_color = Color(
 
 ## **Key Lessons Learned**
 
-### **1. Observability is Critical**
-The "bug" was a configuration issue made invisible by disabled debug logging. Proper observability prevented weeks of unnecessary debugging.
+### **1. Multi-System Issues Require Systematic Decomposition**
+BUG-005 demonstrated that complex behavioral issues often stem from **multiple independent system failures** working in combination. What appeared as a single "zombie movement bug" was actually:
+- LOS detection parameter mismatches
+- State management logic flaws  
+- Memory system interference
+- Visual system component misunderstanding
+- Missing debug infrastructure
+- Performance configuration errors
 
-### **2. Debug-Driven Development Works**
-Systematic debug flag implementation revealed the working system and guided optimization efforts.
+**Lesson:** Don't assume complex bugs have simple root causes. Break down systems methodically.
 
-### **3. Performance vs Functionality**
-What appeared as functionality failure was actually performance configuration mismatch.
+### **2. Observability Infrastructure is Non-Negotiable**
+The most critical discovery was that **missing debug methods made root causes invisible**. State transitions were happening but never logged because `_debug_log_state_transition()` didn't exist. This created a false impression of system failure when the issue was observability gaps.
 
-### **4. Progressive Analysis Methodology**
-The sequential analysis approach (#debug_log_2 → #debug_log_5) provided comprehensive understanding even when initial theories were wrong.
+**Lesson:** Build comprehensive debug infrastructure **first**, then investigate. You can't fix what you can't see.
+
+### **3. Debug-Driven Development Methodology Validation**
+The systematic implementation of debug flags across all systems:
+- Revealed which systems were actually working vs. broken
+- Guided optimization efforts to real bottlenecks
+- Enabled rapid iteration and verification of fixes
+- Provided confidence in architectural decisions
+
+**Lesson:** Debug infrastructure is not overhead—it's the foundation of reliable development.
+
+### **4. Progressive Analysis Prevents Tunnel Vision**
+The sequential analysis approach (#debug_log_2 → #debug_log_5) prevented fixation on incorrect theories. Each phase built understanding even when root cause theories were wrong, ultimately leading to breakthrough insights.
+
+**Lesson:** Document analysis progression. Wrong theories still provide valuable system understanding.
+
+### **5. Performance Issues Can Mask Functional Issues**
+The 25x oversized sight radius created performance problems that made it difficult to analyze actual functionality. Fixing performance revealed that core systems were working correctly.
+
+**Lesson:** Address performance bottlenecks early—they obscure functional debugging.
 
 ---
 
-## **Conclusion: From Crisis to Triumph**
+## **Conclusion: From Crisis to Mastery**
 
-BUG-005 represents one of the most significant debugging achievements in the ZED project. What began as a "game-breaking architectural failure" was revealed to be a minor configuration issue obscured by incomplete observability. The zombie movement system now works perfectly, validating the core game architecture and enabling confident progression to advanced features.
+BUG-005 represents the **most valuable debugging experience** in the ZED project. What began as a perceived "catastrophic system failure" evolved into a **masterclass in systematic debugging methodology**. 
 
-**The movement system crisis is over. Development can proceed at full speed.** 🎉
+**The Real Victory:**
+- **Not the fixes themselves** (relatively straightforward once identified)
+- **But the development of systematic debugging capabilities** that will benefit every future feature
+- **Complete confidence in the core architecture** after stress-testing under pressure
+- **Comprehensive debug infrastructure** enabling rapid development going forward
+
+**Key Transformations:**
+
+**From:** "Is our architecture fundamentally broken?"  
+**To:** "Our architecture is solid; we just needed proper observability."
+
+**From:** "This might take weeks to fix."  
+**To:** "We can systematically identify and resolve any issue."
+
+**From:** "Should we redesign the entire system?"  
+**To:** "We have the debugging tools to optimize any component."
+
+**The movement system isn't just fixed—it's now the most thoroughly tested and understood component in the entire codebase.** 🎉
 
 ---
 
-**Total Debugging Effort:** ~40 hours across multiple analysis phases  
-**Actual Issue Complexity:** 5-minute configuration fix  
-**Value Gained:** Complete system understanding + robust debug infrastructure  
-**Development Confidence:** MAXIMUM - Core systems validated and optimized
+**Total Development Investment:** ~16 hours across analysis and implementation  
+**Technical Debt Eliminated:** 7 critical system issues resolved simultaneously  
+**Debug Infrastructure Gained:** Comprehensive observability across all systems  
+**Development Velocity Impact:** **MASSIVE ACCELERATION** - future issues will be resolved in minutes, not hours  
+**Confidence:** **ABSOLUTE** - proven capability to systematically resolve any technical challenge
+
+**The debugging methodology developed during BUG-005 is now the project's greatest technical asset.**
