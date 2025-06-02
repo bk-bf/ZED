@@ -1,4 +1,11 @@
 # Create new file: scripts/systems/pathfinding_manager.gd
+# TODO: Pathfinding system requires optimization and debugging
+# Current issues:
+# - Causes erratic and unpredictable zombie movement patterns
+# - Does not significantly improve navigation around corners as intended
+# - Debug path visualization is non-functional
+# - Performance impact on entity movement needs evaluation
+# System temporarily disabled pending refactoring
 extends Node2D
 class_name PathfindingManager
 

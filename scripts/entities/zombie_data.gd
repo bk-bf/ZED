@@ -7,7 +7,7 @@ class_name ZombieData
 @export var speed: float
 @export var max_health: int
 @export var damage: int
-@export var sight_range: float # Used in Area2D for sight detection
+@export var sight_range: float = 350 # Used in Area2D for sight detection
 
 var detected_player: Node2D = null
 @export var target_position: Vector2 = Vector2.ZERO
