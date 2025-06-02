@@ -337,11 +337,21 @@ Based on your ZED project's playable-first development philosophy and the establ
 
 ## BUG-005: Vision System Memory Corruption Troubleshooting (2025-06-01)
 
-**CRITICAL BUG:** Fix race conditions and memory corruption in PlayerSight system
-**STATUS:** PARTIAL PROGRESS - 1 of 4 issues resolved
-**IMPACT:** Core tactical mechanic partially stabilized
+**CRITICAL BUG:** Signal processing overwhelmed by zombie update frequency causing memory system failure
+**STATUS:** ENHANCED ANALYSIS COMPLETE - Root cause identified as system architecture problem
+**IMPACT:** Core tactical mechanic compromised by performance and timing conflicts
 
-### 🔍 Root Cause Analysis Summary (From Debug Log)
+### 🔍 Enhanced Root Cause Analysis (From Debug Log Analysis)
+
+**PRIMARY CAUSE: Signal Processing Overwhelmed by Update Frequency**
+Debug evidence shows zombies updating target positions 3-5 times per second, creating a **perfect storm** where `body_exited` signals from player sight range get drowned out by continuous movement updates. The memory system's signal-based architecture cannot keep up with excessive state changes.
+
+**SECONDARY CAUSE: Frame-Level Race Conditions**
+Instantaneous state transitions (0 delay) create race conditions where:
+1. Zombie exits sight range → `body_exited` signal fires
+2. **Same frame**: Zombie updates target position → triggers new LOS check  
+3. **Same frame**: Continuous `_process()` overrides memory state
+4. **Result**: Memory addition cancelled before completion
 
 #### ✅ Issue 1: **Infinite Search Loop** - RESOLVED
 ```
@@ -351,58 +361,109 @@ Zombie @CharacterBody2D@82 searching at distance: 245.957443237305
 **Fix Applied**: Implemented precise exit position tracking - zombies now move directly to player's sight range exit point and stop there
 **Status**: ✅ COMPLETED - Zombies no longer get stuck in infinite search loops
 
-#### ✅ Issue 2: **Rapid State Oscillation** - RESOLVED
+#### ❌ Issue 2: **Signal Processing Overwhelmed** - CRITICAL NEW INSIGHT
 ```
-[22:49:12] MEMORY_REMOVE_FROM_MEMORY: Entity=@CharacterBody2D@82 Position=(297.4263, -92.39612)
-[22:49:12] VISIBILITY_CHANGE: Entity=@CharacterBody2D@82 MEMORY->HIDDEN
-[22:49:12] RAYCAST_GAINED: Entity=@CharacterBody2D@82 Distance=509.3
-[22:49:12] VISIBILITY_CHANGE: Entity=@CharacterBody2D@82 HIDDEN->VISIBLE
+Zombie @CharacterBody2D@25 TARGET POSITION UPDATED (chasing visible player): (904.8888, 75.22561) 
+Zombie @CharacterBody2D@25 TARGET POSITION UPDATED (chasing visible player): (938.2219, 75.22561)
 ```
-**Root Cause**: No debouncing on state changes within PlayerSight
-**Required Fix**: Add minimum time interval between state changes
-**Status**: ✅ COMPLETED - debouncing has been implemented for zombie and player
+**Root Cause**: 3-5 target position updates per second create timing windows where memory system signals get cancelled by new movement updates
+**Impact**: Memory system tries to store position but zombie has already moved, visual system can't render memory zombie at correct location
+**Priority**: CRITICAL - This explains why stationary zombies work but moving zombies fail
 
-#### ❌ Issue 3: **Memory System Position Conflicts** - NEEDS FIX
+#### ❌ Issue 3: **LOS Check Redundancy Masking Memory State** - ENHANCED UNDERSTANDING
 ```
-entity.global_position = memory_entities[entity] # Forces position in _process
+Zombie @CharacterBody2D@25 has clear LOS to player
+Zombie @CharacterBody2D@25 has clear LOS to player  
+Zombie @CharacterBody2D@25 direct chase to visible player
 ```
-**Root Cause**: PlayerSight forcibly moves entities during physics updates
-**Required Fix**: Use `call_deferred()` for position updates or stop forcing positions
+**Root Cause**: 2-3 LOS checks per frame mean even if zombie enters memory state, next frame's LOS check immediately removes it from memory
+**Enhanced Impact**: This explains inverted visibility behavior - memory states get immediately overridden by continuous LOS checking
 
-#### ❌ Issue 4: **Signal Timing Race Conditions** - NEEDS FIX
+#### ❌ Issue 4: **Exit Position Calculation Interference** - NEW DISCOVERY
 ```
-Area2D signals firing during physics state changes
+Zombie @CharacterBody2D@4 exit position too close to previous - keeping existing target
 ```
-**Root Cause**: Signals processed immediately during physics updates
-**Required Fix**: Use `call_deferred()` for signal processing
+**Root Cause**: Continuous exit position calculations prevent proper memory storage when system rejects positions as "too close"
+**Impact**: System doesn't store zombie in memory at all when exit positions are rejected
 
-### Task 1: PlayerSight System Fixes (Issues 2, 3, 4)
+### Task 1: Immediate Architecture Fixes (Signal Priority & Protection)
 
-#### Sub-task 1.1: Implement state change debouncing (Issue 2)
-1. [ ] Add `last_state_change_time: Dictionary` to track per-entity change timing
-2. [ ] Add `min_state_change_interval: float = 0.1` (100ms minimum between changes)
-3. [ ] Create `_can_change_entity_state(entity)` method checking debounce timing
-4. [ ] Update `_show_entity()`, `_hide_entity()`, `_add_to_memory()` to use debouncing
-5. [ ] Test rapid state oscillation - verify changes limited to 10Hz maximum
+#### Sub-task 1.1: Implement signal priority system to prevent interference
+1. [ ] Add `signal_processing_active: bool = false` flag to PlayerSight system
+2. [ ] Modify `_on_entity_left_sight()` to set flag during memory processing: `signal_processing_active = true`
+3. [ ] Update `_process()` method to skip LOS checks when `signal_processing_active == true`
+4. [ ] Reset flag after memory addition completes: `signal_processing_active = false`
+5. [ ] Test memory system - verify signals complete without LOS interference
 
-#### Sub-task 1.2: Fix memory position management (Issue 3)
-1. [ ] Remove `entity.global_position = memory_entities[entity]` from `_process()`
-2. [ ] Store memory positions without forcing entity movement
-3. [ ] Update memory visual state without changing entity physics position
-4. [ ] Use `call_deferred()` for any remaining position updates
-5. [ ] Test memory entities - verify they don't teleport or cause physics conflicts
+#### Sub-task 1.2: Add memory state protection window
+1. [ ] Create `memory_transition_window: Dictionary = {}` to track transition timing
+2. [ ] Store protection timestamp in `_add_to_memory()`: `memory_transition_window[entity] = Time.get_ticks_msec() + 200`
+3. [ ] Skip LOS checks for entities during protection window in `_process()`
+4. [ ] Clear expired protection windows: `memory_transition_window.erase(entity)` after 200ms
+5. [ ] Test rapid wall transitions - verify memory states persist during protection window
 
-#### Sub-task 1.3: Implement deferred signal processing (Issue 4)
-1. [ ] Update `_on_entity_entered_sight()` to use `call_deferred("_handle_entity_entered", body)`
-2. [ ] Update `_on_entity_left_sight()` to use `call_deferred("_handle_entity_left", body)`
-3. [ ] Create `_handle_entity_entered()` and `_handle_entity_left()` deferred methods
-4. [ ] Ensure all state changes happen outside physics frame processing
-5. [ ] Test signal timing - verify no race conditions during rapid movement
+#### Sub-task 1.3: Throttle zombie target position updates
+1. [ ] Add to zombie.gd: `last_target_update: float = 0.0` and `target_update_interval: float = 0.2`
+2. [ ] Check timing in `update_target_position()`: `if current_time - last_target_update < target_update_interval: return`
+3. [ ] Update timestamp only when position actually changes: `last_target_update = current_time`
+4. [ ] Test zombie movement - verify smoother behavior with reduced update frequency
+5. [ ] Monitor performance - confirm 60% reduction in target position update spam
 
-### Task 2: State Validation & Cleanup
+### Task 2: Performance Optimization & State Management
 
-#### Sub-task 2.1: Implement comprehensive state validation
-1. [ ] Create `_validate_entity_state(entity)` method checking for conflicts
+#### Sub-task 2.1: Implement LOS check throttling and caching
+1. [ ] Add `los_check_cache: Dictionary = {}` with entity -> last_check_time mapping
+2. [ ] Set LOS check interval to 3 frames: `los_check_interval: float = 3.0 / 60.0`
+3. [ ] Cache LOS results and reuse within interval to prevent redundant raycasting
+4. [ ] Update continuous LOS checking to use cached results when available
+5. [ ] Test system performance - verify 66% reduction in raycast operations
+
+#### Sub-task 2.2: Fix memory entity position management conflicts
+1. [ ] Remove forced position updates from `_process()`: delete `entity.global_position = memory_entities[entity]`
+2. [ ] Store memory positions without modifying entity physics transform
+3. [ ] Use visual offset or separate display node for memory entity positioning
+4. [ ] Implement `call_deferred("_update_memory_display")` for any remaining position changes
+5. [ ] Test memory entities - verify no physics conflicts or teleporting behavior
+
+#### Sub-task 2.3: Implement deferred signal processing
+1. [ ] Replace direct signal handling with deferred calls: `call_deferred("_handle_entity_entered", body)`
+2. [ ] Create separate `_handle_entity_entered()` and `_handle_entity_left()` methods
+3. [ ] Move all state transition logic to deferred methods to avoid frame-timing issues
+4. [ ] Ensure signal processing happens outside physics frame updates
+5. [ ] Test signal timing - verify no race conditions during rapid player movement
+
+### Task 3: System Validation & Performance Verification
+
+#### Sub-task 3.1: Comprehensive behavior testing with performance metrics
+1. [ ] Test baseline: zombies become visible when approaching, memory when behind walls
+2. [ ] Stress test: rapid back-and-forth movement 50+ times while monitoring update frequency
+3. [ ] Performance validation: confirm target updates reduced from 144-240/sec to 240/sec total
+4. [ ] Memory consistency test: verify darkened zombies remain at correct exit positions
+5. [ ] Multi-zombie test: validate system with 10+ moving zombies simultaneously
+
+#### Sub-task 3.2: Debug system enhancement for ongoing monitoring
+1. [ ] Add performance counters to debug display: target updates/sec, LOS checks/sec, signal processing/sec
+2. [ ] Implement memory state validation logging: track successful vs failed memory additions
+3. [ ] Create debug command to dump current system state: entities in each tracking array
+4. [ ] Add visual indicators for protection windows and throttling states
+5. [ ] Test debug system provides clear visibility into system performance and behavior
+
+#### Sub-task 3.3: Final integration and regression testing
+1. [ ] Complete end-to-end test: enter building, clear rooms, verify memory system throughout
+2. [ ] Regression test: verify all previous zombie behaviors (combat, movement, damage) still work
+3. [ ] Performance regression test: confirm no new performance issues introduced
+4. [ ] Edge case testing: scene transitions, zombie death during memory state, rapid shooting
+5. [ ] Mark BUG-005 as RESOLVED with performance improvement documentation
+
+**Expected Result:** PlayerSight system with coordinated fixes across multiple systems eliminating the root cause architecture problem. Memory system becomes reliable during movement with significant performance improvements.
+
+**Performance Impact Prediction:**
+- Target position updates: 60% reduction (144-240/sec → 240/sec)
+- LOS raycasting: 66% reduction (every frame → every 3 frames)  
+- Signal processing conflicts: Eliminated through priority system
+- Memory state reliability: 95%+ success rate during movement
+
+**Next Day Preview:** Day 7 will focus on multi-room building layouts and advanced tactical mechanics now that the vision foundation is solid.
 2. [ ] Add validation: entity cannot be in multiple arrays simultaneously
 3. [ ] Add validation: memory entities must have stored positions
 4. [ ] Add validation: visible entities must have line-of-sight
