@@ -57,7 +57,6 @@ Build immediately testable core gameplay loop
 
 ## **PHASE 2: Map Content Development (Days 12-18+)**
 
-
 ### **Day 11: Map Design Foundation (2025-06-04)**
 - [ ] **DESIGN**: Complete Level Design Document for primary map type (Hospital Complex recommended)
 - [ ] **DESIGN**: Detailed map specification covering flow, ambience, loot distribution, threat placement, extraction points
