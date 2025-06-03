@@ -2,7 +2,7 @@
 
 **Top-Down Tactical Extraction Shooter**
 
-ZED is a top-down tactical extraction game where you lead survivors through zombie-infested buildings in a post-apocalyptic world. Every mission is a calculated risk - clear buildings for resources, but lose everything if you die before extraction!
+ZED is a top-down tactical extraction game where you rescue survivors from zombie-infested buildings in a post-apocalyptic world. Every mission is a calculated risk - clear buildings for resources, but lose everything if you die before extraction!
 
 ## 🎯 Core Gameplay
 
