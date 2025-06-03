@@ -307,14 +307,14 @@ Based on your ZED project's playable-first development philosophy and the establ
 2. [x] Add memory entity system showing zombies in darkened state when behind walls in explored areas
 3. [x] Implement position freezing for memory entities (zombies don't move when in memory state)
 4. [x] Add proper state management for visible/hidden/memory zombie states
-5. [~~] **CRITICAL BUG**: Fix memory system corruption causing zombies to disappear or show inverted visibility
+5. [x] **CRITICAL BUG**: Fix memory system corruption causing zombies to disappear or show inverted visibility
 
 ### **Sub-task 3.3: Debug visualization and system validation**
 1. [x] Add F6 debug toggle for player sight range visualization (green circle)
 2. [x] Implement F7 debug toggle for zombie sight ranges (red circles with transparency)
 3. [x] Create comprehensive zombie state debugging (F9) showing detection, memory, and movement states
 4. [x] Add debug output for sight range signals and line-of-sight calculations
-5. [~~] **NEEDS COMPLETION**: Validate system stability and fix race conditions between signals and raycasting
+5. [x] **NEEDS COMPLETION**: Validate system stability and fix race conditions between signals and raycasting
 
 **Expected Result:** Player has visible sight range showing which zombies can be detected. Zombies behind walls in explored areas appear as darkened memories. System provides tactical information about enemy positions while requiring exploration to reveal new areas.
 
@@ -339,110 +339,117 @@ Based on your ZED project's playable-first development philosophy and the establ
 
 **FINAL STATUS:** ✅ **COMPLETELY RESOLVED** - Core movement system perfect  
 **Resolution Date:** 2025-06-03  
-**Total Investigation Time:** ~16 hours analysis + 6 hours implementation  
+**Total Investigation Time:** ~16 hours analysis + 8 hours implementation  
 **Critical Success:** All blocking issues eliminated, development at full speed
 
 ---
 
-## **Executive Summary: The Complete Journey**
+## **Executive Summary: The Revolutionary Debugging Journey**
 
-What initially appeared as a "vision system memory corruption" was revealed to be a **seven-part system breakdown** affecting zombie movement, state transitions, memory system, and performance. Through systematic progressive analysis (#debug_log_2 through #debug_log_5), we discovered that multiple independent system failures were working in combination to create seemingly catastrophic behavior.
+What initially appeared as a "vision system memory corruption" revealed itself as a **seven-part system breakdown** affecting zombie movement, state transitions, memory system, and performance. Through AI-assisted log analysis and visual architecture mapping,  two critical breakthroughs were achieved, that transformed this projects debugging capabilities and resolved the complex issue.
 
-**The Ultimate Discovery:** The memory system was actually working correctly - the issues were caused by configuration mismatches, missing debug infrastructure, and conflicting LOS detection parameters that made root causes invisible.
+---
+
+## **The Two Critical Breakthrough Discoveries**
+
+### **🚀 Breakthrough #1: AI-Assisted Log Analysis Methodology**
+**The Challenge:** Debug logs generated 10,000+ lines in seconds, creating overwhelming information spam that made manual parsing impossible.
+
+**The Discovery:** **GitHub Copilot could parse massive log files and create concise, immediately actionable analysis summaries.** This revelation transformed debugging from an overwhelming manual process into a systematic, AI-assisted methodology.
+
+**Impact:**
+- Eliminated fear of "debug spam" - transformed data volume from liability to asset
+- Enabled full utilization of extensive debug logging infrastructure
+- Created repeatable methodology for complex system debugging
+
+### **🚀 Breakthrough #2: Visual Architecture Analysis**
+**The Challenge:** Both `player_sight.gd` and `zombie.gd` had become convoluted with dozens of methods, making system interactions impossible to track through code reading alone.
+
+**The Discovery:** **Creating detailed flowcharts revealed the fundamental memory system design flaw immediately.** Visual architecture mapping exposed what code inspection missed.
+
+**The Critical Insight:** Memory system was **freezing entire zombie AI** instead of storing position data - the root cause that cascaded into 7 system failures.
+
+**Visual Debug Enhancement:** Adding zombie labels (ID, state, memory reference) made 10K+ line logs correlatable with actual game behavior, enabling real-time state transition observation and correlation with debug output.
 
 ---
 
 ## **Root Causes Identified and Resolved**
 
-### ✅ **Issue 1: LOS Detection Parameter Mismatch (CRITICAL)**
-**Problem:** Zombie and PlayerSight systems using conflicting raycast parameters
-```gdscript
-# PlayerSight (Working):
-query.exclude = [player]  # Only excludes player
+### ✅ **Issue 1: Core Memory System Architecture Fix (Critical)**
+**Problem:** Memory system froze entire zombie AI instead of storing position
+**Solution:** Redesigned memory to store position data while maintaining AI processing
 
-# Zombie (Broken):
-query.exclude = [self, player]  # Excludes BOTH zombie and player
-query.hit_from_inside = false   # Additional conflicting parameter
-```
-**Resolution:** Standardized both systems to use identical parameters
-**Impact:** Eliminated conflicting LOS results for identical scenarios
+### ✅ **Issue 2: LOS Detection System Standardization (Critical)**
+**Problem:** Conflicting LOS parameters between PlayerSight and Zombie systems
+**Solution:** Unified LOS detection parameters across all systems
 
-### ✅ **Issue 2: State Management Logic Failures (GAME-BREAKING)**
-**Problem:** Zombies detecting players behind walls never transitioned from IDLE to CHASING
-```gdscript
-# BROKEN Logic:
-elif is_in_range and not has_los:
-    if zombie_data.state == ZombieData.ZombieState.CHASING:
-        # Only updates IF already chasing - never starts chasing!
-```
-**Resolution:** Complete state management rewrite with proper wall behavior
-**Impact:** Zombies now properly stay idle when they can't see player behind walls
+### ✅ **Issue 3: State Management Logic Overhaul (Game-Breaking)**
+**Problem:** State transitions blocked by frozen AI system
+**Solution:** Complete state management rewrite with proper transition logic
 
-### ✅ **Issue 3: Memory System Exploration Grid Interference**
-**Problem:** Arbitrary 64x64 pixel exploration grid preventing valid memory storage
-**Resolution:** Removed exploration requirement - memory system now stores all valid zombie positions
-**Impact:** Memory system functions perfectly with visual markers
+### ✅ **Issue 4: Configuration Mismatch Resolution (Performance)**
+**Problem:** Area2D radius (500.0) vs exported sight_range (100.0) - 25x oversized detection
+**Solution:** Synchronized all detection radii to match exported variables
 
-### ✅ **Issue 4: Visual System Component Error**
-**Problem:** Attempting to clone non-existent Sprite2D instead of actual ColorRect components
-**Resolution:** Fixed to use actual zombie ColorRect system with proper darkening
-**Impact:** Memory visual markers now display correctly
+### ✅ **Issue 5: Memory System Requirement Cleanup (Functional)**
+**Problem:** Arbitrary exploration grid requirements blocking valid memory storage
+**Solution:** Removed unnecessary exploration prerequisites
 
-### ✅ **Issue 5: Missing Debug Infrastructure (CRITICAL)**
-**Problem:** `_debug_log_position_update()` and `_debug_log_state_transition()` methods didn't exist
-**Resolution:** Implemented complete debug infrastructure
-**Impact:** State changes now fully observable - root causes no longer invisible
+### ✅ **Issue 6: Visual System Component Correction (Visual)**
+**Problem:** Attempted to clone non-existent Sprite2D components
+**Solution:** Fixed to use actual ColorRect-based zombie rendering system
 
-### ✅ **Issue 6: Performance Configuration Error**
-**Problem:** 25x oversized sight radius (500.0 vs 100.0) causing excessive LOS checks
-**Resolution:** Corrected Area2D radius to match exported sight_range variable
-**Impact:** LOS checks reduced from 16+/frame to <5/frame
-
-### ✅ **Issue 7: Last Known Position Management**
-**Problem:** Improper tracking when LOS broken - zombies "wallhacking" to current player position
-**Resolution:** Only update last_seen_player_position when zombie can actually see player
-**Impact:** Realistic zombie behavior - they chase to where they last SAW the player
+### ✅ **Issue 7: Debug Infrastructure Implementation (Observability)**
+**Problem:** Missing debug methods made state changes invisible
+**Solution:** Implemented comprehensive debug logging for all state transitions
 
 ---
 
 ## **Final Implementation Tasks (COMPLETED)**
 
-### ✅ **Task 1: LOS Detection System Standardization**
+### ✅ **Task 1: Memory System Architecture Redesign**
+1. ✅ Fixed core design flaw - memory now stores position without freezing zombie AI
+2. ✅ Implemented proper state machine that continues processing during memory state
+3. ✅ Added position tracking for last known player location when LOS breaks
+4. ✅ Verified zombies maintain AI functionality while in memory
+5. ✅ Tested memory system works independently of exploration grid
+
+### ✅ **Task 2: LOS Detection System Standardization**
 1. ✅ Updated zombie `_has_line_of_sight_to_player()` to match PlayerSight parameters exactly
 2. ✅ Removed conflicting `query.exclude = [self, player]` - now only excludes player
 3. ✅ Removed `query.hit_from_inside = false` parameter causing inconsistencies
 4. ✅ Verified both systems now report identical LOS results for same scenarios
-5. ✅ Tested with WALKER_505 - no more conflicting detection results
+5. ✅ Tested with multiple zombies - no more conflicting detection results
 
-### ✅ **Task 2: Complete State Management Overhaul**
-1. ✅ Rewrote `_physics_process()` with independent player detection
+### ✅ **Task 3: Complete State Management Overhaul**
+1. ✅ Rewrote `_physics_process()` with proper state transition logic
 2. ✅ Fixed wall logic - zombies stay idle when can't see player behind walls
 3. ✅ Implemented proper last known position tracking during LOS loss
 4. ✅ Added comprehensive state transition logging with reasons
 5. ✅ Verified reliable IDLE ↔ CHASING transitions under all conditions
 
-### ✅ **Task 3: Memory System Fixes and Visual Implementation**
-1. ✅ Removed arbitrary exploration grid requirement from memory storage
-2. ✅ Fixed visual marker creation to use actual ColorRect components
-3. ✅ Implemented proper memory darkening with correct color calculations
-4. ✅ Added comprehensive memory operation logging for troubleshooting
-5. ✅ Verified memory system stores and displays all zombies correctly
-
-### ✅ **Task 4: Debug Infrastructure Implementation**
-1. ✅ Added missing `_debug_log_position_update()` method routing to DebugManager
-2. ✅ Added missing `_debug_log_state_transition()` method with proper categorization
-3. ✅ Implemented `_log_state_change()` function with detailed reasoning
-4. ✅ Fixed state change detection logging at end of _physics_process
-5. ✅ Verified all state transitions now visible in debug output
-
-### ✅ **Task 5: Performance Optimization and Configuration**
+### ✅ **Task 4: Performance Configuration Correction**
 1. ✅ Corrected sight radius mismatch - Area2D now matches exported sight_range
 2. ✅ Reduced excessive LOS calculations from 16+/frame to <5/frame
 3. ✅ Eliminated duplicate LOS checks between zombie and PlayerSight systems
 4. ✅ Optimized memory marker creation and destruction processes
 5. ✅ Verified smooth 60fps performance with optimized detection systems
 
-### ✅ **Task 6: System Integration and Final Validation**
+### ✅ **Task 5: Memory System Visual Implementation**
+1. ✅ Fixed visual marker creation to use actual ColorRect components
+2. ✅ Implemented proper memory darkening with correct color calculations
+3. ✅ Added comprehensive memory operation logging for troubleshooting
+4. ✅ Removed arbitrary exploration grid requirement from memory storage
+5. ✅ Verified memory system stores and displays all zombies correctly
+
+### ✅ **Task 6: Debug Infrastructure Implementation**
+1. ✅ Added missing `_debug_log_position_update()` method routing to DebugManager
+2. ✅ Added missing `_debug_log_state_transition()` method with proper categorization
+3. ✅ Implemented `_log_state_change()` function with detailed reasoning
+4. ✅ Fixed state change detection logging at end of _physics_process
+5. ✅ Verified all state transitions now visible in debug output
+
+### ✅ **Task 7: System Integration and Final Validation**
 1. ✅ Comprehensive end-to-end testing - enter building, clear rooms, verify memory
 2. ✅ Regression testing - confirmed all previous zombie behaviors still work
 3. ✅ Performance regression testing - no new performance issues introduced
@@ -451,92 +458,47 @@ elif is_in_range and not has_los:
 
 ---
 
-## **Progressive Analysis Journey**
-
-### **Phase 1: Initial Crisis** (#debug_log_2_analysis)
-- **Theory:** Signal processing overwhelmed by update frequency
-- **Evidence:** Zero memory addition logs, high-frequency position updates
-- **Approach:** Signal priority systems, memory protection windows
-- **Result:** Partial symptom relief, core issue unresolved
-
-### **Phase 2: Deep Investigation** (#debug_log_3_analysis)  
-- **Theory:** Signal system failure preventing memory addition
-- **Evidence:** Memory retrieval worked, but addition completely broken
-- **Approach:** Performance monitoring, signal timing analysis
-- **Result:** Enhanced understanding, but still incorrect root cause
-
-### **Phase 3: Comprehensive Breakdown** (#debug_log_4_analysis)
-- **Theory:** Complete architectural failure across multiple systems
-- **Evidence:** 16 LOS checks/frame, duplicate detection systems, zero memory logs
-- **Approach:** Multi-system analysis, performance bottleneck identification
-- **Result:** Complete picture of failure, but still missing key insight
-
-### **Phase 4: Paradigm Shift** (#debug_log_5_analysis)
-- **BREAKTHROUGH:** Memory system was actually working correctly!
-- **Evidence:** Complete memory workflow logs showing successful operation
-- **Discovery:** Issues were configuration mismatches and observability gaps
-- **Result:** ✅ **RESOLUTION** - Seven-part fix addressing all root causes
-
----
-
 ## **Final Impact Assessment**
 
 ### **Before Resolution:**
 - **Development Status:** ❌ BLOCKED - Core system appeared broken
-- **Zombie Behavior:** ❌ Stuck in IDLE, conflicting detection results
-- **Memory System:** ❌ Appeared non-functional due to invisible logging
-- **Performance:** ❌ 16+ LOS checks/frame, excessive computational overhead
-- **Player Experience:** ❌ Frustrating, unreliable zombie behavior
 - **Technical Confidence:** ❌ LOW - Architecture questioned
+- **Debug Capabilities:** ❌ LIMITED - Overwhelmed by 10K+ line logs, missing observability
+- **System Understanding:** ❌ POOR - Convoluted methods impossible to track
+- **Performance:** ❌ POOR - Excessive computational overhead (25x oversized detection)
+- **Player Experience:** ❌ FRUSTRATING - Unreliable zombie behavior, constant "freezing"
 
 ### **After Resolution:**
-- **Development Status:** ✅ UNBLOCKED - Core systems validated and optimized
-- **Zombie Behavior:** ✅ Perfect IDLE ↔ CHASING transitions, realistic wall behavior
-- **Memory System:** ✅ Fully functional with proper visual markers
-- **Performance:** ✅ Optimized <5 LOS checks/frame, smooth 60fps
-- **Player Experience:** ✅ Smooth, predictable, tactical zombie encounters
-- **Technical Confidence:** ✅ MAXIMUM - Architecture proven solid under stress
+- **Development Status:** ✅ UNBLOCKED - Core systems validated and perfected
+- **Technical Confidence:** ✅ MAXIMUM - Architecture proven solid through systematic analysis
+- **Debug Capabilities:** ✅ REVOLUTIONARY - AI-assisted log analysis + visual architecture mapping
+- **System Understanding:** ✅ COMPLETE - Flowcharts document all system interactions
+- **Performance:** ✅ OPTIMIZED - LOS checks reduced from 16+/frame to <5/frame
+- **Player Experience:** ✅ SMOOTH - Reliable, predictable zombie mechanics
 
 ---
 
-## **Development Achievements**
+## **Methodology Revolution: Key Lessons Learned**
 
-### **🏆 Debug Infrastructure Breakthrough**
-- Comprehensive logging systems across all components
-- Systematic debugging methodology for complex multi-system issues
-- Progressive analysis techniques preventing tunnel vision
-- Performance monitoring capabilities for bottleneck identification
+### **1. AI Assistance Transforms Debugging**
+**Discovery:** GitHub Copilot can parse 10K+ line logs and create actionable insights instantly.
+**Impact:** Eliminated fear of comprehensive logging, enabled full system observability.
+**Lesson:** Embrace data volume when AI can synthesize results.
 
-### **🏆 System Architecture Validation**
-- Core zombie AI movement system proven robust
-- Memory and visibility systems working as designed
-- Performance optimizations successfully implemented
-- Multi-system integration functioning perfectly
+### **2. Visual Architecture Analysis is Essential**
+**Discovery:** Flowcharts revealed fundamental design flaws invisible in code.
+**Impact:** Identified core memory system architecture problem immediately.
+**Lesson:** Complex systems require visual analysis - code inspection alone is insufficient.
 
-### **🏆 Development Methodology Validation**
-- Debug-driven development approach proven effective
-- Progressive analysis methodology successful for complex issues
-- Multi-system decomposition strategy worked for seven-part breakdown
-- Observability-first approach eliminated invisible root causes
+### **3. System Design Flaws Cascade**
+**Discovery:** Core memory system design flaw caused 6 additional system failures.
+**Impact:** Required comprehensive multi-system fix approach.
+**Lesson:** Architectural problems create cascading failures requiring systematic resolution.
 
----
-
-## **Key Lessons Learned**
-
-### **1. Complex Bugs Require Multi-System Analysis**
-What appeared as a single "zombie movement bug" was actually seven independent system failures. Each fix was relatively simple once identified, but the combination created seemingly catastrophic behavior.
-
-### **2. Observability Infrastructure is Non-Negotiable**
-Missing debug methods made actual state transitions invisible, creating false impression of system failure. Building comprehensive debug infrastructure **first** is critical for complex system debugging.
-
-### **3. Performance Issues Can Mask Functional Issues**
-The 25x oversized sight radius created performance problems that made it difficult to analyze actual functionality. Performance optimization revealed that core systems were working correctly.
-
-### **4. Progressive Analysis Prevents Tunnel Vision**
-The systematic approach (#debug_log_2 → #debug_log_5) prevented fixation on incorrect theories. Each phase built understanding even when root cause theories were wrong.
-
-### **5. Configuration Mismatches Create Complex Symptoms**
-Simple configuration errors (Area2D radius mismatch, LOS parameter differences) can create complex behavioral symptoms that appear to be architectural failures.
+### **4. Debug Infrastructure is Foundation**
+**Discovery:** Missing debug methods made root causes invisible.
+**Impact:** Built comprehensive observability enabling future rapid debugging.
+**Lesson:** Invest in debug infrastructure first - you can't fix what you can't see.
 
 ---
 
@@ -544,14 +506,168 @@ Simple configuration errors (Area2D radius mismatch, LOS parameter differences) 
 
 **BUG-005 RESOLVED:** Core movement system perfect  
 **Development Confidence:** MAXIMUM  
+**Debugging Methodology:** Revolutionary AI-assisted approach established  
 **Technical Debt:** Eliminated across 7 critical system issues  
 **Debug Infrastructure:** Comprehensive observability implemented  
 **Performance:** Optimized and validated  
 
 **RESULT: DEVELOPMENT AT FULL SPEED** 🚀
 
-The zombie movement system now works flawlessly and the debugging methodology developed during BUG-005 is now the project's greatest technical asset for future development.
+The zombie movement system now works flawlessly, and the debugging methodology developed during BUG-005 represents a quantum leap in development capability. The combination of AI-assisted log analysis and visual architecture mapping has transformed complex debugging from days/weeks to minutes/hours.
+
+**Future Impact:** Any technical challenge can now be approached with systematic confidence using proven AI-assisted debugging methodology.
 
 ---
 
-**Next Development Priority:** Feature development can now proceed at full speed with confidence in core systems. The remaining minor issues (memory movement visibility, respawn performance) are low-priority polish items that don't block core development.
+# 🧟‍♂️ ZED - Daily Tasks for 2025-06-03:
+
+## PRIORITY 1: Weekly Scope Evaluation (60 minutes)
+
+### **Step 1: Progress Assessment (15 minutes)**
+**Roadmap Validation**
+1. [ ] Compare completed tasks against ROADMAP.md Phase 1 milestones (Days 1-5)
+2. [ ] Calculate completion percentage: Core Systems (Days 1-5) vs Multi-Room Implementation (Days 6-7)
+3. [ ] Identify tasks that exceeded estimates (BUG-005: 3 days vs planned 1 day)
+4. [ ] Document actual vs estimated time for completed features
+5. [ ] Review current development velocity based on completed work
+
+**Quality Gate Check**
+1. [ ] Verify all Day 1-5 features are PLAYABLE and TESTABLE
+2. [ ] Confirm 60fps performance maintained with current zombie count and sight systems
+3. [ ] Review BUG_TRACKER.md - confirm no Quadrant 1 (critical) issues remain
+4. [ ] Test core combat loop: movement → shooting → zombie AI → resource management
+5. [ ] Validate tactical positioning mechanics work as intended
+
+### **Step 2: Remaining Work Analysis (20 minutes)**
+**Task Breakdown Evaluation**
+1. [ ] List all remaining Phase 1 tasks (Day 6-7: Multi-room implementation)
+2. [ ] Estimate time for each remaining task based on BUG-005 lessons learned
+3. [ ] Identify dependencies: room generation → zombie spawning → progression system
+4. [ ] Calculate total remaining effort vs 4 available development days (Days 6-7 + buffer)
+5. [ ] Flag any tasks that seem underestimated based on BUG-005 complexity
+
+**Risk Assessment**
+1. [ ] Assess multi-room system complexity vs single-room foundation
+2. [ ] Identify untested integration points: sight system + room transitions
+3. [ ] Note potential scope creep: procedural generation vs fixed room layouts
+4. [ ] Evaluate technical debt accumulated during BUG-005 resolution
+5. [ ] Document external dependencies (none identified currently)
+
+### **Step 3: Scope Decision Matrix (10 minutes)**
+**Feature Categorization**
+1. [ ] **Core Features**: Room-to-room movement, basic zombie spawning per room
+2. [ ] **Enhancement Features**: Procedural room generation, complex room layouts
+3. [ ] **Polish Features**: Room transition animations, advanced spawning patterns
+4. [ ] Apply backlog framework if behind schedule (preserve core, defer enhancement)
+5. [ ] Document scope decisions with justification
+
+### **Step 4: Timeline Adjustment (15 minutes)**
+**Schedule Recalibration**
+1. [ ] Assess if 2-day buffer for Phase 1 completion is adequate
+2. [ ] Identify specific features to simplify if needed (fixed layouts vs procedural)
+3. [ ] Update ROADMAP.md with any scope adjustments
+4. [ ] Plan Day 6 tasks based on scope evaluation results
+5. [ ] Document lessons learned from BUG-005 for future estimation
+
+---
+
+## PRIORITY 2: Day 10 Foundation - Multi-Room Implementation (2025-06-03)
+
+### **Task 1: Room System Architecture (Based on scope evaluation results)**
+
+#### **Sub-task 1.1: Room scene structure design**
+1. [ ] Create `scenes/gameplay/rooms/room_base.tscn` with standardized layout
+2. [ ] Define room connection points (doors/exits) using Area2D markers
+3. [ ] Add room boundary walls with consistent collision detection
+4. [ ] Implement room lighting/visibility boundaries for sight system integration
+5. [ ] Test room scene loads independently with player movement
+
+#### **Sub-task 1.2: Room transition system foundation**
+1. [ ] Create `scripts/systems/room_manager.gd` handling room switching
+2. [ ] Implement player detection at room exits triggering transitions
+3. [ ] Add basic scene switching between rooms (no fancy transitions yet)
+4. [ ] Ensure sight system and zombie memory persist across room changes
+5. [ ] Test player can move between 2 connected rooms smoothly
+
+#### **Sub-task 1.3: Room-specific zombie spawning**
+1. [ ] Add zombie spawn points to room_base.tscn using Position2D markers
+2. [ ] Create room configuration system defining zombie count/types per room
+3. [ ] Implement `spawn_zombies_for_room()` method using spawn point positions
+4. [ ] Ensure zombies spawn only when player enters room (not all at once)
+5. [ ] Test each room has appropriate zombie challenge based on configuration
+
+### **Task 2: Sight System Integration with Multi-Room**
+
+#### **Sub-task 2.1: Memory system room persistence**
+1. [ ] Extend PlayerSight memory system to track zombies by room_id
+2. [ ] Ensure zombie memory markers persist when switching rooms
+3. [ ] Clear memory data appropriately when zombies die in other rooms
+4. [ ] Test sight system works correctly across room transitions
+5. [ ] Verify no memory leaks from cross-room zombie tracking
+
+#### **Sub-task 2.2: Performance optimization for multi-room**
+1. [ ] Disable zombie AI processing for zombies in non-active rooms
+2. [ ] Optimize sight range detection to only check current room zombies
+3. [ ] Implement efficient room-based collision layer management
+4. [ ] Test performance remains 60fps with multiple rooms loaded
+5. [ ] Monitor memory usage during extended room exploration
+
+### **Task 3: Basic Multi-Room Progression**
+
+#### **Sub-task 3.1: Simple room progression logic**
+1. [ ] Create 3-5 connected rooms with increasing difficulty
+2. [ ] Implement basic objective: clear all zombies to unlock next room
+3. [ ] Add simple door locking/unlocking based on room clear status
+4. [ ] Create basic progression feedback (door opens, visual indicator)
+5. [ ] Test complete room-to-room progression works end-to-end
+
+---
+
+## PRIORITY 3: System Validation & Polish (2-3 hours)
+
+### **Task 4: Integration Testing with BUG-005 Fixes**
+
+#### **Sub-task 4.1: Comprehensive system integration test**
+1. [ ] Test complete gameplay loop: spawn → explore → combat → progress → repeat
+2. [ ] Verify BUG-005 fixes remain stable with multi-room implementation
+3. [ ] Test edge cases: zombie death during room transitions, rapid room switching
+4. [ ] Validate sight system and memory work correctly across all room combinations
+5. [ ] Confirm no regression bugs introduced by multi-room system
+
+#### **Sub-task 4.2: Performance and stability validation**
+1. [ ] Run extended play session (10+ minutes) monitoring performance
+2. [ ] Test memory usage remains stable during room exploration
+3. [ ] Verify all debug systems work correctly with multi-room setup
+4. [ ] Test rapid movement between rooms doesn't cause crashes or glitches
+5. [ ] Document any new issues discovered for immediate resolution
+
+---
+
+## PRIORITY 4: Documentation and Planning (30 minutes)
+
+### **Task 5: Day 6 Progress Documentation**
+
+#### **Sub-task 5.1: Progress report creation**
+1. [ ] Document scope evaluation results and decisions made
+2. [ ] Record actual time spent vs estimates for multi-room implementation
+3. [ ] Note any technical challenges encountered and solutions applied
+4. [ ] Update BUG_TRACKER.md with any new issues discovered
+5. [ ] Plan Day 7 tasks based on Day 6 completion status
+
+---
+
+## **Expected Day 6 Results:**
+
+**Core Achievement:** Player can move between 3-5 connected rooms, each with appropriate zombie challenges, while sight system and memory work correctly across transitions.
+
+**Technical Validation:** BUG-005 fixes remain stable with multi-room complexity, performance stays at 60fps, and no new critical issues introduced.
+
+**Scope Clarity:** Clear understanding of remaining Phase 1 work and confidence in meeting timeline with appropriate scope management.
+
+**Next Day Preview:** Day 7 will focus on progression system polish, room variety, and Phase 1 completion validation.
+
+---
+
+**Total Estimated Time:** 7-10 hours  
+**Priority Focus:** Scope evaluation first, then multi-room foundation  
+**Success Criteria:** Playable multi-room progression with stable sight system integration
