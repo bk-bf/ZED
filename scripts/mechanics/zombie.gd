@@ -21,27 +21,27 @@ var debug_label: Label
 ## Shows: sight radius overlay, pathfinding waypoints if enabled
 ## Example: Red circle with 200px radius around zombie showing detection area
 # ✅ Visual feedback
-@export var debug_movement_enabled: bool = true # Start disabled to reduce spam
+@export var debug_movement_enabled: bool = false # Start disabled to reduce spam
 ## Movement and velocity tracking - logs when zombies change movement direction/speed
 ## Example: "🏃 [WALKER_123] MOVEMENT_DIRECT_CHASE: Velocity: (45.2, -12.8), Speed: 100.0"
 # ❌ Too spammy initially
-@export var debug_los_enabled: bool = true # Start disabled to reduce spam
+@export var debug_los_enabled: bool = false # Start disabled to reduce spam
 ## Line of sight validation - logs LOS checks and what blocks zombie vision
 ## Example: "👁️ [WALKER_123] LOS_BLOCKED: LOS blocked by: LeftWall at distance 87.3"
 # ❌ Too spammy initially
-@export var debug_state_transitions_enabled: bool = true # Start disabled to reduce spam
+@export var debug_state_transitions_enabled: bool = false # Start disabled to reduce spam
 ## State change tracking - logs when zombies switch between IDLE/CHASING/DEAD states
 ## Example: "🔄 [WALKER_123] STATE_CHANGE: From IDLE to CHASING"
 # ❌ Too spammy initially
-@export var debug_position_updates_enabled: bool = true # Start disabled to reduce spam
+@export var debug_position_updates_enabled: bool = false # Start disabled to reduce spam
 ## Position update spam monitoring - tracks target position changes (BUG-005 culprit)
 ## Example: "📍 [WALKER_123] POSITION_DIRECT_CHASE: New target: (456.7, 234.1) (Distance: 123.4)"
 # ❌ MAJOR spam source
-@export var debug_physics_enabled: bool = true # Start disabled - only needed for setup validation
+@export var debug_physics_enabled: bool = false # Start disabled - only needed for setup validation
 ## Physics validation - collision layers, wall detection, Area2D setup verification
 ## Example: "🧟 [WALKER_123] SYSTEM_PHYSICS_VALIDATION: ✓ Sight range configuration consistent"
  # ❌ Only for setup issues
-@export var debug_area2d_enabled: bool = true # Start disabled to reduce spam
+@export var debug_area2d_enabled: bool = false # Start disabled to reduce spam
 ## Area2D signal tracking - logs when player enters/exits zombie sight Area2D
 ## Example: "🎯 [WALKER_123] AREA2D_ENTERED_SIGHT: Player entered Area2D for WALKER_123"
  # ❌ Moderate spam
@@ -131,7 +131,7 @@ func _create_debug_label():
 	debug_label.modulate = Color.YELLOW
 	debug_label.position = Vector2(-20, -40) # Above zombie
 	debug_label.add_theme_font_size_override("font_size", 12)
-	add_child(debug_label)
+	add_child.call_deferred(debug_label)
 	
 	# Update label based on state
 	_update_debug_label()
@@ -216,13 +216,13 @@ func _setup_zombie_sight_range():
 	if not sight_range:
 		sight_range = Area2D.new()
 		sight_range.name = "SightRange"
-		add_child(sight_range)
+		add_child.call_deferred(sight_range)
 		
 		var collision_shape = CollisionShape2D.new()
 		var circle_shape = CircleShape2D.new()
 		circle_shape.radius = zombie_data.sight_range if zombie_data else 150.0
 		collision_shape.shape = circle_shape
-		sight_range.add_child(collision_shape)
+		sight_range.add_child.call_deferred(collision_shape)
 	
 	sight_range_node = sight_range
 	sight_range.collision_layer = 0
@@ -749,7 +749,7 @@ func _setup_damage_area():
 	var damage_shape = CircleShape2D.new()
 	damage_shape.radius = 25
 	damage_collision.shape = damage_shape
-	damage_area.add_child(damage_collision)
+	damage_area.add_child.call_deferred(damage_collision)
 	
 	damage_area.collision_mask = PhysicsLayers.PLAYER
 	damage_area.collision_layer = 0
@@ -879,7 +879,7 @@ func _create_pickups():
 			pickup_item["position"]
 		)
 		
-		get_tree().current_scene.add_child(pickup_instance)
+		get_tree().current_scene.add_child.call_deferred(pickup_instance)
 
 func get_health_percentage() -> float:
 	return zombie_data.health / float(zombie_data.max_health)

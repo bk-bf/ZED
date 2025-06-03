@@ -67,6 +67,9 @@ func setup_camera_ui():
 	var ammo_counter_ui = preload("res://scenes/ui/debug_ammo_counter.tscn").instantiate()
 	ui_layer.add_child(ammo_counter_ui)
 	ammo_counter_ui.setup(player_data)
+	
+	# FPS counter
+	DebugManager.setup_fps_ui(ui_layer)
 
 func get_resistances() -> Dictionary:
 	return player_data.get_resistances() if player_data else {}
@@ -124,7 +127,7 @@ func shoot_bullet(direction: Vector2):
 		
 	if bullet_preload:
 		var bullet = bullet_preload.instantiate()
-		get_tree().current_scene.add_child(bullet)
+		get_tree().current_scene.add_child.call_deferred(bullet)
 		bullet.initialize(global_position, direction)
 		
 		# Use ammo from PlayerData

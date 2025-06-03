@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://0oxfp677k87d"]
+
+[ext_resource type="Script" uid="uid://cthekojneaf72" path="res://scripts/ui/debug_fps_counter.gd" id="1_f2eor"]
+[ext_resource type="FontFile" uid="uid://b3aimnmtfx4oy" path="res://assets/fonts/Roboto_Condensed/RobotoCondensed-BlackItalic.ttf" id="2_f2eor"]
+
+[node name="DebugFPSCounter" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 49.0
+offset_bottom = 20.0
+script = ExtResource("1_f2eor")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 22.0
+
+[node name="FPSLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f2eor")
+text = "FPS:"
+
+[node name="ValueLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f2eor")
+text = "60"

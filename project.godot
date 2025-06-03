@@ -29,6 +29,7 @@ settings/stdout/verbose_stdout=true
 window/size/viewport_width=1344
 window/size/viewport_height=840
 window/stretch/mode="canvas_items"
+window/vsync/vsync_mode=2
 
 [input]
 

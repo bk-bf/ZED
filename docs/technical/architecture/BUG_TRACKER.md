@@ -19,7 +19,7 @@ Using Eisenhower Matrix for prioritization:
 ## **Current Development Status**
 
 **BREAKTHROUGH ACHIEVED:** Core movement system completely resolved  
-**Bug Count:** 4 remaining (0 CRITICAL), 2 resolved  
+**Bug Count:** 3 remaining (0 CRITICAL), 6 resolved  
 **Critical Path Impact:** NONE - All blocking issues resolved  
 **Development Confidence:** MAXIMUM - Core systems validated and optimized  
 
@@ -35,15 +35,56 @@ Using Eisenhower Matrix for prioritization:
 
 ## **Quadrant 2: Important, Not Urgent (Schedule Next Sprint)**
 
+---
+
+### **[ ] BUG-003: Zombie Collision Overlap**
+**Priority:** High  
+**Severity:** Medium  
+**Status:** Needs Investigation  
+**Reported:** 2025-05-29  
+**Component:** Zombie AI System
+
+**Description:**  
+Zombies occasionally overlap with each other during movement, creating unrealistic stacking behavior that affects tactical gameplay.
+
+**Impact:**
+- Breaks tactical positioning mechanics
+- Creates visual inconsistencies
+- May affect pathfinding calculations
+- Reduces tactical challenge when zombies cluster
+
+**Technical Notes:**
+- Separate from movement pathfinding issues (now resolved)
+- Related to CharacterBody2D collision separation
+- May need zombie-to-zombie collision detection
+- Consider implementing separation steering behavior
+
+**Estimated Effort:** 4-6 hours  
+**Business Value:** High (affects core tactical gameplay)  
+**Target Resolution:** Next sprint (after current remaining issues)
+
+---
+
+## **Quadrant 3: Urgent, Not Important (Investigate After Core Features)**
+
+---
+
+## **Quadrant 4: Backlog (Low Priority)**
+
+---
+
 ### **[ ] BUG-006: Memory Zombies Movement Visibility**
 **Priority:** Medium  
 **Severity:** Medium (affects immersion)  
-**Status:** ACTIVE - Design Decision Required  
+**Status:** READY - Fix proposed
 **Reported:** 2025-06-03  
 **Component:** Memory System Visual Behavior
 
 **Description:**  
-Players can currently see zombies moving during chase state even when zombies are in memory mode. This breaks the intended "frozen memory" mechanic where memory zombies should appear stationary to maintain immersion.
+Players can see zombies moving when zombies are in memory mode (outside vision range/behind walls). This breaks intended game design where memory zombies should appear frozen at their last known position.
+
+**Design Intent:** Memory zombies should appear frozen to maintain tactical immersion
+**Current Behavior:** Memory zombies continue showing movement (useful for debugging)
 
 **Impact:**
 - Affects tactical immersion (players see "impossible" movement)
@@ -83,85 +124,8 @@ func _physics_process(delta):
 
 **Estimated Effort:** 10 minutes  
 **Business Value:** Medium (immersion and design consistency)  
-**Target Resolution:** Next development session  
+**Target Resolution:** When you want proper game behavior vs. debug convenience
 
----
-
-### **[ ] BUG-003: Zombie Collision Overlap**
-**Priority:** High  
-**Severity:** Medium  
-**Status:** Needs Investigation  
-**Reported:** 2025-05-29  
-**Component:** Zombie AI System
-
-**Description:**  
-Zombies occasionally overlap with each other during movement, creating unrealistic stacking behavior that affects tactical gameplay.
-
-**Impact:**
-- Breaks tactical positioning mechanics
-- Creates visual inconsistencies
-- May affect pathfinding calculations
-- Reduces tactical challenge when zombies cluster
-
-**Technical Notes:**
-- Separate from movement pathfinding issues (now resolved)
-- Related to CharacterBody2D collision separation
-- May need zombie-to-zombie collision detection
-- Consider implementing separation steering behavior
-
-**Estimated Effort:** 4-6 hours  
-**Business Value:** High (affects core tactical gameplay)  
-**Target Resolution:** Next sprint (after current remaining issues)
-
----
-
-## **Quadrant 3: Urgent, Not Important (Investigate After Core Features)**
-
-### **[ ] BUG-007: Respawn Performance Breakdown**
-**Priority:** High (Performance)  
-**Severity:** High  
-**Status:** ACTIVE - Solution Ready  
-**Reported:** 2025-06-03  
-**Component:** Scene Transition & Memory System
-
-**Description:**  
-When player dies and respawns, there are significant performance glitches for several seconds. Debug logs show "consider add_child_deferred calls" indicating memory system persistence across scene reloads.
-
-**Technical Cause:**
-Memory markers not properly cleaned before scene reload, leading to:
-- Invalid node references
-- Orphaned memory markers
-- Accumulated debug data
-- Signal connection conflicts
-
-**Solution Ready for Implementation:**
-```gdscript
-# In player_controller.gd die() function:
-func die():
-    print("Player died! Restarting scene...")
-    
-    # CRITICAL: Clear memory system before scene reload
-    var player_sight = get_tree().get_first_node_in_group("player_sight")
-    if player_sight:
-        player_sight.clear_all_memory_data()
-    
-    # Visual death feedback
-    modulate = Color.RED
-    
-    await get_tree().create_timer(1.0).timeout
-    get_tree().reload_current_scene()
-    
-    DebugManager.reset_ai_stats()
-    PlayerDataAutoload.reset_to_defaults()
-```
-
-**Estimated Effort:** 20 minutes  
-**Business Value:** High (player experience)  
-**Target Resolution:** Immediate (today)
-
----
-
-## **Quadrant 4: Backlog (Low Priority)**
 
 ### **[ ] BUG-008: Visual Glitches - Ghost Zombies**
 **Priority:** Low  
@@ -216,6 +180,33 @@ var memory_color = Color(
 
 ## **Resolved Bugs**
 
+---
+
+### **[x] BUG-007: Respawn Performance Breakdown**
+**Status:** RESOLVED ✅  
+**Resolution Date:** 2025-06-03  
+**Resolution Time:** 5 seconds (accidental discovery)  
+**Component:** Scene Transition & Memory System
+
+**Root Cause:** Synchronous `add_child()` calls during scene reload blocking main thread
+
+**Solution Applied:**
+```gdscript
+# Changed from:
+get_tree().current_scene.add_child(marker)
+# To:
+get_tree().current_scene.add_child.call_deferred(marker)
+```
+
+**Performance Results:**
+- **Before:** drops to min. 7 FPS for 1-3 seconds on respawn
+- **After:** Zero performance issues, even improved initial performance
+- **Validation:** 5 consecutive respawns tested - flawless performance
+
+**Discovery Method:** Accidental observation during FPS counter implementation
+**Mood Impact:** EXHILARATED! 🚀
+
+
 ### **[x] BUG-005: Player Vision System Multi-Component Failure**
 **Status:** RESOLVED  
 **Resolution Date:** 2025-06-03  
@@ -243,7 +234,6 @@ Critical multi-system failure affecting zombie movement, state transitions, memo
 
 **Key Lesson:** Complex behavioral bugs often require multi-system analysis rather than single-point fixes.
 
----
 
 ### **[x] BUG-001: Zombie Movement Algorithm Inefficiency**
 **Status:** RESOLVED (via BUG-005 resolution)  
@@ -262,7 +252,6 @@ Fixed through BUG-005 multi-system resolution:
 
 **Original A* Implementation Plan:** No longer needed - current movement system works perfectly after fixes.
 
----
 
 ### **[x] BUG-002: Corner Navigation Inefficiency**
 **Status:** RESOLVED (subset of BUG-001)  
@@ -272,7 +261,6 @@ Fixed through BUG-005 multi-system resolution:
 **Description:**  
 Zombie corner navigation issues resolved through BUG-005 comprehensive fixes.
 
----
 
 ### **[x] BUG-004: Intermittent Zombie Chase Detection Failure**
 **Status:** RESOLVED  
@@ -282,7 +270,6 @@ Zombie corner navigation issues resolved through BUG-005 comprehensive fixes.
 **Description:**  
 Zombies failing to chase players when in sight range. Resolved through BUG-005 state management and LOS detection fixes.
 
----
 
 ### **[x] BUG-000: Recursive Damage Interface Calls**
 **Status:** RESOLVED  

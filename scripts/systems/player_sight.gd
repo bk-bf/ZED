@@ -48,7 +48,7 @@ var memory_markers: Dictionary = {} # zombie_id -> memory_marker_node
 ## Sight boundary position calculations - logs precise exit position calculations
 ## Example: "📐 [PLAYER_SIGHT] BOUNDARY_CALCULATED: WALKER_123 exit position: (234.5, -456.7)"
 # ✅ Essential for memory positioning accuracy
-@export var debug_exploration_system: bool = true
+@export var debug_exploration_system: bool = false
 ## Area exploration tracking - logs when areas are marked as explored
 ## Example: "🗺️ [PLAYER_SIGHT] EXPLORATION_MARKED: Area (12, -8) marked as explored - Total areas: 45"
 # ❌ Moderate spam
@@ -56,10 +56,11 @@ var memory_markers: Dictionary = {} # zombie_id -> memory_marker_node
 ## Performance metrics - tracks LOS check frequency, entity counts, processing times
 ## Example: "⚡ [PLAYER_SIGHT] PERF_LOS_CHECKS: Performed 8 visible LOS checks, 3 range LOS checks"
 # ✅ Important for optimization
-@export var debug_validation_checks: bool = true
+@export var debug_validation_checks: bool = false
 ## System integrity validation - memory system consistency, marker validation
 ## Example: "✅ [PLAYER_SIGHT] VALIDATION_PASSED: Memory system validation passed - 3 entries"
 # ❌ Only for debugging issues
+
 # Enhanced debug state tracking for change detection
 var entity_los_states: Dictionary = {} # Track last known LOS state for each entity
 var entity_visibility_states: Dictionary = {} # Track last known visibility state
@@ -208,7 +209,7 @@ func _create_memory_marker_from_zombie(zombie_id: String, position: Vector2, zom
         _debug_log_memory_operations("FALLBACK", "Using fallback visual for %s - zombie ColorRect not found at expected path" % zombie_id)
     
     # Add to scene
-    get_tree().current_scene.add_child(marker)
+    get_tree().current_scene.add_child.call_deferred(marker)
     memory_markers[zombie_id] = marker
     
     _debug_log_memory_operations("MARKER_CREATED", "%s visual marker created at: %s using zombie ColorRect appearance" % [zombie_id, position])
@@ -394,6 +395,40 @@ func _on_entity_left_sight(body):
         # Even unexplored areas get memory now, not hidden
         _debug_log_state_transitions("TRANSITION", "%s: VISIBLE -> MEMORY (unexplored area)" % entity_id)
         _store_in_memory(entity_id, boundary_position, body)
+
+func clear_memory_on_death():
+    """Clear all memory data and markers when player dies"""
+    _debug_log_system("DEATH_CLEAR", "Clearing all memory data due to player death...")
+    
+    var memory_count = memory_data.size()
+    var marker_count = memory_markers.size()
+    
+    # Destroy all memory markers
+    for zombie_id in memory_markers.keys():
+        _destroy_memory_marker(zombie_id)
+    
+    # Clear all memory data
+    memory_data.clear()
+    memory_markers.clear()
+    
+    # Clear exploration data
+    var explored_count = explored_areas.size()
+    explored_areas.clear()
+    
+    # Clear entity tracking arrays
+    var visible_count = visible_entities.size()
+    var range_count = entities_in_range.size()
+    visible_entities.clear()
+    entities_in_range.clear()
+    
+    # Clear state tracking
+    entity_los_states.clear()
+    entity_visibility_states.clear()
+    entity_last_state_change_time.clear()
+    
+    _debug_log_system("DEATH_COMPLETE", "Memory cleared: %d memory entries, %d markers, %d explored areas, %d visible entities, %d range entities" % [
+        memory_count, marker_count, explored_count, visible_count, range_count
+    ])
 
 # ============================================================================
 # VISUAL DEBUG SYSTEM - Removed circles
