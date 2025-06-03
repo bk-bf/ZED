@@ -49,98 +49,143 @@ Build immediately testable core gameplay loop
 - [x] **CRITICAL** Fixed game breaking *BUG-005 - Vision System Multi-Component Failure*
 
 ### **Day 10: Room Progression (2025-06-03)**
-- [x] **DOCUMENTATION** Conduct scope assessment accoring to 'docs/technical/project/Scope_Evaluation.md'
-- [ ] **PLAYABLE**: Multiple connected rooms with doors using hand-crafted layouts
-- [ ] **PLAYABLE**: Player must clear each room to progress through designed building template
-- [ ] **PLAYABLE**: Final room has exit that completes mission
-- [ ] **TESTABLE**: Building clearance concept with tactical positioning opportunities
-- [ ] **FOUNDATION**: Hand-crafted room template system for consistent tactical complexity
-
-### **Day 11: Core Loop Validation (2025-06-04)**
-- [ ] **PLAYABLE**: Complete mission loop - enter building, clear rooms, extract
-- [ ] **PLAYABLE**: Loot collection with inventory display
-- [ ] **PLAYABLE**: Mission success/failure with consequences
-- [ ] **TESTABLE**: Full tactical building clearance mechanic
-- [ ] **OPTIMIZATION**: Performance optimization for 60fps with 50+ entities
+- [x] **DOCUMENTATION**: Conduct scope assessment accoring to 'docs/technical/project/Scope_Evaluation.md'
+- [x] **OPTIMIZATION**: Performance optimization for 60fps with 50+ entities
+- [x] **PLANNING**: Reasses current ROADMAP and update if necessary
 
 ---
 
-## **Phase 2: Content Systems (Days 12-18)**
-*Expand playable content while maintaining testability*
+## **PHASE 2: Map Content Development (Days 12-18+)**
 
-### **Day 12: Mission Variety (2025-06-05)**
+
+### **Day 11: Map Design Foundation (2025-06-04)**
+- [ ] **DESIGN**: Complete Level Design Document for primary map type (Hospital Complex recommended)
+- [ ] **DESIGN**: Detailed map specification covering flow, ambience, loot distribution, threat placement, extraction points
+- [ ] **DESIGN**: Hand-drawn sketch with player flow validation and tactical opportunity mapping
+- [ ] **VALIDATION**: Playtest sketch using paper prototype or digital mockup for pacing and challenge
+
+### **Day 12: Core Component Library (2025-06-05)**
+- [ ] **FOUNDATION**: Wall system (interior, exterior, damaged variants)
+- [ ] **FOUNDATION**: Door system (standard, locked, emergency, destroyed)
+- [ ] **FOUNDATION**: Floor/ceiling tiles (clean, damaged, hazardous)
+- [ ] **FOUNDATION**: Basic furniture (tables, chairs, beds, medical equipment)
+- [ ] **TESTABLE**: All components work in test scenes with proper collision and interaction
+
+### **Day 13: Environmental Components (2025-06-06)**
+- [ ] **FOUNDATION**: Decorative elements (debris, blood, environmental storytelling)
+- [ ] **FOUNDATION**: Spawn point system (zombie spawns, loot spawns, player entry/exit)
+- [ ] **FOUNDATION**: Interactive elements (switches, computers, barricades)
+- [ ] **FOUNDATION**: Lighting and atmosphere components
+- [ ] **TESTABLE**: Component library supports varied room creation
+
+### **Day 14: Map Assembly & Implementation (2025-06-07)**
+- [ ] **PLAYABLE**: Build complete map using component library following design document
+- [ ] **PLAYABLE**: Implement all spawn systems, loot distribution, and extraction points
+- [ ] **PLAYABLE**: Full tactical building clearance from entry to extraction
+- [ ] **TESTABLE**: Map supports intended tactical flow and challenge progression
+
+### **Day 15: Map Polish & Validation (2025-06-08)**
+- [ ] **OPTIMIZATION**: Performance optimization for full map with 50+ entities
+- [ ] **PLAYABLE**: Final balancing of loot, spawns, and tactical opportunities
+- [ ] **TESTABLE**: Multiple playthroughs validate replayability and tactical depth
+- [ ] **DOCUMENTATION**: Component usage guide for future map development
+
+### **Day 16: Second Map Rapid Development (2025-06-09)**
+- [ ] **DESIGN**: Quick design document for second map type using established component library
+- [ ] **PLAYABLE**: Rapid assembly using existing components (should take 50% less time)
+- [ ] **TESTABLE**: Demonstrates component reusability and development velocity improvement
+- [ ] **VALIDATION**: Two distinct tactical environments with different challenges
+
+### **Day 17: Map System Integration (2025-06-10)**
+- [ ] **PLAYABLE**: Mission selection system with multiple map options
+- [ ] **PLAYABLE**: Map-specific loot tables and threat configurations
+- [ ] **TESTABLE**: Full content variety supporting extended gameplay sessions
+- [ ] **FOUNDATION**: Scalable map development pipeline proven and documented
+
+### **Day 18: Mission Variety (2025-06-11)**
 - [ ] **PLAYABLE**: 3 different hand-crafted building layouts (small, medium, large)
 - [ ] **PLAYABLE**: Different zombie densities per mission type
 - [ ] **PLAYABLE**: Mission selection screen with difficulty indicators
 - [ ] **TESTABLE**: Variety in tactical challenges across designed environments
 - [ ] **FOUNDATION**: Mission system with objectives and rewards
 
-### **Day 13: Base Management Foundation (2025-06-06)**
+---
+
+## **Phase 3: Content Systems (Days 19-25)**
+*Expand playable content while maintaining testability*
+
+### **Day 19: Base Management Foundation (2025-06-12)**
 - [ ] **PLAYABLE**: Simple base screen with resource counters
 - [ ] **PLAYABLE**: Spend collected resources on upgrades
 - [ ] **PLAYABLE**: Upgrades affect next mission (more health, ammo, etc.)
 - [ ] **TESTABLE**: Resource management consequences between missions
 - [ ] **FOUNDATION**: Basic base building mechanics
 
-### **Day 14: Weapon Variety (2025-06-07)**
+### **Day 20: Weapon Variety (2025-06-13)**
 - [ ] **PLAYABLE**: 3 weapon types (pistol, rifle, shotgun) with different stats
 - [ ] **PLAYABLE**: Weapon switching during missions
 - [ ] **PLAYABLE**: Weapons found as loot in hand-crafted building locations
 - [ ] **TESTABLE**: Tactical weapon choice for different room layouts and situations
 - [ ] **FOUNDATION**: Weapon system with stats and behaviors
 
-### **Day 15: Advanced AI (2025-06-08)**
+### **Day 21: Advanced AI (2025-06-14)**
 - [ ] **PLAYABLE**: Zombie group behavior and coordination
 - [ ] **PLAYABLE**: Sound-based zombie attraction system
 - [ ] **PLAYABLE**: Stealth mechanics for avoiding detection
 - [ ] **TESTABLE**: Tactical depth through advanced enemy behavior
 - [ ] **FOUNDATION**: AI behavior tree system
 
-### **Day 16: Environmental Systems (2025-06-09)**
+### **Day 22: Environmental Systems (2025-06-15)**
 - [ ] **PLAYABLE**: Destructible environment elements
 - [ ] **PLAYABLE**: Interactive objects (doors, switches, barricades)
 - [ ] **PLAYABLE**: Environmental hazards and tactical elements
 - [ ] **TESTABLE**: Environmental interaction affects tactical options
 - [ ] **FOUNDATION**: Dynamic environment system
 
-### **Day 17: Progression Systems (2025-06-10)**
+### **Day 23: Progression Systems (2025-06-16)**
 - [ ] **PLAYABLE**: Character skill trees with meaningful upgrades
 - [ ] **PLAYABLE**: Equipment modification and customization
 - [ ] **PLAYABLE**: Mission rewards scale with difficulty
 - [ ] **TESTABLE**: Long-term progression affects gameplay
 - [ ] **FOUNDATION**: RPG-lite progression mechanics
 
-### **Day 18: Core Content Complete (2025-06-11)**
+### **Day 24: Core Content Complete (2025-06-17)**
 - [ ] **PLAYABLE**: 5 distinct building types with unique challenges
 - [ ] **PLAYABLE**: 10+ zombie variants with different behaviors
 - [ ] **PLAYABLE**: Complete base management with multiple upgrade paths
 - [ ] **TESTABLE**: Full gameplay loop with meaningful choices
 - [ ] **OPTIMIZATION**: 60fps performance with complex scenarios
 
+### **Day 25: Content Systems Integration (2025-06-18)**
+- [ ] **PLAYABLE**: All systems working together seamlessly
+- [ ] **TESTABLE**: Extended gameplay sessions with full feature set
+- [ ] **OPTIMIZATION**: Final content system performance tuning
+- [ ] **DOCUMENTATION**: Content development pipeline documentation
+
 ---
 
-## **Phase 3: Polish & Enhancement (Days 19-25)**
+## **Phase 4: Polish & Enhancement (Days 26-32)**
 *Add visual polish and expand content*
 
-### **Day 19-20: Visual Enhancement (2025-06-12 to 2025-06-13)**
+### **Day 26-27: Visual Enhancement (2025-06-19 to 2025-06-20)**
 - [ ] **VISUAL**: Replace placeholder art with AI-generated assets
 - [ ] **VISUAL**: Particle effects for combat and environmental interactions
 - [ ] **VISUAL**: Lighting system for atmosphere and tactical gameplay
 - [ ] **FOUNDATION**: Asset pipeline for AI-generated content
 
-### **Day 21-22: Audio Implementation (2025-06-14 to 2025-06-15)**
+### **Day 28-29: Audio Implementation (2025-06-21 to 2025-06-22)**
 - [ ] **AUDIO**: Sound effects for all game actions
 - [ ] **AUDIO**: Ambient audio for different environments
 - [ ] **AUDIO**: Music system with dynamic tracks
 - [ ] **FOUNDATION**: Audio management system
 
-### **Day 23-24: UI/UX Polish (2025-06-16 to 2025-06-17)**
+### **Day 30-31: UI/UX Polish (2025-06-23 to 2025-06-24)**
 - [ ] **UI**: Professional interface design
 - [ ] **UI**: Tutorial system for new players
 - [ ] **UI**: Settings and options menus
 - [ ] **FOUNDATION**: Comprehensive UI framework
 
-### **Day 25: Pre-Launch Prep (2025-06-18)**
+### **Day 32: Pre-Launch Prep (2025-06-25)**
 - [ ] **TESTING**: Comprehensive bug testing and fixes
 - [ ] **OPTIMIZATION**: Final performance optimization
 - [ ] **DOCUMENTATION**: Player-facing documentation
@@ -149,9 +194,9 @@ Build immediately testable core gameplay loop
 ---
 
 ## **Success Metrics**
-- [ ] **Day 11**: Core gameplay loop is fun and engaging
-- [ ] **Day 18**: 2+ hours of varied gameplay content
-- [ ] **Day 25**: Release-ready game with professional presentation
+- [ ] **Day 18**: Core gameplay loop is fun and engaging
+- [ ] **Day 25**: 2+ hours of varied gameplay content
+- [ ] **Day 32**: Release-ready game with professional presentation
 
 ## **Risk Mitigation**
 - Each day produces immediately testable content

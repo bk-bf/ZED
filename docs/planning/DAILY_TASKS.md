@@ -521,7 +521,7 @@ The zombie movement system now works flawlessly, and the debugging methodology d
 
 # 🧟‍♂️ ZED - Daily Tasks for 2025-06-03:
 
-## PRIORITY 1: Weekly Scope Evaluation (60 minutes)
+## PRIORITY 1: Weekly Scope Evaluation 
 
 ### **Step 1: Progress Assessment (15 minutes)**
 **Roadmap Validation**
@@ -538,7 +538,14 @@ The zombie movement system now works flawlessly, and the debugging methodology d
 4. [x] Test core combat loop: movement → shooting → zombie AI → resource management
 5. [x] Validate tactical positioning mechanics work as intended
 
-### **Step 2: Scope Decision Matrix (10 minutes)**
+**Risk Assessment**
+1. [ ] Assess multi-room system complexity vs single-room foundation
+2. [ ] Identify untested integration points: sight system + room transitions
+3. [ ] Note potential scope creep: procedural generation vs fixed room layouts
+4. [ ] Evaluate technical debt accumulated during BUG-005 resolution
+5. [ ] Document external dependencies (none identified currently)
+
+### **Step 3: Scope Decision Matrix (10 minutes)**
 **Feature Categorization**
 1. [ ] **Core Features**: Room-to-room movement, basic zombie spawning per room
 2. [ ] **Enhancement Features**: Procedural room generation, complex room layouts
@@ -546,7 +553,7 @@ The zombie movement system now works flawlessly, and the debugging methodology d
 4. [ ] Apply backlog framework if behind schedule (preserve core, defer enhancement)
 5. [ ] Document scope decisions with justification
 
-### **Step 3: Timeline Adjustment (15 minutes)**
+### **Step 4: Timeline Adjustment (15 minutes)**
 **Schedule Recalibration**
 1. [ ] Assess if 2-day buffer for Phase 1 completion is adequate
 2. [ ] Identify specific features to simplify if needed (fixed layouts vs procedural)
@@ -556,103 +563,3 @@ The zombie movement system now works flawlessly, and the debugging methodology d
 
 ---
 
-## PRIORITY 2: Day 10 Foundation - Multi-Room Implementation (2025-06-03)
-
-### **Task 1: Room System Architecture (Based on scope evaluation results)**
-
-#### **Sub-task 1.1: Room scene structure design**
-1. [ ] Create `scenes/gameplay/rooms/room_base.tscn` with standardized layout
-2. [ ] Define room connection points (doors/exits) using Area2D markers
-3. [ ] Add room boundary walls with consistent collision detection
-4. [ ] Implement room lighting/visibility boundaries for sight system integration
-5. [ ] Test room scene loads independently with player movement
-
-#### **Sub-task 1.2: Room transition system foundation**
-1. [ ] Create `scripts/systems/room_manager.gd` handling room switching
-2. [ ] Implement player detection at room exits triggering transitions
-3. [ ] Add basic scene switching between rooms (no fancy transitions yet)
-4. [ ] Ensure sight system and zombie memory persist across room changes
-5. [ ] Test player can move between 2 connected rooms smoothly
-
-#### **Sub-task 1.3: Room-specific zombie spawning**
-1. [ ] Add zombie spawn points to room_base.tscn using Position2D markers
-2. [ ] Create room configuration system defining zombie count/types per room
-3. [ ] Implement `spawn_zombies_for_room()` method using spawn point positions
-4. [ ] Ensure zombies spawn only when player enters room (not all at once)
-5. [ ] Test each room has appropriate zombie challenge based on configuration
-
-### **Task 2: Sight System Integration with Multi-Room**
-
-#### **Sub-task 2.1: Memory system room persistence**
-1. [ ] Extend PlayerSight memory system to track zombies by room_id
-2. [ ] Ensure zombie memory markers persist when switching rooms
-3. [ ] Clear memory data appropriately when zombies die in other rooms
-4. [ ] Test sight system works correctly across room transitions
-5. [ ] Verify no memory leaks from cross-room zombie tracking
-
-#### **Sub-task 2.2: Performance optimization for multi-room**
-1. [ ] Disable zombie AI processing for zombies in non-active rooms
-2. [ ] Optimize sight range detection to only check current room zombies
-3. [ ] Implement efficient room-based collision layer management
-4. [ ] Test performance remains 60fps with multiple rooms loaded
-5. [ ] Monitor memory usage during extended room exploration
-
-### **Task 3: Basic Multi-Room Progression**
-
-#### **Sub-task 3.1: Simple room progression logic**
-1. [ ] Create 3-5 connected rooms with increasing difficulty
-2. [ ] Implement basic objective: clear all zombies to unlock next room
-3. [ ] Add simple door locking/unlocking based on room clear status
-4. [ ] Create basic progression feedback (door opens, visual indicator)
-5. [ ] Test complete room-to-room progression works end-to-end
-
----
-
-## PRIORITY 3: System Validation & Polish (2-3 hours)
-
-### **Task 4: Integration Testing with BUG-005 Fixes**
-
-#### **Sub-task 4.1: Comprehensive system integration test**
-1. [ ] Test complete gameplay loop: spawn → explore → combat → progress → repeat
-2. [ ] Verify BUG-005 fixes remain stable with multi-room implementation
-3. [ ] Test edge cases: zombie death during room transitions, rapid room switching
-4. [ ] Validate sight system and memory work correctly across all room combinations
-5. [ ] Confirm no regression bugs introduced by multi-room system
-
-#### **Sub-task 4.2: Performance and stability validation**
-1. [ ] Run extended play session (10+ minutes) monitoring performance
-2. [ ] Test memory usage remains stable during room exploration
-3. [ ] Verify all debug systems work correctly with multi-room setup
-4. [ ] Test rapid movement between rooms doesn't cause crashes or glitches
-5. [ ] Document any new issues discovered for immediate resolution
-
----
-
-## PRIORITY 4: Documentation and Planning (30 minutes)
-
-### **Task 5: Day 6 Progress Documentation**
-
-#### **Sub-task 5.1: Progress report creation**
-1. [ ] Document scope evaluation results and decisions made
-2. [ ] Record actual time spent vs estimates for multi-room implementation
-3. [ ] Note any technical challenges encountered and solutions applied
-4. [ ] Update BUG_TRACKER.md with any new issues discovered
-5. [ ] Plan Day 7 tasks based on Day 6 completion status
-
----
-
-## **Expected Day 6 Results:**
-
-**Core Achievement:** Player can move between 3-5 connected rooms, each with appropriate zombie challenges, while sight system and memory work correctly across transitions.
-
-**Technical Validation:** BUG-005 fixes remain stable with multi-room complexity, performance stays at 60fps, and no new critical issues introduced.
-
-**Scope Clarity:** Clear understanding of remaining Phase 1 work and confidence in meeting timeline with appropriate scope management.
-
-**Next Day Preview:** Day 7 will focus on progression system polish, room variety, and Phase 1 completion validation.
-
----
-
-**Total Estimated Time:** 7-10 hours  
-**Priority Focus:** Scope evaluation first, then multi-room foundation  
-**Success Criteria:** Playable multi-room progression with stable sight system integration
