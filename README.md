@@ -1,98 +1,107 @@
 # 🧟‍♂️ ZED
 
-**Top-Down Tactical Extraction Shooter**
+**Top-Down Arcade Looter Shooter**
 
-ZED is a top-down tactical extraction game where you rescue survivors from zombie-infested buildings in a post-apocalyptic world. Every mission is a calculated risk - clear buildings for resources, but lose everything if you die before extraction!
+ZED is a fast-paced arcade extraction shooter where you clear procedurally generated houses for color-coded loot in a post-apocalyptic world. Every run is a quick 5-10 minute session - clear zombies, collect tiered weapons, and extract with your rewards!
 
 ## 🎯 Core Gameplay
 
-### Mission-Based Extraction Structure
-- **Clear Buildings**: Eliminate zombie threats in procedurally generated structures
-- **Secure Resources**: Collect valuable supplies and equipment
-- **Extract Safely**: Reach the extraction point to keep your loot
+### Quick House Clearing Sessions
+- **Deploy to Houses**: Enter procedurally generated residential layouts (5-15 rooms)
+- **Clear Zombies**: Eliminate all threats using tactical positioning and weapon variety
+- **Collect Loot**: Gather color-coded weapons and items with procedural stats
+- **Extract Safely**: Exit to secure all collected gear for your next run
 
-### Risk/Reward Mechanics
-- **Permadeath Consequences**: Death means losing all carried equipment
-- **Resource Scarcity**: Every bullet, medical supply, and piece of gear matters
-- **Extraction Timing**: Push deeper for better loot or extract early to secure gains
+### Infinite Loot Progression
+- **Color-Coded Tiers**: Gray → White → Green → Blue → Purple → Orange rarity system
+- **Procedural Weapons**: Every weapon has randomized damage, accuracy, and fire rate stats
+- **House Level Scaling**: Higher difficulty houses offer better loot tier chances
+- **Endless Variety**: No two weapons are identical - infinite combinations to discover
 
-### Base Building Progression
-- **Resource Management**: Use extracted materials to upgrade your base
-- **Survivor Development**: Rescued NPCs provide specialized skills and abilities
-- **Equipment Crafting**: Modify and improve weapons using salvaged components
+### Arcade Shooter Mechanics
+- **Fast Sessions**: Complete house clearing runs in 5-10 minutes
+- **Immediate Action**: Jump straight into combat without complex preparation
+- **Clear Progression**: Always another house level to unlock and better loot to find
+- **Satisfying Feedback**: Responsive shooting with visual tier-based weapon upgrades
 
 ## 🔥 Key Features
 
-### Procedural Generation
-- **Dynamic Buildings**: Each mission features unique room layouts and challenges
-- **Adaptive Difficulty**: Building complexity scales with your team's capabilities
-- **Varied Objectives**: Mission types and requirements change based on story progression
+### Procedural House Generation
+- **Infinite Layouts**: Every house is uniquely generated with logical room connections
+- **Scalable Difficulty**: Houses range from 5-room starter homes to 15-room complexes
+- **Room Variety**: Living rooms, kitchens, bedrooms, bathrooms with tactical furniture placement
+- **Smart Spawning**: Zombies and loot placed logically based on room type and house level
+
+### Looter Shooter Progression
+- **Weapon Hunting**: Seek perfect stat combinations in your preferred weapon types
+- **Tier Chasing**: Hunt for legendary weapons with maximum performance
+- **Build Diversity**: Different weapon stats enable varied tactical approaches
+- **Collection Goals**: Master every weapon type across all rarity tiers
 
 ### Tactical Combat
-- **Real-Time Strategy**: Point-and-click combat with tactical positioning
-- **Environmental Interaction**: Use cover, destructible objects, and terrain advantages
-- **Weapon Variety**: Firearms, melee weapons, and improvised tools with distinct characteristics
-
-### Survival Elements
-- **Medical System**: Injuries affect performance and require treatment
-- **Ammunition Management**: Limited resources force tactical decision-making
-- **Equipment Degradation**: Gear wears down and requires maintenance
+- **5 Zombie Types**: Walker, Runner, Brute, Crawler, Spitter with distinct behaviors
+- **Weapon Variety**: Pistols, rifles, shotguns, medical packs with unique tactical roles
+- **Environmental Tactics**: Use furniture cover, multiple room entries, and positioning
+- **Resource Management**: Limited ammunition forces careful engagement decisions
 
 ## 🛠️ Technical Specifications
 
 ### Engine & Platform
 - **Engine**: Godot 4.4 with Jolt Physics integration
 - **Platform**: PC (Steam)
-- **Graphics**: AI-generated 2D sprites using Stable Diffusion 3 LoRA
+- **Graphics**: AI-generated 2D sprites using placeholder-first development
 - **Audio**: AI-generated sound effects and atmospheric music
 
-### Asset Pipeline
-- **Visual Style**: Post-apocalyptic aesthetic inspired by Cataclysm: Dark Days Ahead
-- **Sprite Generation**: Custom LoRA models trained on CDDA UlticaMSX tilesets
-- **Procedural Content**: Template-based room generation with AI-enhanced variety
+### Procedural Systems
+- **House Generation**: Template-based room assembly with infinite variety
+- **Loot Distribution**: Smart spawning based on room type and house difficulty
+- **Weapon Stats**: Procedural generation ensuring balanced but varied equipment
+- **Difficulty Scaling**: Automatic zombie and loot tier adjustment by house level
 
 ## 🚀 Development Approach
 
-### Mechanics-First Philosophy
-1. **Core Loop Validation**: Prove gameplay is engaging with placeholder assets
-2. **AI Asset Integration**: Replace placeholders with generated content at 33% completion
-3. **Polish & Optimization**: Focus on performance and visual consistency
-4. **Market Preparation**: Anonymous marketing through development documentation
+### Playable-First Philosophy
+1. **Core Loop Validation**: Prove arcade shooting is engaging with placeholder assets
+2. **Procedural Content**: Generate infinite variety through systematic algorithms
+3. **AI Asset Integration**: Replace placeholders with generated sprites at completion
+4. **Performance Focus**: Maintain 60fps with complex procedural systems
 
-### Timeline
-- **Week 1**: Core mechanics with placeholders
-- **Week 2**: Systems integration and market research
+### Rapid Development Timeline
+- **Week 1**: Core mechanics and procedural generation with placeholders
+- **Week 2**: Loot tier systems and house scaling with full gameplay loop
 - **Week 3**: AI asset generation and visual development
-- **Week 4**: Marketing preparation and launch readiness
+- **Week 4**: Polish, optimization, and launch preparation
 
 ## 🎮 Target Audience
 
 ### Primary Demographics
-- **Tactical Strategy Enthusiasts**: Players who enjoy games like XCOM, Darkest Dungeon
-- **Extraction Game Fans**: Audience from Escape from Tarkov, Dark and Darker
-- **Indie Game Supporters**: Steam users seeking innovative mechanics and fair pricing
+- **Arcade Shooter Fans**: Players who enjoy Synthetik, Enter the Gungeon, Neon Chrome
+- **Looter Shooter Enthusiasts**: Audience from Borderlands, Destiny, Risk of Rain
+- **Extraction Game Players**: Fans of quick, high-stakes sessions with meaningful rewards
 
 ### Unique Selling Points
-- **Meaningful Consequences**: Every decision has lasting impact on progression
-- **AI-Enhanced Development**: Cutting-edge asset generation for rapid content creation
-- **Balanced Complexity**: Deep mechanics without overwhelming micromanagement
+- **Infinite Replayability**: Procedural houses and weapons ensure no two runs are identical
+- **Quick Sessions**: Perfect for streamers and casual players with limited time
+- **Satisfying Progression**: Clear visual feedback through color-coded loot tiers
+- **Tactical Depth**: Simple to learn, difficult to master positioning and resource management
 
 ## 💰 Commercial Strategy
 
 ### Pricing & Distribution
 - **Early Access**: $7.99 on Steam
-- **Full Release**: $12.99 with expanded content
-- **DLC Strategy**: Additional building types, enemy factions, and story campaigns
+- **Full Release**: $12.99 with expanded content and additional house types
+- **Content Updates**: New weapon types, zombie variants, and house archetypes
 
 ### Marketing Approach
-- **Anonymous Development**: Focus on gameplay and technical innovation
-- **Community Building**: Development blog documenting AI-assisted creation process
-- **Press Strategy**: Target indie gaming outlets with unique development story
+- **Gameplay Focus**: Highlight the addictive loot hunt and quick session structure
+- **Procedural Appeal**: Emphasize infinite variety and replayability
+- **Arcade Heritage**: Position alongside successful top-down shooters and looter games
 
 ### Success Metrics
-- **Launch Target**: 300-800 copies in first week
-- **Revenue Goal**: $24,000-$64,000 in first year
-- **Review Target**: 85%+ positive Steam rating
+- **Launch Target**: 500-1,200 copies in first week
+- **Revenue Goal**: $35,000-$75,000 in first year
+- **Review Target**: 90%+ positive Steam rating
+- **Session Metrics**: Average 3+ runs per player session
 
 ## 💻 Installation Requirements
 
@@ -115,16 +124,16 @@ ZED is a top-down tactical extraction game where you rescue survivors from zombi
 ### Installation
 1. Purchase through Steam Early Access
 2. Download and install via Steam client
-3. Launch and complete tutorial mission
-4. Begin your extraction journey!
+3. Complete quick tutorial house
+4. Begin your loot hunting journey!
 
 ## 👤 Development Team
 
 **Solo Developer**: Anonymous indie developer specializing in:
-- Systematic project planning and execution
+- Procedural content generation and arcade game design
 - AI-assisted game development workflows
-- Tactical game design and balance
-- Procedural content generation
+- Looter shooter progression systems and balance
+- Performance optimization for complex procedural systems
 
 ## 📞 Contact & Support
 
@@ -136,20 +145,19 @@ ZED is a top-down tactical extraction game where you rescue survivors from zombi
 ## 📄 License & Credits
 
 ### Third-Party Assets
-- **Reference Material**: Cataclysm: Dark Days Ahead UlticaMSX tilesets
-  - Used for AI training reference only
-- **AI Tools**: Stable Diffusion 3, LoRA training, AI audio generation
+- **AI Tools**: Stable Diffusion 3, procedural audio generation
 - **Engine**: Godot 4.4 (MIT License)
+- **Inspiration**: Synthetik, Borderlands, Enter the Gungeon
 
 ### Development Tools
-- **Asset Generation**: AUTOMATIC1111/ComfyUI for Stable Diffusion
-- **Audio Creation**: MusicLM, AIVA for procedural sound design
-- **Website Development**: Claude Opus 4 for marketing materials
+- **Asset Generation**: AI-powered sprite and audio creation
+- **Procedural Systems**: Custom algorithms for house and loot generation
+- **Performance Optimization**: Jolt Physics integration for smooth 60fps gameplay
 
 ---
 
-**ZED - Where every extraction could be your last, and every decision shapes your survival.**
+**ZED - Where every house holds new loot, and every run brings better rewards.**
 
 **Status**: In Development  
-**Expected Early Access Launch**: June 22, 2025  
+**Expected Early Access Launch**: June 25, 2025  
 **Platform**: Steam

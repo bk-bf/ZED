@@ -1,200 +1,147 @@
 # ZED - Core Mechanics Documentation
 
-ZED is a top-down tactical extraction shooter inspired by Escape from Tarkov and Stalker Anomaly, set in a post-apocalyptic world. Players lead survivors through dangerous missions in hand-crafted building layouts to collect resources, complete objectives, and extract safely while managing permanent consequences for failure.
+ZED is a top-down arcade looter shooter inspired by Synthetik and Borderlands, set in a post-apocalyptic world. Players deploy to procedurally generated houses for quick extraction runs, collecting color-coded loot and battling zombie hordes in fast-paced 5-10 minute sessions with infinite replayability.
 
 ## Core Game Loop
 
-### 1. Mission Planning Phase
-- **Base Operations**: Interact with workbenches, storage, and facilities in your base room
-- **Quest Selection**: Choose from available missions with varying objectives and difficulty
-- **Location Selection**: Pick from unlocked buildings on the world map
-- **Loadout Preparation**: Equip weapons, medical supplies, and gear before deployment
+### 1. House Selection Phase
+- **Level Selection**: Choose house difficulty (1-10) affecting size, zombie density, and loot tier chances
+- **Loadout Preparation**: Equip best available weapons and medical supplies from previous runs
+- **Risk Assessment**: Higher house levels offer better loot tiers but increased danger
 
-### 2. Mission Execution Phase
-- **Deployment**: Enter hand-crafted building layouts with tactical complexity
-- **Objective Completion**: Fulfill quest requirements (rescue, elimination, retrieval)
-- **Resource Collection**: Gather loot while managing inventory space and weight
-- **Threat Management**: Combat zombies, mutants, bandits, and environmental hazards
-- **Extraction**: Reach randomized extraction points to secure progress
+### 2. House Clearing Phase
+- **Deployment**: Enter procedurally generated house layouts (5-15 rooms based on level)
+- **Room-by-Room Clearing**: Eliminate zombies using tactical positioning and weapon variety
+- **Loot Collection**: Gather color-coded items with procedural stats and tier-based rarity
+- **Resource Management**: Balance ammunition consumption against zombie threats
+- **Extraction**: Exit house to secure all collected loot and progression
 
-### 3. Base Development Phase
-- **Loot Processing**: Sort and store collected resources
-- **Base Upgrades**: Build and upgrade workbenches for crafting and production
-- **Progression**: Unlock new locations, quests, and capabilities
+### 3. Progression Phase
+- **Loot Evaluation**: Compare new weapons and items against current loadout
+- **Weapon Upgrades**: Replace equipment with higher-tier procedural variants
+- **House Level Progression**: Unlock access to higher difficulty houses with better rewards
 
-## Death and Consequence System
+## Loot Tier System
 
-### Difficulty-Based Death Mechanics
+### Color-Coded Rarity Hierarchy
+- **Gray**: Damaged/broken items (vendor trash)
+- **White**: Common civilian equipment (baseline stats)
+- **Green**: Uncommon military surplus (improved stats)
+- **Blue**: Rare police/security gear (significant upgrades)
+- **Purple**: Epic special forces equipment (major improvements)
+- **Orange**: Legendary prototype weapons (maximum performance)
 
-#### Standard Difficulty (Default)
-- **Player Character**: Death results in losing ALL carried equipment and loot
-- **Recovery Process**: Player wakes up injured at base, requires medical resources for treatment
-- **Gear Loss**: Must re-equip and restock before next mission
-- **Progress Impact**: Setback due to lost equipment and medical costs
-- **Character Persistence**: Player character survives but suffers consequences
+### Procedural Weapon Generation
+Each weapon type (pistol, rifle, shotgun, medical pack) generates with randomized stats:
+- **Damage**: Base damage modified by tier multiplier and house level
+- **Accuracy**: Precision rating affecting hit chance and spread
+- **Fire Rate**: Shots per second determining DPS potential
+- **Ammo Capacity**: Magazine size affecting sustained combat capability
+- **Special Properties**: Tier-specific bonuses (critical chance, armor penetration, etc.)
 
-#### Permadeath Difficulty (Optional)
-- **True Death**: Character death is permanent and irreversible
-- **Survivor System**: Recruited NPCs can continue the mission/campaign
-- **Character Switching**: Can deploy either main character or recruited survivors
-- **Game Over Conditions**:
-  - All characters dead = campaign failure
-  - Main character dead with no survivors = immediate game over
-- **Strategic Depth**: Forces careful survivor recruitment and risk management
+### Loot Distribution Logic
+- **House Level Scaling**: Higher levels increase chances of better tier drops
+- **Room-Specific Spawns**: Logical placement (weapons in bedrooms, medical in bathrooms)
+- **Zombie Tier Drops**: Stronger zombie variants drop better loot tiers
+- **Extraction Rewards**: Bonus loot for successful house completion
 
-### Character Management System
+## Procedural House Generation
 
-#### Main Character
-- **Standard Mode**: Respawns at base with gear loss and injury
-- **Permadeath Mode**: Permanent death if killed
-- **Base Operations**: Can manage base, plan missions, and lead expeditions
+### Room Type System
+Houses generate with 5-15 rooms depending on difficulty level:
+- **Living Room**: Electronics, civilian weapons, furniture cover
+- **Kitchen**: Food, medical supplies, improvised weapons
+- **Bedroom**: Personal items, ammunition, weapon spawns
+- **Bathroom**: Medical supplies, cleaning chemicals
+- **Entrance**: Central hub connecting other rooms
+- **Storage**: Rare items, tool spawns, bonus loot
 
-#### Recruited Survivors
-- **Both Difficulties**: Permanent death when killed in missions
-- **Mission Deployment**: Can be sent on missions instead of main character
-- **Specialized Skills**: Each survivor may have unique stats or abilities
-- **Backup Leadership**: Can continue campaign if main character dies in Permadeath mode
+### House Scaling Mechanics
+- **Level 1-3**: Small houses (5-7 rooms), mostly Gray/White loot, basic zombies
+- **Level 4-6**: Medium houses (8-10 rooms), Green/Blue loot chances, mixed zombie types
+- **Level 7-10**: Large houses (12-15 rooms), Purple/Orange possibilities, elite zombie variants
 
-### Risk Mitigation Strategies
+### Tactical Layout Features
+- **Room Merging**: Kitchen + living room combinations for varied layouts
+- **Alternative Entries**: Destroyed walls, locked doors requiring keys
+- **Furniture Placement**: Cover objects and tactical positioning opportunities
+- **Extraction Points**: Multiple exit options (front door, back door, windows)
 
-#### Standard Difficulty
-- **Medical Preparation**: Stock healing items before dangerous missions
-- **Gear Insurance**: Keep backup equipment at base
-- **Early Extraction**: Retreat when health is low to preserve character
-- **Resource Buffer**: Maintain medical supplies for post-mission recovery
+## Combat and Zombie System
 
-#### Permadeath Difficulty
-- **Survivor Recruitment**: Priority on finding and recruiting capable NPCs
-- **Character Rotation**: Use different characters for different mission types
-- **Emergency Protocols**: Always have extraction plans and backup characters
-- **Conservative Play**: Higher emphasis on tactical positioning and risk assessment
+### Zombie Variety (5 Types)
+- **Walker**: Slow, high health, basic threat (common in all house levels)
+- **Runner**: Fast, medium health, flanking behavior (appears level 3+)
+- **Brute**: Slow, very high health, heavy damage (appears level 5+)
+- **Crawler**: Low profile, surprise attacks, fast movement (appears level 4+)
+- **Spitter**: Ranged attacks, medium health, area denial (appears level 6+)
 
-### Base Persistence (All Difficulties)
-- **Facility Upgrades**: Base improvements remain regardless of character deaths
-- **Stored Resources**: Stockpiled supplies stay safe at base
-- **Knowledge Retention**: Unlocked locations and completed quests persist
-- **Technology Progress**: Research and crafting unlocks carry forward
+### Zombie Scaling
+- **Density**: More zombies per room at higher house levels
+- **Type Distribution**: Higher levels feature more dangerous variants
+- **Behavior**: Room-specific AI (sleeping in bedrooms, feeding in kitchen)
+- **Stats**: Health and damage scale with house level progression
 
-### Mission Consequences
+### Weapon Types and Roles
+- **Pistol**: High accuracy, low damage, efficient ammo usage
+- **Rifle**: Balanced damage and accuracy, versatile engagement range
+- **Shotgun**: High damage, close range, crowd control capability
+- **Medical Pack**: Healing items, damage resistance, survival utility
 
-#### Failed Extraction (Standard)
-- **Gear Loss**: All carried equipment lost
-- **Medical Costs**: Resources required for character recovery
-- **Time Loss**: Recovery period before next mission
-- **Morale Impact**: Potential negative effects on base operations
+## Arcade Shooter Mechanics
 
-#### Failed Extraction (Permadeath)
-- **Character Death**: Permanent loss of deployed character
-- **Survivor Impact**: Remaining characters may suffer morale penalties
-- **Strategic Reassessment**: May need to recruit new team members
-- **Campaign Continuation**: Switch to surviving character or face game over
+### Session Structure
+- **Quick Deployment**: Immediate house entry without complex preparation
+- **Fast-Paced Combat**: Responsive shooting with satisfying weapon feedback
+- **Clear Objectives**: Eliminate all zombies, collect loot, extract safely
+- **Immediate Rewards**: Instant loot comparison and progression feedback
 
-## Resource and Loot System
+### Infinite Replayability
+- **Procedural Generation**: Every house layout is unique and unpredictable
+- **Loot Variety**: Infinite weapon combinations through procedural stats
+- **Difficulty Scaling**: Always higher house levels to challenge improved equipment
+- **Optimization Goals**: Perfect stat combinations and legendary weapon hunting
 
-### Loot Categories
-- **Ammunition**: Various calibers for different weapon types
-- **Medical Supplies**: Bandages, painkillers, antibiotics, surgical kits
-- **Consumables**: Food, water, energy drinks for sustenance and buffs
-- **Electronics**: Components for base upgrades and quest objectives
-- **Tools and Materials**: Crafting components and repair supplies
-- **Weapons and Gear**: Firearms, melee weapons, armor, and equipment
+### Risk/Reward Balance
+- **House Level Choice**: Players select their preferred risk/reward ratio
+- **Loot vs. Safety**: Push deeper for better items or extract early with guaranteed gains
+- **Ammunition Management**: Limited resources force tactical engagement decisions
+- **Equipment Progression**: Better gear enables tackling higher difficulty houses
 
-### Location-Specific Loot
-- **Electronics Market**: Computer parts, batteries, advanced components
-- **Steel Mill**: Tools, raw materials, industrial equipment
-- **Hospital**: Medical supplies, pharmaceuticals, surgical equipment
-- **Residential**: Food, basic supplies, personal items
-- **Military**: Weapons, ammunition, tactical gear
+## Progression Systems
 
-## Quest and Objective System
+### House Level Progression
+- **Unlock System**: Success at current level unlocks next difficulty tier
+- **Scaling Rewards**: Higher levels offer exponentially better loot chances
+- **Challenge Scaling**: Zombie density and variety increase with house level
+- **Mastery Goals**: Perfect clears and speed run achievements
 
-### Mission Types
-- **Rescue Operations**: Locate and extract survivors (potential recruits)
-- **Elimination Contracts**: Neutralize specific threats (bosses, bandit leaders)
-- **Retrieval Missions**: Secure specific items or intelligence
-- **Clearance Operations**: Eliminate all threats in designated areas
-- **Supply Runs**: Collect specific resource quotas
+### Weapon Collection
+- **Tier Hunting**: Seeking higher-tier versions of preferred weapon types
+- **Stat Optimization**: Finding perfect combinations of damage, accuracy, and fire rate
+- **Build Diversity**: Different weapon stats enable varied playstyles
+- **Collection Goals**: Acquiring legendary weapons in each category
 
-### Objective Scaling
-- **Difficulty Progression**: Harder missions unlock as base capabilities improve
-- **Dynamic Threats**: Enemy types and densities scale with player progression
-- **Reward Scaling**: Better loot and resources in more dangerous locations
-
-## Base Building and Progression
-
-### Base Facilities
-- **Storage Systems**: Secure containers for loot and equipment
-- **Medical Bay**: Treatment facilities and medicine production
-- **Workshop**: Weapon modification and equipment crafting
-- **Communications**: Quest management and survivor coordination
-- **Power Generation**: Energy systems for advanced facilities
-
-### Progression Gates
-- **Technology Unlocks**: New crafting recipes and base modules
-- **Location Access**: Unlock new buildings and districts
-- **Quest Availability**: Advanced missions require base development
-- **Survivor Integration**: Rescued NPCs provide specialized skills
-
-## Tactical Combat System
-
-### Engagement Principles
-- **Positioning**: Cover, line of sight, and environmental advantages
-- **Resource Conservation**: Limited ammunition forces tactical thinking
-- **Threat Assessment**: Different enemies require different approaches
-- **Escape Options**: Sometimes retreat is the optimal strategy
-
-### Enemy Types
-- **Zombies**: Slow but numerous, attracted to noise, smell
-- **Mutants**: Fast and dangerous, unique abilities
-- **Bandits**: Intelligent opponents with weapons and tactics
-- **Bosses**: Unique encounters requiring specific strategies
-
-## Risk/Reward Balance
-
-### High-Risk Areas
-- **Better Loot**: Dangerous zones contain superior resources
-- **Rare Materials**: Unique components only found in hazardous locations
-- **Quest Objectives**: Important targets often in heavily defended areas
-
-### Risk Mitigation Strategies
-- **Preparation**: Better equipment and supplies improve survival odds
-- **Knowledge**: Learning enemy patterns and location layouts
-- **Timing**: Choosing when to push forward vs. when to extract
-- **Resource Management**: Balancing current needs vs. future preparation
-
-## Hand-Crafted Building System
-
-### Building Layouts
-- **Template Mastery**: 3-4 carefully designed layouts per building type for tactical depth
-- **Learnable Patterns**: Players develop expertise through repeated exposure
-- **Tactical Complexity**: Each layout presents unique positioning challenges and opportunities
-- **Strategic Depth**: Knowledge of layouts becomes a core player skill
-
-### Dynamic Mission Elements
-- **Loot Randomization**: Resource spawns vary while maintaining location logic
-- **Extraction Variability**: Exit points rotate between predetermined tactical positions
-- **Mission Objectives**: Quest requirements change while using consistent building layouts
-- **Environmental States**: Door locks, lighting, and accessibility vary by mission parameters
-
-### Progression Integration
-- **Unlocked Buildings**: New hand-crafted locations become available over time
-- **Difficulty Scaling**: Enemy density and types increase with progression in known layouts
-- **Tactical Evolution**: Players must adapt strategies as threats evolve in familiar environments
+### Achievement Integration
+- **Loot Milestones**: First Purple weapon, first Orange weapon, perfect stat rolls
+- **Combat Achievements**: Headshot streaks, perfect accuracy runs, speed clears
+- **House Mastery**: Completing all difficulty levels, rare house variants
+- **Collection Completionist**: Acquiring weapons of each tier in every category
 
 ## Success Metrics
 
-### Mission Success
-- **Objective Completion**: Primary goals fulfilled
-- **Successful Extraction**: Player reaches extraction point alive
-- **Loot Secured**: Collected resources added to base storage
-- **Progression**: Experience and unlocks gained
+### Session Success
+- **House Completion**: All zombies eliminated and successful extraction
+- **Loot Quality**: Higher-tier items collected compared to previous runs
+- **Efficiency**: Ammunition conservation and minimal health loss
+- **Time Performance**: Quick clears enabling more runs per play session
 
-### Long-term Success
-- **Base Development**: Facilities upgraded and expanded
-- **Territory Control**: More locations unlocked and accessible
-- **Survivor Network**: Rescued NPCs providing ongoing benefits
-- **Equipment Superiority**: Better gear enabling harder missions
+### Long-term Progression
+- **Equipment Improvement**: Steady upgrade path through loot tier progression
+- **House Level Advancement**: Access to increasingly challenging and rewarding content
+- **Mastery Development**: Improved tactical skills and weapon handling
+- **Collection Growth**: Expanding arsenal of high-tier weapons and equipment
 
 ---
 
-This document defines the core mechanics that drive player engagement through meaningful risk/reward decisions, tactical mastery of hand-crafted environments, and permanent progression consequences.
+This document defines the core mechanics that drive player engagement through immediate action, meaningful loot progression, infinite procedural variety, and satisfying arcade shooter gameplay with extraction shooter risk/reward elements.
