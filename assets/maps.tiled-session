@@ -1,0 +1,46 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "residential_complex_sketch.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "placeholder_residential.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "residential_complex_sketch.tmx": {
+            "scale": 0.03125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 13088,
+                "y": 11184
+            }
+        }
+    },
+    "last.imagePath": "/home/kirillboychenko/Documents/tiles",
+    "map.height": 64,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 64,
+    "openFiles": [
+        "residential_complex_sketch.tmx"
+    ],
+    "project": "maps.tiled-project",
+    "recentFiles": [
+        "residential_complex_sketch.tmx",
+        "placeholder_residential.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    },
+    "tileset.type": 0
+}
